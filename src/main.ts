@@ -1,20 +1,20 @@
 import { mount } from 'svelte'
 import './app.css'
-import App from './App.svelte'
-import App2 from './App2.svelte'
-import DeliveryPlanner from './DeliveryPlanner.svelte'
+import ProductPageInfo from './entries/ProductPageInfo.svelte'
+import DeliveryPlanner from './entries/DeliveryPlanner.svelte'
+import App from './entries/App.svelte'
 
 
-const app = mount(App, {
-  target: document.getElementById('app')!,
-})
-
-const app2 = mount(App2, {
-  target: document.getElementById('app2')!,
+const productPageInfo = mount(ProductPageInfo, {
+  target: document.getElementById('product-page-info')!,
 })
 
 const deliveryPlanner = mount(DeliveryPlanner, {
   target: document.getElementById('delivery-planner')!,
 })
 
-export default app
+const app = mount(App, {
+  target: document.getElementById('app')!,
+})
+
+// export default app
