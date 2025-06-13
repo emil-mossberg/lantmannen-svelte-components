@@ -7,4 +7,5 @@
 .svelte-component * {
   all: unset;
   font-family: inherit;
+  margin-bottom: 0;
 }
