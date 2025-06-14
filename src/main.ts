@@ -3,6 +3,7 @@ import './app.css'
 import ProductPageInfo from './entries/ProductPageInfo.svelte'
 import DeliveryPlanner from './entries/DeliveryPlanner.svelte'
 import PurchaseDemo from './entries/PurchaseDemo.svelte'
+import PurchaseInfo from './entries/PurchaseInfo.svelte'
 
 
 
@@ -16,6 +17,10 @@ const deliveryPlanner = mount(DeliveryPlanner, {
 
 const purchaseDemo = mount(PurchaseDemo, {
   target: document.getElementById('purchase-demo')!,
+})
+
+const purchaseInfo = mount(PurchaseInfo, {
+  target: document.getElementById('purchase-info-2')!,
 })
 
 // export default app

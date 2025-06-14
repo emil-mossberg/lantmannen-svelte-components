@@ -1,10 +1,16 @@
 <script lang="ts">
+  import { onMount, onDestroy } from "svelte";
+
   import { slide } from "svelte/transition";
   import { cubicIn } from "svelte/easing";
 
   import Button from "../lib/Button.svelte";
   import Select from "../lib/Select.svelte";
   import SelectDate from "../lib/SelectDate.svelte";
+
+  import { useBridgeSingleton } from '../lib/stores/useBridgeSingleton.svelte'
+
+  const { testData, testMethod } = useBridgeSingleton
 
   import {
     bulkDeliveryMethods,
@@ -68,9 +74,38 @@
       ],
     },
   ]);
+
+  function handleCartUpdate(e: Event) {
+        console.log('cart updated!', e);
+  }
+
+  function handleIntialState(e: Event) {
+        console.log('Initial state!', e);
+  }
+
+//   onMount(() => {
+//     const state = window.MagentoBridgeState;
+
+//     console.log('Initial cart:', state?.cart);
+
+//     console.log('Initial customer:', state?.customer);
+
+//     console.log('mounting!');
+
+//     window.addEventListener('magento:cartUpdated', handleCartUpdate);
+//     window.addEventListener('magento:initialState', handleIntialState);
+// });
+
+//   onDestroy(() => {
+
+//     window.removeEventListener('magento:cartUpdated', handleCartUpdate);
+//   })
+
 </script>
 
 <div class="fixed right-0 top-0 z-[110]">
+  <div>{testData.value}</div>
+  <Button text="TEST STUFF" onclick={testMethod}/>
   <Button text="Leveransplaneraren" onclick={() => (visible = !visible)} />
 </div>
 {#if visible}

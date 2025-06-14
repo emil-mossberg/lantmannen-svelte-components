@@ -3,6 +3,10 @@
   import Select from "../lib/Select.svelte";
   import SelectDate from "../lib/SelectDate.svelte";
 
+  import { useBridgeSingleton } from "../lib/stores/useBridgeSingleton.svelte";
+
+  const { testData, testMethod, cart } = useBridgeSingleton;
+
   import {
     bulkDeliveryMethods,
     packageDeliveryMethods,
@@ -28,17 +32,22 @@
   };
 </script>
 
+<div>{testData.value}</div>
+<div>{cart.value.subtotalAmount}</div>
+{#each cart.value.items as item}
+  {item.product_sku}
+{/each}
 {#if showModal}
   <div
     class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white p-6 border z-[110] w-[500px]"
   >
-  <div class="flex justify-between items-center mb-4">
-    <h4 class="font-bold text-[1.125rem] leading-[1.2]">
-      {`Beställ ${deliveryType === 'bulk' ? deliveryType : ''}`}
-    </h4>
-    <button onclick={() => showModal = false}>Stäng</button>
-  </div>
-    
+    <div class="flex justify-between items-center mb-4">
+      <h4 class="font-bold text-[1.125rem] leading-[1.2]">
+        {`Beställ ${deliveryType === "bulk" ? deliveryType : ""}`}
+      </h4>
+      <button onclick={() => (showModal = false)}>Stäng</button>
+    </div>
+
     {#if deliveryType === "bulk"}
       <Select
         label="Leveransmetod:"
@@ -63,36 +72,36 @@
         }}
       />
     {:else if deliveryType === "packaged"}
-                 <Select
-              label="Leveransmetod:"
-              options={packageDeliveryMethods}
-              bind:value={deliveryMethod}
-              valueFormatter={(value) => {
-                return value.delivery_method;
-              }}
-              labelFormatter={(value) => {
-                return value.delivery_method_name;
-              }}
-            />
-            <Select
-              label="Leveransadress:"
-              options={packageAddresses}
-              bind:value={deliveryAddress}
-              valueFormatter={(value) => {
-                return value.addressId;
-              }}
-              labelFormatter={(value) => {
-                return value.address;
-              }}
-            />
-    {/if} 
+      <Select
+        label="Leveransmetod:"
+        options={packageDeliveryMethods}
+        bind:value={deliveryMethod}
+        valueFormatter={(value) => {
+          return value.delivery_method;
+        }}
+        labelFormatter={(value) => {
+          return value.delivery_method_name;
+        }}
+      />
+      <Select
+        label="Leveransadress:"
+        options={packageAddresses}
+        bind:value={deliveryAddress}
+        valueFormatter={(value) => {
+          return value.addressId;
+        }}
+        labelFormatter={(value) => {
+          return value.address;
+        }}
+      />
+    {/if}
     <SelectDate
       bind:deliveryFrom={deliveryDateFrom}
       deliveryTo={deliveryDateTo}
     />
     <div class="w-full flex justify-center mt-8">
       <Button
-        text={`Beställ ${deliveryType === 'bulk' ? deliveryType : ''}`}
+        text={`Beställ ${deliveryType === "bulk" ? deliveryType : ""}`}
         onclick={() => (showModal = false)}
         class="min-w-[260px]"
       />
