@@ -7,10 +7,10 @@
   let { deliveryFrom = $bindable(), deliveryTo }: Props = $props();
 </script>
 
-<div class="mb-3">
-  <label class="block !mb-0" for="">Önskat leveransintervall:</label>
-  <div>
-    <input type="text" class="!h-[30px] border px-2 py-1 !w-auto !rounded-none" bind:value={deliveryFrom} />
+<div class="tw-mb-3">
+  <label class="tw-block" for="">Önskat leveransintervall:</label>
+  <div class="tw-flex tw-gap-3">
+    <input type="text" bind:value={deliveryFrom} />
     <span>{` - ${deliveryTo}`}</span>
   </div>
 </div>

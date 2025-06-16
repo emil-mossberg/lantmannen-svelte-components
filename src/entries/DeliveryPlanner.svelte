@@ -1,17 +1,18 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
-
   import { slide } from "svelte/transition";
   import { cubicIn } from "svelte/easing";
 
   import Button from "../lib/Button.svelte";
-  import Select from "../lib/Select.svelte";
   import SelectDate from "../lib/SelectDate.svelte";
+  import SelectWrapper from "../lib/SelectWrapper.svelte";
 
   import { useBridgeSingleton } from "../lib/stores/useBridgeSingleton.svelte";
 
-  const { testData, testMethod } = useBridgeSingleton;
+  import IconCart from '../assets/icons/icon-cart.svg'
 
+  const { cart } = useBridgeSingleton;
+  
+  console.log(cart);
   import {
     bulkDeliveryMethods,
     packageDeliveryMethods,
@@ -24,7 +25,6 @@
   };
 
   const { showDeliveryPlanner }: Props = $props();
-
 
   let visible = $state(false);
 
@@ -81,99 +81,62 @@
       ],
     },
   ]);
-
-  function handleCartUpdate(e: Event) {
-    console.log("cart updated!", e);
-  }
-
-  function handleIntialState(e: Event) {
-    console.log("Initial state!", e);
-  }
-
-
 </script>
 
-<div class="fixed right-0 top-0 z-[110]">
-  <div>{testData.value}</div>
-  <Button text="TEST STUFF" onclick={testMethod} />
+<div class="tw-fixed tw-right-0 tw-top-0 tw-z-[110]">
+    <img src="{IconCart}" alt="" />
   <Button text="Leveransplaneraren" onclick={() => (visible = !visible)} />
 </div>
 {#if visible}
   <div
-    class="w-[600px] h-full fixed top-0 border bg-white text-charcoal right-0 z-[110] overflow-auto"
+    class="tw-w-[600px] tw-h-full tw-fixed tw-top-0 tw-border tw-bg-white tw-right-0 tw-z-[110] tw-overflow-auto"
     transition:slide={{ axis: "x", duration: 400, easing: cubicIn }}
   >
-    <div class="flex justify-between p-6">
-      <h1 class="font-bold text-[1.625rem] leading-[1.2] text-charcoal">
-        Leveransplaneraren
-      </h1>
+    <div class="tw-flex tw-justify-between tw-p-6">
+      <h3>Leveransplaneraren</h3>
       <button class="" onclick={() => (visible = false)}> Stäng</button>
     </div>
     <ul>
       {#each deliveries as delivery, index}
-        <li class="py-3 px-6 mb-2 border-b">
-          <h4 class="mb-2 font-bold text-[1.125rem] leading-[1.2]">
+        <li class="tw-py-3 tw-px-6 tw-mb-2 tw-border-b">
+          <h5>
             {`Leverans ${index + 1} ${delivery.type === "bulk" ? "(Bulkleverans - silo krävs)" : ""}`}
-          </h4>
-          {#if delivery.type === "bulk"}
-            <Select
-              label="Leveransmetod:"
-              options={bulkDeliveryMethods}
-              bind:value={delivery.deliveryMethod}
-              valueFormatter={(value) => {
-                return value.delivery_method;
-              }}
-              labelFormatter={(value) => {
-                return value.delivery_method_name;
-              }}
-            />
-            <Select
-              label="Leveransadress:"
-              options={bulkAddress}
-              bind:value={delivery.adress}
-              valueFormatter={(value) => {
-                return value.addressId;
-              }}
-              labelFormatter={(value) => {
-                return `${value.address}, Silo ${value.siloId}`;
-              }}
-            />
-          {:else if delivery.type === "package"}
-            <Select
-              label="Leveransmetod:"
-              options={packageDeliveryMethods}
-              bind:value={delivery.deliveryMethod}
-              valueFormatter={(value) => {
-                return value.delivery_method;
-              }}
-              labelFormatter={(value) => {
-                return value.delivery_method_name;
-              }}
-            />
-            <Select
-              label="Leveransadress:"
-              options={packageAddresses}
-              bind:value={delivery.adress}
-              valueFormatter={(value) => {
-                return value.addressId;
-              }}
-              labelFormatter={(value) => {
-                return value.address;
-              }}
-            />
-          {/if}
+          </h5>
+          {delivery.deliveryMethod.delivery_method}
+          <SelectWrapper
+            text="Leveransmethod:"
+            bind:value={delivery.deliveryMethod}
+            items={delivery.type === "bulk"
+              ? bulkDeliveryMethods
+              : packageDeliveryMethods}
+            label="delivery_method_name"
+            itemId="delivery_method"
+          />
+          <SelectWrapper
+            text="Leveransadress:"
+            bind:value={delivery.adress}
+            items={delivery.type === "bulk"
+              ? bulkAddress.map((item) => ({
+                  ...item,
+                  address: `${item.address}, Silo: ${item.siloId}`,
+                  addressId: `${item.addressId}-${item.siloId}`,
+                }))
+              : packageAddresses}
+            label="address"
+            itemId="addressId"
+          />
           <SelectDate
             bind:deliveryFrom={delivery.deliveryDateFrom}
             deliveryTo={delivery.deliveryDateTo}
           />
-          <h6 class="mb-2 font-bold">Produkter</h6>
+          <h6 class="mb-2">Produkter</h6>
           <ul>
             {#each delivery.items as item}
-              <li class="grid grid-cols-2 grid-rows-2 mb-3 ml-8">
-                <span class="font-bold text-sm">{item.name}</span>
-                <span class="text-sm text-right">{`Pris: ${item.pris}`}</span>
-                <span class="text-sm">{`Artikelnummer: ${item.sku}`}</span>
-                <span class="text-sm text-right"
+              <li class="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-mb-3 tw-ml-8">
+                <span class="tw-font-bold tw-text-sm">{item.name}</span>
+                <span class="tw-text-sm tw-text-right">{`Pris: ${item.pris}`}</span>
+                <span class="tw-text-sm">{`Artikelnummer: ${item.sku}`}</span>
+                <span class="tw-text-sm tw-text-right"
                   >{`Antal: ${item.quantity}`}</span
                 >
               </li>
@@ -182,5 +145,12 @@
         </li>
       {/each}
     </ul>
+    <div>{cart.value.subtotalAmount}</div>
+    {#each cart.value.items as item}
+      {item.product_sku}
+    {/each}
+
+    <Button text="Gå till varukorgen" onclick={() => window.location.href = window.BASE_URL + 'checkout/cart/'} />
+
   </div>
 {/if}

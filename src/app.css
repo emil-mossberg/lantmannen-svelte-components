@@ -5,14 +5,26 @@
 @tailwind components;
 @tailwind utilities;
 
-.svelte-component, .svelte-component * {
-  all: unset;
+
+.tw-s-overlay {
+  opacity: .4;
 }
 
+/* .svelte-component, .svelte-component * {
+  all: unset;
+} */
+
 /* TO DO use variables */
-.svelte-component h1 {
+/* .svelte-component h1 {
   font-family: 'LantmannenSerif', serif;
   font-weight: 700;
   font-size: 3.125rem;
   color: #1e6e37;
-}
+} */
+
+
+/* RESET LIST */
+
+/* Wrap all rules in .svelte-component */
+
+

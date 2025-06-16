@@ -18,6 +18,7 @@ const _useBridge = () => {
   }
 
   function handleIntialState(e: Event) {
+    console.log(e);
 	cart.value = e.detail.cart
   }
 
