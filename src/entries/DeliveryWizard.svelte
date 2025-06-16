@@ -4,6 +4,7 @@
   import SelectDate from "../lib/SelectDate.svelte";
 
   import { useBridgeSingleton } from "../lib/stores/useBridgeSingleton.svelte";
+  
 
   const { testData, testMethod, cart } = useBridgeSingleton;
 

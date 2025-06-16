@@ -8,9 +8,9 @@
   import Select from "../lib/Select.svelte";
   import SelectDate from "../lib/SelectDate.svelte";
 
-  import { useBridgeSingleton } from '../lib/stores/useBridgeSingleton.svelte'
+  import { useBridgeSingleton } from "../lib/stores/useBridgeSingleton.svelte";
 
-  const { testData, testMethod } = useBridgeSingleton
+  const { testData, testMethod } = useBridgeSingleton;
 
   import {
     bulkDeliveryMethods,
@@ -18,6 +18,13 @@
     bulkAddress,
     packageAddresses,
   } from "../dummyData";
+
+  type Props = {
+    showDeliveryPlanner: boolean;
+  };
+
+  const { showDeliveryPlanner }: Props = $props();
+
 
   let visible = $state(false);
 
@@ -76,41 +83,24 @@
   ]);
 
   function handleCartUpdate(e: Event) {
-        console.log('cart updated!', e);
+    console.log("cart updated!", e);
   }
 
   function handleIntialState(e: Event) {
-        console.log('Initial state!', e);
+    console.log("Initial state!", e);
   }
 
-//   onMount(() => {
-//     const state = window.MagentoBridgeState;
-
-//     console.log('Initial cart:', state?.cart);
-
-//     console.log('Initial customer:', state?.customer);
-
-//     console.log('mounting!');
-
-//     window.addEventListener('magento:cartUpdated', handleCartUpdate);
-//     window.addEventListener('magento:initialState', handleIntialState);
-// });
-
-//   onDestroy(() => {
-
-//     window.removeEventListener('magento:cartUpdated', handleCartUpdate);
-//   })
 
 </script>
 
 <div class="fixed right-0 top-0 z-[110]">
   <div>{testData.value}</div>
-  <Button text="TEST STUFF" onclick={testMethod}/>
+  <Button text="TEST STUFF" onclick={testMethod} />
   <Button text="Leveransplaneraren" onclick={() => (visible = !visible)} />
 </div>
 {#if visible}
   <div
-    class="w-[600px] h-full fixed top-0 border bg-white text-charcoal right-0 z-[110] overflow-auto "
+    class="w-[600px] h-full fixed top-0 border bg-white text-charcoal right-0 z-[110] overflow-auto"
     transition:slide={{ axis: "x", duration: 400, easing: cubicIn }}
   >
     <div class="flex justify-between p-6">
@@ -172,7 +162,10 @@
               }}
             />
           {/if}
-          <SelectDate bind:deliveryFrom={delivery.deliveryDateFrom}  deliveryTo={delivery.deliveryDateTo} />
+          <SelectDate
+            bind:deliveryFrom={delivery.deliveryDateFrom}
+            deliveryTo={delivery.deliveryDateTo}
+          />
           <h6 class="mb-2 font-bold">Produkter</h6>
           <ul>
             {#each delivery.items as item}

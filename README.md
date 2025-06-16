@@ -12,3 +12,5 @@ require(['Magento_Customer/js/customer-data'], function(customerData) {
         console.log('Cart updated:', newCartData);
     });
 });
+
+

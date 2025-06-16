@@ -4,8 +4,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-.svelte-component * {
+
+.svelte-component, .svelte-component * {
   all: unset;
-  font-family: inherit;
-  margin-bottom: 0;
+}
+
+/* TO DO use variables */
+.svelte-component h1 {
+  font-family: 'LantmannenSerif', serif;
+  font-weight: 700;
+  font-size: 3.125rem;
+  color: #1e6e37;
 }

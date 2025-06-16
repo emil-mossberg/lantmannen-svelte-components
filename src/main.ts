@@ -1,26 +1,52 @@
-import { mount } from 'svelte'
-import './app.css'
-import ProductPageInfo from './entries/ProductPageInfo.svelte'
-import DeliveryPlanner from './entries/DeliveryPlanner.svelte'
-import PurchaseDemo from './entries/PurchaseDemo.svelte'
-import PurchaseInfo from './entries/PurchaseInfo.svelte'
+import { mount } from "svelte";
+import "./app.css";
+import ProductPageInfo from "./entries/ProductPageInfo.svelte";
+import DeliveryPlanner from "./entries/DeliveryPlanner.svelte";
+import DeliveryWizard from './entries/DeliveryWizard.svelte'
+import SvelteTester from "./entries/SvelteTester.svelte";
+import PriceInfo from "./entries/PriceInfo.svelte";
 
-
+// Logic Product Page Info component
 
 const productPageInfo = mount(ProductPageInfo, {
-  target: document.getElementById('product-page-info')!,
-})
+  target: document.getElementById("product-page-info")!,
+});
+
+// Logic Delivery Planner component
+
+const plannerMountPoint = document.getElementById("delivery-planner");
+
+const showDeliveryPlanner = !!plannerMountPoint.dataset.showDeliveryPlanner;
 
 const deliveryPlanner = mount(DeliveryPlanner, {
-  target: document.getElementById('delivery-planner')!,
+  target: plannerMountPoint!,
+  props: {
+    showDeliveryPlanner,
+  },
+});
+
+
+// Logic Delivery Planner component
+
+const deliveryWizard = mount(DeliveryWizard, {
+  target: document.getElementById('svelte-delivery-wizard')!,
 })
 
-const purchaseDemo = mount(PurchaseDemo, {
-  target: document.getElementById('purchase-demo')!,
-})
 
-const purchaseInfo = mount(PurchaseInfo, {
-  target: document.getElementById('purchase-info-2')!,
-})
+// Logic Price Area component(s)
 
-// export default app
+document.querySelectorAll('[id^="svelte-price-info-"]').forEach((el) => {
+  const id = el.id;
+  const sku = id.replace("svelte-price-info-", "");
+
+  mount(PriceInfo, {
+    target: el,
+    props: { sku },
+  });
+});
+
+// Logic Svelte Tester component
+
+const svelteTester = mount(SvelteTester, {
+  target: document.getElementById("svelte-tester")!,
+});
