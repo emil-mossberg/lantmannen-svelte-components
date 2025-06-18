@@ -27,7 +27,7 @@
     const resolvedItemId = itemId ?? (isStringArray ? undefined : 'id');
 </script>
 
-<div class="tw-mb-3 svelte-component">
+<div class="tw-mb-3">
   <label class="tw-block" for={id}>{text}</label>
   <Select
     id={id}

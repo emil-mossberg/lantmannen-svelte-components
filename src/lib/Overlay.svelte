@@ -1,24 +1,14 @@
 <script lang="ts">
   type Props = {
-    disabled?: boolean;
-    text: string;
-    type?: "button" | "submit" | "reset" | null | undefined; // TO DO move to type, does it exist?
-    class?: string;
-    onclick: () => void;
+    show: boolean;
+    onclick?: () => void; // Can be used to wire close on click overlay
   };
 
-  const {
-    text,
-    type = "button",
-    onclick,
-    disabled = false,
-    class: className = "",
-  }: Props = $props();
+  const { show, onclick }: Props = $props();
 </script>
 
-<button
-  {type}
-  {onclick}
-  class={`tw-px-4 tw-py-2 tw-border tw-border-green-pea tw-bg-green-pea p-2 tw-text-white hover:tw-bg-tannenbaum hover:tw-border-tannenbaum hover:tw-text-white disabled:tw-cursor-not-allowed disabled:tw-opacity-50 ${className}`}
-  {disabled}>{text}</button
->
+{#if show}
+  <button class="tw-fixed tw-inset-0 tw-bg-black tw-z-110 tw-s-overlay hover:tw-bg-black" aria-label="overlay"  onclick={() => onclick?.()}  
+
+  ></button>
+{/if}

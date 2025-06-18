@@ -22,9 +22,14 @@
   const productType: "bulk" | "packaged" = $state("bulk");
 </script>
 
-<Modal textButton="Köp">
-  <h4>{`Beställ ${deliveryType === "bulk" ? deliveryType : ""}`}</h4>
-  <SelectWrapper
+
+
+{#snippet header()}
+	{`Beställ ${deliveryType === "bulk" ? deliveryType : ""}`}
+{/snippet}
+
+{#snippet body()}
+	<SelectWrapper
     text="Leveransmethod:"
     bind:value={deliveryMethod}
     items={productType === "bulk"
@@ -55,4 +60,9 @@
     text={`Beställ ${deliveryType === "bulk" ? deliveryType : ""}`}
     class="min-w-[260px]"
   />
-</Modal>
+{/snippet}
+
+
+<Modal textButton="Köp produkten" {header} {body} />
+  
+  

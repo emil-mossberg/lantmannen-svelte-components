@@ -7,5 +7,4 @@
 
 
 <div>
-  <div>Work in Progress - Product Page Info</div>
 </div>
