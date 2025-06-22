@@ -83,11 +83,15 @@
 {/snippet}
 
 {#snippet body()}
-  <div class="tw-flex tw-justify-between tw-align-middle tw-px-6 tw-py-4 tw-border-b">
-    <span>
-      {`${cart.value.items.length} Varor`}
-    </span>
-    <span>{`Total( Excl VAT): ${cart.value.subtotalAmount}`}</span>
+  <div
+    class="tw-flex tw-justify-between tw-align-middle tw-px-6 tw-py-4 tw-border-b"
+  >
+    {#if cart.value.items}
+      <span>
+        {`${cart.value.items.length} Varor`}
+      </span>
+      <span>{`Total( Excl VAT): ${cart.value.subtotalAmount}`}</span>
+    {/if}
   </div>
   <ul class="tw-h-full tw-overflow-auto">
     {#each deliveries as delivery, index}

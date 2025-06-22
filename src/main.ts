@@ -13,7 +13,6 @@ import PriceInfo from "./entries/PriceInfo.svelte";
 
 // Logic Product Page Info component
 setupI18n();
-console.log('setup done!');
 
 const productPageInfo = mount(ProductPageInfo, {
   target: document.getElementById("product-page-info")!,
@@ -43,12 +42,14 @@ const deliveryWizard = mount(DeliveryWizard, {
 // Logic Price Area component(s)
 
 document.querySelectorAll('[id^="svelte-price-info-"]').forEach((el) => {
-  const id = el.id;
-  const sku = id.replace("svelte-price-info-", "");
+  const elementId = el.id;
+  const id = elementId.replace("svelte-price-info-", "");
+
+  const prefSalesQuantity = el.getAttribute("data-pref-sales-quantity");
 
   mount(PriceInfo, {
     target: el,
-    props: { sku },
+    props: { id, prefSalesQuantity },
   });
 });
 

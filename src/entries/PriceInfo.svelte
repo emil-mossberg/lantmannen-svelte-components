@@ -4,21 +4,21 @@
   const { productPrice, requestPrice, testPriceCall } = usePriceStockSingleton;
 
   type Props = {
-    sku: string;
+    id: string;
+    prefSalesQuantity: number,
   };
 
-  const { sku }: Props = $props();
+  const { id, number = 1 }: Props = $props();
 
-  requestPrice(sku);
+  requestPrice(id);
 
-  // TO DO rename and Type it
-  let product = $derived(productPrice.value[sku]);
+  let product = $derived(productPrice.value[id]);
 </script>
 
-<div>{sku}</div>
+<div>{id}</div>
 {#if product}
-  <div>Price</div>
-  <div>{product.price_info.extension_attributes.lma_line_amount}</div>
+
+  <div>{`Id:${id} - Price ${product.price_info.extension_attributes.lma_line_amount}`}</div>
 {/if}
 
 <button type="button" onclick={testPriceCall}>TEST call Price APP</button>

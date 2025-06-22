@@ -12,11 +12,11 @@ import { REST_PRICE, REST_PRICE_GUEST } from "../constants";
 const _usePriceStock = () => {
   const { customer, isLoggedIn } = useBridgeSingleton;
 
-  // Fetch both in parallell with Promise.all Ofcourse
-  // add Price and Stock to maps, since not rendered by the stock, or is there other way, maybe derived, ask chat
-  // TEST ON PLP with injected skus from Magento / Adobe commerce
+  // TO DO 
+  // Fetch both in parallell with Promise.all
+  // Keep Price and stock separate for now since one is id and other is skue
+  
 
-  // TO DO rename to products, when have price and stock
   const productPrice = $state<{ value: { [key: string]: {} } }>({ value: {} });
 
   // TO DO right now its id, but should be SKU
@@ -24,7 +24,6 @@ const _usePriceStock = () => {
   let timer: number | null = null;
 
   async function fetchPrice() {
-    console.log("apa");
 
     const items = Array.from(queue).map((item) => ({
       itemNumber: Number(item),
@@ -36,10 +35,10 @@ const _usePriceStock = () => {
     const needsToWait =
       isLoggedIn &&
       (!customer.value || Object.keys(customer.value).length === 0);
-    console.log("Before need to wait");
+    
     if (needsToWait) {
       // Retry after short delay
-      console.log("trigger");
+    
       setTimeout(fetchPrice, 10);
       return;
     }
@@ -72,7 +71,6 @@ const _usePriceStock = () => {
 
       const result = await response.json();
 
-      // TO DO should be sku
       const resultAsObj = result.items.reduce((acc, item) => {
         acc[item.product_id] = item;
         return acc;
@@ -89,12 +87,12 @@ const _usePriceStock = () => {
     timer = setTimeout(fetchPrice, 10); // 100ms debounce
   }
 
-  function requestPrice(sku: string) {
-    if (productPrice.value[sku]) {
+  function requestPrice(id: string, quantity: number) {
+    if (productPrice.value[id]) {
       return;
     }
 
-    queue.add(sku);
+    queue.add(id);
     scheduleFetch();
   }
 
@@ -120,7 +118,6 @@ const _usePriceStock = () => {
 
       const result = await response.json();
 
-      // TO DO should be sku
       const resultAsObj = result.items.reduce((acc, item) => {
         acc[item.product_id] = item;
         return acc;
