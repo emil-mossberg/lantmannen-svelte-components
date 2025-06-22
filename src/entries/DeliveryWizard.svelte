@@ -3,6 +3,7 @@
   import SelectWrapper from "../lib/SelectWrapper.svelte";
   import SelectDate from "../lib/SelectDate.svelte";
   import Modal from "../lib/Modal.svelte";
+  import QtyIncrement from "../lib/QtyIncrement.svelte";
 
   import {
     bulkDeliveryMethods,
@@ -63,6 +64,7 @@
 {/snippet}
 
 
-<Modal textButton="Köp produkten" {header} {body} />
+
+<QtyIncrement qty={20} /><Modal textButton="Köp produkten" {header} {body} />
   
   

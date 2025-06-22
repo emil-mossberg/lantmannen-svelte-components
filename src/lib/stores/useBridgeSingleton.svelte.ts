@@ -5,15 +5,18 @@ declare global {
 }
 
 const _useBridge = () => {
-
   // TO DO add boolean for if user is logged in
   // const isLoggedIn = document.getElementById('is-customer-logged-in')?.textContent.trim() === '1';
 
   // TO DO should work without reactivity
-  let isLoggedIn = $state((document.getElementById('is-customer-logged-in')?.textContent?.trim() === '1'));
+  let isLoggedIn = $state(
+    document.getElementById("is-customer-logged-in")?.textContent?.trim() ===
+      "1"
+  );
 
   // TO DO create type for this
   const cart = $state({ value: {} });
+
   const customer = $state({ value: {} });
 
   function handleCartUpdate(e: Event) {
@@ -43,7 +46,7 @@ const _useBridge = () => {
   return {
     customer,
     cart,
-    isLoggedIn
+    isLoggedIn,
   };
 };
 

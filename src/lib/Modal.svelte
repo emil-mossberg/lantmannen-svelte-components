@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { t } from "svelte-i18n";
+
   import type { Snippet } from "svelte";
   import Button from "../lib/Button.svelte";
   import Overlay from "./Overlay.svelte";
@@ -23,6 +25,7 @@
   });
 </script>
 
+<div>HELLO</div>
 <Overlay show={showModal} />
 {#if showModal}
   <div
@@ -35,5 +38,5 @@
     <div>{@render body?.()}</div>
   </div>
 {/if}
-
+<div>{$t("welcome")}</div>
 <Button text={textButton} onclick={() => (showModal = true)} />

@@ -1,12 +1,19 @@
 import { mount } from "svelte";
 import "./app.css";
+
+import {setupI18n} from './lib/localization'
+
+// Entry level components
 import ProductPageInfo from "./entries/ProductPageInfo.svelte";
 import DeliveryPlanner from "./entries/DeliveryPlanner.svelte";
 import DeliveryWizard from './entries/DeliveryWizard.svelte'
 import SvelteTester from "./entries/SvelteTester.svelte";
 import PriceInfo from "./entries/PriceInfo.svelte";
 
+
 // Logic Product Page Info component
+setupI18n();
+console.log('setup done!');
 
 const productPageInfo = mount(ProductPageInfo, {
   target: document.getElementById("product-page-info")!,

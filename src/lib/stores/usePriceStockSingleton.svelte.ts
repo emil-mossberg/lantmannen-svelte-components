@@ -5,20 +5,16 @@ declare global {
   }
 }
 
-
 import { useBridgeSingleton } from "./useBridgeSingleton.svelte";
 
-
+import { REST_PRICE, REST_PRICE_GUEST } from "../constants";
 
 const _usePriceStock = () => {
-  const { customer, isLoggedIn } = useBridgeSingleton;  
-
+  const { customer, isLoggedIn } = useBridgeSingleton;
 
   // Fetch both in parallell with Promise.all Ofcourse
   // add Price and Stock to maps, since not rendered by the stock, or is there other way, maybe derived, ask chat
   // TEST ON PLP with injected skus from Magento / Adobe commerce
-
-
 
   // TO DO rename to products, when have price and stock
   const productPrice = $state<{ value: { [key: string]: {} } }>({ value: {} });
@@ -27,43 +23,38 @@ const _usePriceStock = () => {
   const queue = new Set<string>();
   let timer: number | null = null;
 
-  
   async function fetchPrice() {
-    console.log("CALLED!");
+    console.log("apa");
+
     const items = Array.from(queue).map((item) => ({
-      itemNumber: item,
+      itemNumber: Number(item),
       quantity: 1, // TO DO make this dynamic
     }));
+
+    if (items.length === 0) return;
+
+    const needsToWait =
+      isLoggedIn &&
+      (!customer.value || Object.keys(customer.value).length === 0);
+    console.log("Before need to wait");
+    if (needsToWait) {
+      // Retry after short delay
+      console.log("trigger");
+      setTimeout(fetchPrice, 10);
+      return;
+    }
 
     queue.clear();
     timer = null;
 
-    if (items.length === 0) return;
+    const url = isLoggedIn
+      ? `${window.BASE_URL}${REST_PRICE}`
+      : `${window.BASE_URL}${REST_PRICE_GUEST}`;
 
-    const isCustomerReady = isLoggedIn && (!customer || Object.keys(customer).length === 0);
-
-    console.log(isLoggedIn);
-    console.log('isCustomerReady', isCustomerReady);
-
-      if (!isCustomerReady) {
-        console.log("Waiting for customer data before fetching prices");
-        // Retry after short delay
-        setTimeout(fetchPrice, 200);
-        return;
-      }
-      console.log(Object.keys(customer).length === 0);
-      console.log(!customer);
-      console.log('Loaded customer?', customer);
-
-    // TO DO need to toggle here depending if logged in or not
-    // const url = `${window.BASE_URL}rest/V1/lma-api/product-prices/`;
-    // const "19040960"
-    const url = `${window.BASE_URL}rest/V1/lma-api/product-prices/`;
-    const customerNumber = "10000003"
-    
     const priceFinderData = {
-      customerNumber, // TO DO make dynamic
       items,
+      storeId: 1,
+      customerNumber: isLoggedIn ? customer.value.current_company_number : null,
     };
 
     try {
@@ -71,8 +62,10 @@ const _usePriceStock = () => {
         method: "POST",
 
         body: JSON.stringify({ priceFinderData }),
+        credentials: "same-origin",
         headers: {
-          "Content-Type": "application/json",
+          Accept: "application/json, text/javascript, */*; q=0.01",
+          "Content-Type": "application/json; charset=UTF-8",
           "X-Requested-With": "XMLHttpRequest",
         },
       });
@@ -93,7 +86,7 @@ const _usePriceStock = () => {
 
   function scheduleFetch() {
     if (timer) return;
-    timer = setTimeout(fetchPrice, 100); // 100ms debounce
+    timer = setTimeout(fetchPrice, 10); // 100ms debounce
   }
 
   function requestPrice(sku: string) {
@@ -105,9 +98,44 @@ const _usePriceStock = () => {
     scheduleFetch();
   }
 
+  async function testPriceCall() {
+    const priceFinderData = {
+      items: [{ itemNumber: 441863, quantity: 1 }],
+      storeId: 1,
+      customerNumber: null,
+    };
+
+    try {
+      const response = await fetch(`${window.BASE_URL}${REST_PRICE_GUEST}`, {
+        method: "POST",
+
+        body: JSON.stringify({ priceFinderData }),
+        credentials: "same-origin",
+        headers: {
+          Accept: "application/json, text/javascript, */*; q=0.01",
+          "Content-Type": "application/json; charset=UTF-8",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      });
+
+      const result = await response.json();
+
+      // TO DO should be sku
+      const resultAsObj = result.items.reduce((acc, item) => {
+        acc[item.product_id] = item;
+        return acc;
+      }, {});
+
+      productPrice.value = { ...productPrice.value, ...resultAsObj };
+    } catch (error) {
+      console.log("fetchPrice Failed");
+    }
+  }
+
   return {
     productPrice,
     requestPrice,
+    testPriceCall,
   };
 };
 
