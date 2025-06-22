@@ -12,22 +12,21 @@ import { REST_PRICE, REST_PRICE_GUEST } from "../constants";
 const _usePriceStock = () => {
   const { customer, isLoggedIn } = useBridgeSingleton;
 
-  // TO DO 
+  // TO DO
   // Fetch both in parallell with Promise.all
   // Keep Price and stock separate for now since one is id and other is skue
-  
 
   const productPrice = $state<{ value: { [key: string]: {} } }>({ value: {} });
 
   // TO DO right now its id, but should be SKU
-  const queue = new Set<string>();
+  const queue = new Map<string, number>();
   let timer: number | null = null;
 
   async function fetchPrice() {
-
-    const items = Array.from(queue).map((item) => ({
-      itemNumber: Number(item),
-      quantity: 1, // TO DO make this dynamic
+    
+    const items = Array.from(queue.entries()).map(([id, quantity]) => ({
+      itemNumber: Number(id),
+      quantity,
     }));
 
     if (items.length === 0) return;
@@ -35,10 +34,10 @@ const _usePriceStock = () => {
     const needsToWait =
       isLoggedIn &&
       (!customer.value || Object.keys(customer.value).length === 0);
-    
+
     if (needsToWait) {
       // Retry after short delay
-    
+
       setTimeout(fetchPrice, 10);
       return;
     }
@@ -92,7 +91,7 @@ const _usePriceStock = () => {
       return;
     }
 
-    queue.add(id);
+    queue.set(id, quantity);
     scheduleFetch();
   }
 

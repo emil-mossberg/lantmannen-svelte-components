@@ -8,9 +8,9 @@
     prefSalesQuantity: number,
   };
 
-  const { id, number = 1 }: Props = $props();
+  const { id, prefSalesQuantity }: Props = $props();
 
-  requestPrice(id);
+  requestPrice(id, prefSalesQuantity);
 
   let product = $derived(productPrice.value[id]);
 </script>

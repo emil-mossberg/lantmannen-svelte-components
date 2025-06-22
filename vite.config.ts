@@ -8,7 +8,7 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       output: {
-        entryFileNames: "js/svelte-index.js",
+        entryFileNames: "js/svelte-index.min.js",
         chunkFileNames: "js/svelte-chunk.js",
         assetFileNames: "svelte-bundle.css",
       }
