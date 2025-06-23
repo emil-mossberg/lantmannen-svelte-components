@@ -7,59 +7,70 @@ declare global {
 
 import { useBridgeSingleton } from "./useBridgeSingleton.svelte";
 
-import { REST_PRICE, REST_PRICE_GUEST } from "../constants";
+import { REST_PRICE, REST_PRICE_GUEST, REST_STOCK_GUEST } from "../constants";
 
-const _usePriceStock = () => {
-  const { customer, isLoggedIn } = useBridgeSingleton;
+// TO DO move to type
+type FetchManagerParams<T> = {
+  storeId: number,
+  isLoggedIn: boolean;
+  getCustomerNumber: () => string | null;
+  url: string;
+   bodyWrapperKey: string;
+  resultMapper: (responseData: any) => Record<string, T>;
+};
 
-  // TO DO
-  // Fetch both in parallell with Promise.all
-  // Keep Price and stock separate for now since one is id and other is skue
+type FetchManager<T> = {
+  data: {
+    value: Record<string, T>;
+  };
+  request: (key: string, quantity: number) => void;
+};
 
-  const productPrice = $state<{ value: { [key: string]: {} } }>({ value: {} });
+// TO DO update this to be the real thing
 
-  // TO DO right now its id, but should be SKU
+type PriceResultItem = {
+  sku: string;
+  price: string;
+};
+
+function createFetchManager<T>(params: FetchManagerParams<T>): FetchManager<T> {
+  const { isLoggedIn, getCustomerNumber, url, resultMapper, bodyWrapperKey, storeId } = params;
+
+
+  const data = $state<{ value: Record<string, T> }>({ value: {} });
   const queue = new Map<string, number>();
   let timer: number | null = null;
 
-  async function fetchPrice() {
-    
-    const items = Array.from(queue.entries()).map(([id, quantity]) => ({
-      itemNumber: Number(id),
+  async function fetchQueued() {
+    const items = Array.from(queue.entries()).map(([key, quantity]) => ({
+      itemNumber: key,
       quantity,
     }));
 
     if (items.length === 0) return;
 
-    const needsToWait =
-      isLoggedIn &&
-      (!customer.value || Object.keys(customer.value).length === 0);
+    const customerNumber = getCustomerNumber();
 
-    if (needsToWait) {
-      // Retry after short delay
-
-      setTimeout(fetchPrice, 10);
+    if (isLoggedIn && !customerNumber) {
+      setTimeout(fetchQueued, 50);
       return;
     }
 
     queue.clear();
     timer = null;
 
-    const url = isLoggedIn
-      ? `${window.BASE_URL}${REST_PRICE}`
-      : `${window.BASE_URL}${REST_PRICE_GUEST}`;
-
-    const priceFinderData = {
-      items,
-      storeId: 1,
-      customerNumber: isLoggedIn ? customer.value.current_company_number : null,
+    const bodyData = {
+      [bodyWrapperKey]: {
+        items,
+        storeId,
+        customerNumber: isLoggedIn ? customerNumber : null,
+      },
     };
 
     try {
       const response = await fetch(url, {
         method: "POST",
-
-        body: JSON.stringify({ priceFinderData }),
+        body: JSON.stringify(bodyData),
         credentials: "same-origin",
         headers: {
           Accept: "application/json, text/javascript, */*; q=0.01",
@@ -69,31 +80,70 @@ const _usePriceStock = () => {
       });
 
       const result = await response.json();
-
-      const resultAsObj = result.items.reduce((acc, item) => {
-        acc[item.product_id] = item;
-        return acc;
-      }, {});
-
-      productPrice.value = { ...productPrice.value, ...resultAsObj };
-    } catch (error) {
-      console.log("fetchPrice Failed");
+      const mapped = resultMapper(result);
+      console.log(mapped);
+      data.value = { ...data.value, ...mapped };
+      
+    } catch (e) {
+      console.error("Fetch failed", e);
     }
   }
 
   function scheduleFetch() {
-    if (timer) return;
-    timer = setTimeout(fetchPrice, 10); // 100ms debounce
+    if (!timer) {
+      timer = setTimeout(fetchQueued, 10);
+    }
   }
 
-  function requestPrice(id: string, quantity: number) {
-    if (productPrice.value[id]) {
-      return;
-    }
-
-    queue.set(id, quantity);
+  function request(key: string, quantity: number) {
+    if (data.value[key]) return;
+    queue.set(key, quantity);
     scheduleFetch();
   }
+
+
+  return { data, request };
+}
+
+const _usePriceStock = () => {
+  const { customer, isLoggedIn, storeId } = useBridgeSingleton;
+
+  const priceManager = createFetchManager<PriceResultItem>({
+    storeId,
+    isLoggedIn,
+    getCustomerNumber: () => customer.value?.current_company_number ?? null,
+    url: `${window.BASE_URL}${isLoggedIn ? REST_PRICE : REST_PRICE_GUEST}`,
+    bodyWrapperKey: 'priceFinderData',
+    resultMapper: (response) =>
+      response.items.reduce(
+        (acc: Record<string, PriceResultItem>, item: any) => {
+          acc[item.product_id] = item;
+          return acc;
+        },
+        {}
+      ),
+  });
+
+  const { data: productPrice, request: requestPrice } = priceManager;
+
+  // TO DO switch type
+  const stockManager = createFetchManager<PriceResultItem>({
+    storeId,
+    isLoggedIn,
+    getCustomerNumber: () => customer.value?.current_company_number ?? null,
+    url: `${window.BASE_URL}${REST_STOCK_GUEST}`,
+    bodyWrapperKey: 'stockFinderData',
+    resultMapper: (response) =>
+      response.items.reduce(
+        (acc: Record<string, PriceResultItem>, item: any) => {
+          acc[item.item_number] = item;
+          return acc;
+        },
+        {}
+      ),
+  });
+
+  const { data: productStock, request: requestStock } = stockManager;
 
   async function testPriceCall() {
     const priceFinderData = {
@@ -131,6 +181,8 @@ const _usePriceStock = () => {
   return {
     productPrice,
     requestPrice,
+    productStock,
+    requestStock,
     testPriceCall,
   };
 };

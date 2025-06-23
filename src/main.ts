@@ -6,9 +6,8 @@ import { setupI18n } from "./lib/localization";
 // Entry level components
 import ProductPageInfo from "./entries/ProductPageInfo.svelte";
 import DeliveryPlanner from "./entries/DeliveryPlanner.svelte";
-import DeliveryWizard from "./entries/DeliveryWizard.svelte";
 import SvelteTester from "./entries/SvelteTester.svelte";
-import PriceInfo from "./entries/PriceInfo.svelte";
+import ProductBuyBox from "./entries/ProductBuyBox.svelte";
 
 // Logic Product Page Info component
 setupI18n();
@@ -30,26 +29,24 @@ const deliveryPlanner = mount(DeliveryPlanner, {
   },
 });
 
-// Logic Delivery Planner component
 
-const deliveryWizard = mount(DeliveryWizard, {
-  target: document.getElementById("svelte-delivery-wizard")!,
-});
+// Logic Product Buy Box component(s)
 
-// Logic Price Area component(s)
-
-document.querySelectorAll('[id^="svelte-price-info-"]').forEach((el) => {
+document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
   const elementId = el.id;
-  const id = elementId.replace("svelte-price-info-", "");
+  const id = elementId.replace("svelte-product-buy-box-", "");
+
+  const sku = el.getAttribute("data-sku");
 
   const prefSalesQuantityAttr = el.getAttribute("data-pref-sales-quantity");
   const prefSalesQuantity = prefSalesQuantityAttr
     ? Number(prefSalesQuantityAttr)
     : 1;
 
-  mount(PriceInfo, {
+    // TO DO type here sku
+  mount(ProductBuyBox, {
     target: el,
-    props: { id, prefSalesQuantity },
+    props: { id, prefSalesQuantity,  sku },
   });
 });
 

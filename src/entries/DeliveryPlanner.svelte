@@ -8,7 +8,7 @@
   // TO DO use in future
   // import IconCart from "../assets/icons/icon-cart.svg";
 
-  const { cart } = useBridgeSingleton;
+  const { cart, isLoggedIn } = useBridgeSingleton;
 
   import {
     bulkDeliveryMethods,
@@ -79,7 +79,7 @@
 </script>
 
 {#snippet header()}
-  Leveransplaneraren
+  Leveransplaneraren  {isLoggedIn}
 {/snippet}
 
 {#snippet body()}

@@ -4,49 +4,49 @@ declare global {
   }
 }
 
+import { CartSchema, type CartType } from "../../schemas/Cart";
+
 const _useBridge = () => {
-  // TO DO add boolean for if user is logged in
-  // const isLoggedIn = document.getElementById('is-customer-logged-in')?.textContent.trim() === '1';
+  const isLoggedIn =
+    document.getElementById("svelte-information")?.dataset.loggedIn === "1";
 
-  // TO DO should work without reactivity
-  let isLoggedIn = $state(
-    document.getElementById("is-customer-logged-in")?.textContent?.trim() ===
-      "1"
-  );
-
-  // TO DO create type for this
-  const cart = $state({ value: {} });
+  const storeId =
+    Number(document.getElementById("svelte-information")?.dataset.storeId);
+  
+  const cart = $state<{ value: CartType | null }>({ value: null });
 
   const customer = $state({ value: {} });
 
-  function handleCartUpdate(e: Event) {
-    cart.value = e.detail;
+  function onCartUpdated(e: Event) {
+    const customEvent = e as CustomEvent;
+    cart.value = customEvent.detail.cart;
   }
 
-  function handleCustomerUpdate(e: Event) {
-    customer.value = e.detail;
+  function onCustomerUpdated(e: Event) {
+    const customEvent = e as CustomEvent;
+    customer.value = customEvent.detail.customer;
   }
 
   function handleIntialState(e: Event) {
-    cart.value = e.detail.cart;
-    customer.value = e.detail.customer;
+    const customEvent = e as CustomEvent;
+    cart.value = customEvent.detail.cart;
+    customer.value = customEvent.detail.customer;
   }
 
+  // TO Do use parser here for type safety?
+  // TO DO make sure this works
   // cart.value = window.MagentoBridgeState.cart;
   // customer.value = window.MagentoBridgeState.customer;
 
-  //   console.log("Initial cart:", state?.cart);
-
-  //   console.log("Initial customer:", state?.customer);
-
-  window.addEventListener("magento:cartUpdated", handleCartUpdate);
-  window.addEventListener("magento:customerUpdated", handleCustomerUpdate);
+  window.addEventListener("magento:cartUpdated", onCartUpdated);
+  window.addEventListener("magento:customerUpdated", onCustomerUpdated);
   window.addEventListener("magento:initialState", handleIntialState);
 
   return {
     customer,
     cart,
     isLoggedIn,
+    storeId
   };
 };
 
