@@ -17,5 +17,4 @@ const StockSchema = z.object({
   unit_measure: z.string(), 
 });
 
-
-export type CartType = z.infer<typeof StockSchema>;
+export type StockType = z.infer<typeof StockSchema>;

@@ -7,15 +7,17 @@ declare global {
 
 import { useBridgeSingleton } from "./useBridgeSingleton.svelte";
 
+import { type StockType } from "../../schemas/Stock";
+
 import { REST_PRICE, REST_PRICE_GUEST, REST_STOCK_GUEST } from "../constants";
 
 // TO DO move to type
 type FetchManagerParams<T> = {
-  storeId: number,
+  storeId: number;
   isLoggedIn: boolean;
   getCustomerNumber: () => string | null;
   url: string;
-   bodyWrapperKey: string;
+  bodyWrapperKey: string;
   resultMapper: (responseData: any) => Record<string, T>;
 };
 
@@ -34,8 +36,14 @@ type PriceResultItem = {
 };
 
 function createFetchManager<T>(params: FetchManagerParams<T>): FetchManager<T> {
-  const { isLoggedIn, getCustomerNumber, url, resultMapper, bodyWrapperKey, storeId } = params;
-
+  const {
+    isLoggedIn,
+    getCustomerNumber,
+    url,
+    resultMapper,
+    bodyWrapperKey,
+    storeId,
+  } = params;
 
   const data = $state<{ value: Record<string, T> }>({ value: {} });
   const queue = new Map<string, number>();
@@ -81,9 +89,8 @@ function createFetchManager<T>(params: FetchManagerParams<T>): FetchManager<T> {
 
       const result = await response.json();
       const mapped = resultMapper(result);
-      console.log(mapped);
+
       data.value = { ...data.value, ...mapped };
-      
     } catch (e) {
       console.error("Fetch failed", e);
     }
@@ -101,7 +108,6 @@ function createFetchManager<T>(params: FetchManagerParams<T>): FetchManager<T> {
     scheduleFetch();
   }
 
-
   return { data, request };
 }
 
@@ -113,7 +119,7 @@ const _usePriceStock = () => {
     isLoggedIn,
     getCustomerNumber: () => customer.value?.current_company_number ?? null,
     url: `${window.BASE_URL}${isLoggedIn ? REST_PRICE : REST_PRICE_GUEST}`,
-    bodyWrapperKey: 'priceFinderData',
+    bodyWrapperKey: "priceFinderData",
     resultMapper: (response) =>
       response.items.reduce(
         (acc: Record<string, PriceResultItem>, item: any) => {
@@ -127,12 +133,12 @@ const _usePriceStock = () => {
   const { data: productPrice, request: requestPrice } = priceManager;
 
   // TO DO switch type
-  const stockManager = createFetchManager<PriceResultItem>({
+  const stockManager = createFetchManager<StockType>({
     storeId,
     isLoggedIn,
     getCustomerNumber: () => customer.value?.current_company_number ?? null,
     url: `${window.BASE_URL}${REST_STOCK_GUEST}`,
-    bodyWrapperKey: 'stockFinderData',
+    bodyWrapperKey: "stockFinderData",
     resultMapper: (response) =>
       response.items.reduce(
         (acc: Record<string, PriceResultItem>, item: any) => {
@@ -178,12 +184,46 @@ const _usePriceStock = () => {
     }
   }
 
+  async function testPSSCall() {
+    const priceFinderData = {
+      items: [{ itemNumber: 284903, quantity: 1, isBuyable: 1 }],
+      storeId: 11,
+      customerNumber: "10000003",
+    };
+
+    try {
+      const response = await fetch(`${window.BASE_URL}${'rest/V1/lma-api/pre-season-campaign/'}`, {
+        method: "POST",
+
+        body: JSON.stringify({ priceFinderData }),
+        credentials: "same-origin",
+        headers: {
+          Accept: "application/json, text/javascript, */*; q=0.01",
+          "Content-Type": "application/json; charset=UTF-8",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      });
+
+      const result = await response.json();
+
+      const resultAsObj = result.items.reduce((acc, item) => {
+        acc[item.product_id] = item;
+        return acc;
+      }, {});
+
+      productPrice.value = { ...productPrice.value, ...resultAsObj };
+    } catch (error) {
+      console.log("fetchPrice Failed");
+    }
+  }
+
   return {
     productPrice,
     requestPrice,
     productStock,
     requestStock,
     testPriceCall,
+    testPSSCall,
   };
 };
 

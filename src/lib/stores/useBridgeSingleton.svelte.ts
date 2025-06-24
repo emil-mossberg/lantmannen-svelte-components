@@ -4,33 +4,51 @@ declare global {
   }
 }
 
-import { CartSchema, type CartType } from "../../schemas/Cart";
+import { type CartType } from "../../schemas/Cart";
+import { type CustomerInfoType } from "../../schemas/Customer";
 
 const _useBridge = () => {
   const isLoggedIn =
     document.getElementById("svelte-information")?.dataset.loggedIn === "1";
 
-  const storeId =
-    Number(document.getElementById("svelte-information")?.dataset.storeId);
-  
+  const storeId = Number(
+    document.getElementById("svelte-information")?.dataset.storeId
+  );
+
+  // TO DO scape from DOM
+  const locale = "fi";
+
+  function formatDate(date: string) {
+    if (locale === "fi") {
+      const [year, month, day] = date.split("-");
+      return `${day}.${month}.${year}`;
+    }
+
+    // Default: return as-is (YYYY-MM-DD) for Swedish
+    return date;
+  }
+
   const cart = $state<{ value: CartType | null }>({ value: null });
 
-  const customer = $state({ value: {} });
+  const customer = $state<{ value: CustomerInfoType | null }>({ value: null });
 
   function onCartUpdated(e: Event) {
     const customEvent = e as CustomEvent;
     cart.value = customEvent.detail.cart;
+    console.log(cart.value);
   }
 
   function onCustomerUpdated(e: Event) {
     const customEvent = e as CustomEvent;
     customer.value = customEvent.detail.customer;
+    console.log(customer.value);
   }
 
   function handleIntialState(e: Event) {
     const customEvent = e as CustomEvent;
     cart.value = customEvent.detail.cart;
     customer.value = customEvent.detail.customer;
+    console.log(customer.value);
   }
 
   // TO Do use parser here for type safety?
@@ -46,7 +64,8 @@ const _useBridge = () => {
     customer,
     cart,
     isLoggedIn,
-    storeId
+    storeId,
+    formatDate,
   };
 };
 

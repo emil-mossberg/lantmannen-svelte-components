@@ -18,6 +18,10 @@ const productPageInfo = mount(ProductPageInfo, {
 
 // Logic Delivery Planner component
 
+const packageTypeList = document.getElementById("svelte-information")?.getAttribute('data-tonnage-package-type')?.split(',');
+console.log(document.getElementById("svelte-information"));
+console.log(packageTypeList);
+
 const plannerMountPoint = document.getElementById("delivery-planner");
 
 const showDeliveryPlanner = !!plannerMountPoint.dataset.showDeliveryPlanner;
@@ -29,24 +33,35 @@ const deliveryPlanner = mount(DeliveryPlanner, {
   },
 });
 
-
 // Logic Product Buy Box component(s)
 
 document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
   const elementId = el.id;
   const id = elementId.replace("svelte-product-buy-box-", "");
 
-  const sku = el.getAttribute("data-sku");
+  const sku = el.getAttribute("data-sku") as string; // TO DO is there a better solution?
+
+  const packagingType = el.getAttribute("data-packaging-type")
+    ? el.getAttribute("data-packaging-type")
+    : el.getAttribute("data-packaging-type-se");
+
+  const usedPackagingTypeAttr = el.hasAttribute("data-packaging-type")
+      ? "data-packaging-type"
+      : "data-packaging-type-se";
+
+
+  const isBulk = packageTypeList?.includes(packagingType ?? '') ?? false;
+
+  const isBulkInFinland = isBulk && usedPackagingTypeAttr === "data-packaging-type";
 
   const prefSalesQuantityAttr = el.getAttribute("data-pref-sales-quantity");
   const prefSalesQuantity = prefSalesQuantityAttr
     ? Number(prefSalesQuantityAttr)
     : 1;
-
-    // TO DO type here sku
+  
   mount(ProductBuyBox, {
     target: el,
-    props: { id, prefSalesQuantity,  sku },
+    props: { id, prefSalesQuantity, sku, isBulk },
   });
 });
 
