@@ -10,9 +10,6 @@
   opacity: .4;
 }
 
-/* .svelte-component, .svelte-component * {
-  all: unset;
-} */
 
 /* TO DO use variables */
 /* .svelte-component h1 {
@@ -23,8 +20,23 @@
 } */
 
 
-/* RESET LIST */
+/* RESET LIST (Wrap all rules in .svelte-component) */
 
-/* Wrap all rules in .svelte-component */
+.svelte-component input[type="number"] {
+  border-radius: unset;
+  height: auto;
+  width: auto;
+}
 
+.svelte-component button {
+  pointer-events: unset;
+  opacity: unset;
+}
+
+
+
+/* TO DO get this to work */
+.svelte-qty-button-fix {
+  /* border: none; */
+}
 

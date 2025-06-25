@@ -38,6 +38,7 @@
     {disabled}
     --border-radius="0px"
     --list-border-radius="0px"
+    --internal-padding="0px"
     clearable={false}
   />
 </div>

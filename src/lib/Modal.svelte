@@ -39,4 +39,4 @@
   </div>
 {/if}
 <div>{$t("welcome")}</div>
-<Button text={textButton} onclick={() => (showModal = true)} />
+<Button text={textButton} onclick={() => (showModal = true)} type="button"/>

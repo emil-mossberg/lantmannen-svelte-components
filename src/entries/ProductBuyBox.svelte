@@ -15,6 +15,7 @@
 
   import DeliveryWizard from "./DeliveryWizard.svelte";
   import Button from "../lib/Button.svelte";
+  import QtyIncrement from "../lib/QtyIncrement.svelte";
 
   type Props = {
     id: string;
@@ -41,7 +42,8 @@
   </div>
 {/if}
 <DeliveryWizard />
-<Button text="Buy button" onclick={()=> console.log('click') } disabled={!price && !stock} />
+<!-- TO DO add values from product -->
+<QtyIncrement qty={20} qtyIncrement={5} {id} /><Button text="Buy button" onclick={()=> console.log('click') } disabled={!price && !stock} type="submit" />
 <!-- Stock information  --> 
 {#if stock}
   {#if !stock.in_stock && !stock.allow_backorder}
