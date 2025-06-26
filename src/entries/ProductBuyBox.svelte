@@ -41,7 +41,7 @@
     {`Id:${id} - Price ${price.price_info.extension_attributes.lma_line_amount}`}
   </div>
 {/if}
-<DeliveryWizard />
+<DeliveryWizard {isBulk} />
 <!-- TO DO add values from product -->
 <QtyIncrement qty={20} qtyIncrement={5} {id} /><Button text="Buy button" onclick={()=> console.log('click') } disabled={!price && !stock} type="submit" />
 <!-- Stock information  --> 

@@ -1,7 +1,6 @@
 <script lang="ts">
   import Button from "../lib/Button.svelte";
   import SelectWrapper from "../lib/SelectWrapper.svelte";
-  import SelectDate from "../lib/SelectDate.svelte";
   import Modal from "../lib/Modal.svelte";
 
   import {
@@ -11,37 +10,34 @@
     packageAddresses,
   } from "../dummyData";
 
+  type Props = {
+    isBulk: boolean;
+  };
+
+  const { isBulk }: Props = $props();
+
   // TO DO type it
   let deliveryMethod = $state({});
   let deliveryAddress = $state({});
-  let deliveryDateFrom = $state("2025-06-08");
-  let deliveryDateTo = $state("2025-06-18");
-  let deliveryType = $state("bulk");
-
-  // TO DO get this as props from magento
-  const productType: "bulk" | "packaged" = $state("bulk");
 </script>
 
-
-
 {#snippet header()}
-	{`Beställ ${deliveryType === "bulk" ? deliveryType : ""}`}
+  {`Beställ ${isBulk ? " bulk" : ""}`}
 {/snippet}
 
 {#snippet body()}
-	<SelectWrapper
+  <SelectWrapper
     text="Leveransmethod:"
     bind:value={deliveryMethod}
-    items={productType === "bulk"
-      ? bulkDeliveryMethods
-      : packageDeliveryMethods}
+    items={isBulk ? bulkDeliveryMethods : packageDeliveryMethods}
     label="delivery_method_name"
     itemId="delivery_method"
+    sPlaceholder="Välj leveransmetod"
   />
   <SelectWrapper
     text="Leveransadress:"
     bind:value={deliveryAddress}
-    items={productType === "bulk"
+    items={isBulk
       ? bulkAddress.map((item) => ({
           ...item,
           address: `${item.address}, Silo: ${item.siloId}`,
@@ -50,20 +46,12 @@
       : packageAddresses}
     label="address"
     itemId="addressId"
+    sPlaceholder="Valj leveransaddress"
   />
-    <SelectDate
-    bind:deliveryFrom={deliveryDateFrom}
-    deliveryTo={deliveryDateTo}
-  />
-
   <Button
-    text={`Beställ ${deliveryType === "bulk" ? deliveryType : ""}`}
+    text={`Beställ ${isBulk ? " bulk" : ""}`}
     class="min-w-[260px]"
   />
 {/snippet}
 
-
-
 <Modal textButton="Köp produkten" {header} {body} />
-  
-  
