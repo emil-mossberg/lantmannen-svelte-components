@@ -16,7 +16,6 @@
 
   let showModal = $state(false);
 
-  // Toggle scrolling when opening modal
   $effect(() => {
     if (showModal) {
       const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -25,7 +24,6 @@
     } else {
       document.body.style.overflow = "";
       document.body.style.paddingRight = "";
-
     }
   });
 </script>
@@ -37,7 +35,7 @@
   >
     <div class="tw-flex tw-justify-between">
       <h5>{@render header?.()}</h5>
-      <button onclick={() => (showModal = false)}><IconCross /> </button>
+      <button class="magento-svelte-button-transparent" onclick={() => (showModal = false)}><IconCross /> </button>
     </div>
     <div>{@render body?.()}</div>
   </div>

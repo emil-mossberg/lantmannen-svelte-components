@@ -33,11 +33,15 @@
   opacity: unset;
 }
 
-
 .magento-svelte-select input[type="text"] {
   height: auto;
   border: unset;
   position: absolute;
+}
+
+button.magento-svelte-button-transparent {
+  background-color: transparent;
+  border-color: transparent;
 }
 
 button.magento-svelte-button:focus {
