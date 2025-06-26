@@ -20,7 +20,7 @@
 } */
 
 
-/* RESET LIST (Wrap all rules in .svelte-component) */
+/* RESET LIST (All classes should be named magento-svelte for easy removing one day */
 
 .svelte-component input[type="number"] {
   border-radius: unset;
@@ -38,7 +38,12 @@
   height: auto;
   border: unset;
   position: absolute;
+}
 
+button.magento-svelte-button:focus {
+  background-color: #005720;
+  border-color: #005720;
+  color: white;
 }
 
 

@@ -2,7 +2,7 @@
   type Props = {
     disabled?: boolean;
     text: string;
-    type?: "button" | "submit" | "reset" | null | undefined; // TO DO move to type, does it exist?
+    type?: "button" | "submit" | "reset" | null | undefined; 
     class?: string;
     onclick: () => void;
   };
@@ -19,6 +19,6 @@
 <button
   {type}
   {onclick}
-  class={`tw-px-4 tw-py-2 tw-border tw-border-green-pea tw-bg-green-pea p-2 tw-text-white active:tw-bg-tannenbaum active:tw-border-tannenbaum active:tw-text-white hover:tw-bg-tannenbaum hover:tw-border-tannenbaum hover:tw-text-white disabled:tw-cursor-not-allowed disabled:tw-opacity-50 ${className}`}
+  class={`magento-svelte-button tw-px-4 tw-py-2 tw-border tw-border-green-pea tw-bg-green-pea p-2 tw-text-white active:tw-bg-tannenbaum active:tw-border-tannenbaum active:tw-text-white hover:tw-bg-tannenbaum hover:tw-border-tannenbaum hover:tw-text-white disabled:tw-cursor-not-allowed disabled:tw-opacity-50 ${className}`}
   {disabled}>{text}</button
 >

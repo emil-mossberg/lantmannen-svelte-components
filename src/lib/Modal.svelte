@@ -3,6 +3,7 @@
 
   import type { Snippet } from "svelte";
   import Button from "../lib/Button.svelte";
+  import IconCross from "./IconsDynamic/IconCross.svelte";
   import Overlay from "./Overlay.svelte";
 
   type Props = {
@@ -18,14 +19,17 @@
   // Toggle scrolling when opening modal
   $effect(() => {
     if (showModal) {
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = `${scrollBarWidth}px`;
     } else {
       document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+
     }
   });
 </script>
 
-<div>HELLO</div>
 <Overlay show={showModal} />
 {#if showModal}
   <div
@@ -33,7 +37,7 @@
   >
     <div class="tw-flex tw-justify-between">
       <h5>{@render header?.()}</h5>
-      <button onclick={() => (showModal = false)}>Stäng</button>
+      <button onclick={() => (showModal = false)}><IconCross /> </button>
     </div>
     <div>{@render body?.()}</div>
   </div>
