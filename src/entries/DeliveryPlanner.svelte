@@ -5,8 +5,10 @@
   import SelectWrapper from "../lib/SelectWrapper.svelte";
 
   import { useBridgeSingleton } from "../lib/stores/useBridgeSingleton.svelte";
-  // TO DO use in future
-  // import IconCart from "../assets/icons/icon-cart.svg";
+
+  import IconCart from "../lib/IconsDynamic/IconCart.svelte"
+
+  
 
   const { cart, isLoggedIn } = useBridgeSingleton;
 
@@ -155,5 +157,6 @@
 {/snippet}
 
 <div class="tw-fixed tw-right-0 tw-top-0 tw-z-[110]">
+  <button class="tw-flex tw-gap-4 tw-px-3 tw-py-2 tw-items-center tw-bg-white"><IconCart /> Leveransplaneraren</button>
   <Sheet textButton="Leveransplaneraren" {header} {body} />
 </div>

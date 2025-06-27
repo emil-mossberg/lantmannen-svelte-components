@@ -4,6 +4,7 @@
   import type { Snippet } from "svelte";
   import Button from "../lib/Button.svelte";
   import Overlay from "./Overlay.svelte";
+  import IconCart from "../lib/IconsDynamic/IconCart.svelte"
 
   type Props = {
     textButton: string;

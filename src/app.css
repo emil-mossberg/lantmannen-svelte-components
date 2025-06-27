@@ -50,4 +50,8 @@ button.magento-svelte-button:focus {
   color: white;
 }
 
+svg.magento-svelte-svg {
+  background-color: white;
+}
+
 
