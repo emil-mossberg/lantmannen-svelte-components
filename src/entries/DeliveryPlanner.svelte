@@ -1,15 +1,15 @@
 <script lang="ts">
-  import Sheet from "../lib/Sheet.svelte";
-  import Button from "../lib/Button.svelte";
-  import SelectDate from "../lib/SelectDate.svelte";
-  import SelectWrapper from "../lib/SelectWrapper.svelte";
+  import Sheet from "../lib/components/Sheet.svelte";
+  import Button from "../lib/components/Button.svelte";
+  import SelectDate from "../lib/components/SelectDate.svelte";
+  import SelectWrapper from "../lib/components/SelectWrapper.svelte";
 
   import { useBridgeSingleton } from "../lib/stores/useBridgeSingleton.svelte";
 
   import IconCart from "../lib/IconsDynamic/IconCart.svelte";
 
   const { cart, isLoggedIn } = useBridgeSingleton;
-
+console.log('apa')
   import {
     bulkDeliveryMethods,
     packageDeliveryMethods,

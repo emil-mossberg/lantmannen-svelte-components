@@ -18,7 +18,7 @@
   const { formatDate } = useBridgeSingleton;
 
   import DeliveryWizard from "./DeliveryWizard.svelte";
-  import QtyIncrement from "../lib/QtyIncrement.svelte";
+  import QtyIncrement from "../lib/components/QtyIncrement.svelte";
 
   type Props = {
     id: string;

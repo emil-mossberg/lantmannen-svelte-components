@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Button from "../lib/Button.svelte";
-  import SelectWrapper from "../lib/SelectWrapper.svelte";
-  import Modal from "../lib/Modal.svelte";
+  import Button from "../lib/components/Button.svelte";
+  import SelectWrapper from "../lib/components/SelectWrapper.svelte";
+  import Modal from "../lib/components/Modal.svelte";
 
   import {
     bulkDeliveryMethods,
@@ -48,7 +48,9 @@
     itemId="addressId"
     sPlaceholder="Valj leveransaddress"
   />
-  <Button class="min-w-[260px]">{`Beställ ${isBulk ? " bulk" : ""}`}</Button>
+  <Button
+    class="min-w-[260px]"
+  >{`Beställ ${isBulk ? " bulk" : ""}`}</Button>
 {/snippet}
 
 <Modal textButton="Köp produkten" {header} {body} />
