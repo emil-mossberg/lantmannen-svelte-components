@@ -48,10 +48,7 @@
     itemId="addressId"
     sPlaceholder="Valj leveransaddress"
   />
-  <Button
-    text={`Beställ ${isBulk ? " bulk" : ""}`}
-    class="min-w-[260px]"
-  />
+  <Button class="min-w-[260px]">{`Beställ ${isBulk ? " bulk" : ""}`}</Button>
 {/snippet}
 
 <Modal textButton="Köp produkten" {header} {body} />

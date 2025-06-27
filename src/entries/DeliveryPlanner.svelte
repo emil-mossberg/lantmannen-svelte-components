@@ -149,10 +149,9 @@
   </ul>
   <div class="tw-flex tw-justify-center tw-items-center tw-py-3 tw-border-t">
     <Button
-      text="Gå till varukorgen"
       onclick={() =>
         (window.location.href = window.BASE_URL + "checkout/cart/")}
-    />
+    >Gå till varukorgen</Button>
   </div>
 {/snippet}
 

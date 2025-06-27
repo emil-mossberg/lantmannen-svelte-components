@@ -40,4 +40,4 @@
   </div>
 {/if}
 
-<Button text={textButton} onclick={() => (showSheet = true)} />
+<Button onclick={() => (showSheet = true)}>{textButton}</Button>

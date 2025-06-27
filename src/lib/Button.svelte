@@ -1,24 +1,16 @@
 <script lang="ts">
-  type Props = {
-    disabled?: boolean;
-    text: string;
-    type?: "button" | "submit" | "reset" | null | undefined; 
-    class?: string;
-    onclick: () => void;
-  };
+	import type { HTMLButtonAttributes } from 'svelte/elements';
 
-  const {
-    text,
-    type = "button",
-    onclick,
-    disabled = false,
-    class: className = "",
-  }: Props = $props();
+    type LmButtonProps = HTMLButtonAttributes & {
+	    class?: string;
+    };
+
+	let { children, class: className = "", ...rest }: LmButtonProps = $props();
+
+  // TO DO implement secondary button also and potentially buy bottn
+  // TO DO add support for svg icon?
 </script>
 
-<button
-  {type}
-  {onclick}
-  class={`magento-svelte-button tw-px-4 tw-py-2 tw-border tw-border-green-pea tw-bg-green-pea p-2 tw-text-white active:tw-bg-tannenbaum active:tw-border-tannenbaum active:tw-text-white hover:tw-bg-tannenbaum hover:tw-border-tannenbaum hover:tw-text-white disabled:tw-cursor-not-allowed disabled:tw-opacity-50 ${className}`}
-  {disabled}>{text}</button
->
+<button type="button" {...rest} class={`magento-svelte-button tw-px-4 tw-py-2 tw-border tw-border-green-pea tw-bg-green-pea p-2 tw-text-white active:tw-bg-tannenbaum active:tw-border-tannenbaum active:tw-text-white hover:tw-bg-tannenbaum hover:tw-border-tannenbaum hover:tw-text-white disabled:tw-cursor-not-allowed disabled:tw-opacity-50 ${className}`}>
+	{@render children?.()}
+</button>
