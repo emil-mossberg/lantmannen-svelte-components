@@ -1,6 +1,10 @@
 <script lang="ts">
+  import { t } from "svelte-i18n";
+
   import { usePriceStockSingleton } from "../lib/stores/usePriceStockSingleton.svelte";
   import { useBridgeSingleton } from "../lib/stores/useBridgeSingleton.svelte";
+
+  import IconStock from "../lib/Icons/in-stock.svg";
 
   const {
     productPrice,
@@ -22,10 +26,18 @@
     sku: string;
     prefSalesQuantity: number;
     isBulk: boolean;
+    qtyIncrement: number;
     isBulkInFi?: boolean;
   };
 
-  const { id, prefSalesQuantity, sku, isBulk, isBulkInFi = false }: Props = $props();
+  const {
+    id,
+    prefSalesQuantity,
+    sku,
+    isBulk,
+    qtyIncrement,
+    isBulkInFi = false,
+  }: Props = $props();
 
   requestPrice(id, prefSalesQuantity);
   requestStock(sku, prefSalesQuantity);
@@ -34,27 +46,36 @@
   let stock = $derived(productStock.value[sku]);
 </script>
 
-
 <!-- Price information  -->
 {#if price}
   <div>
     {`Id:${id} - Price ${price.price_info.extension_attributes.lma_line_amount}`}
   </div>
 {/if}
-<DeliveryWizard {isBulk} />
-<!-- TO DO add values from product -->
-<QtyIncrement qty={20} qtyIncrement={5} {id} /><Button text="Buy button" onclick={()=> console.log('click') } disabled={!price && !stock} type="submit" />
-<!-- Stock information  --> 
+
+ <div class="tw-flex tw-gap-4">
+  <QtyIncrement qty={20} {qtyIncrement} {id} />
+  <DeliveryWizard {isBulk} />
+ </div>
+
+<!-- Stock information  -->
 {#if stock}
-  {#if !stock.in_stock && !stock.allow_backorder}
-    <!-- TO DO add logic for isLocalWarehouse -->
-    <!-- TO DO add translations  -->
-    <span>Out of stock</span>
-  {:else if (isBulk && (stock.in_stock || stock.allow_backorder)) || (!isBulk && stock.in_stock)}
-    <span>In stock</span>
-  {:else if !isBulk && !stock.in_stock && stock.allow_backorder}
-    <span>{formatDate(stock.in_stock_date)}</span>
-  {/if}
+  <div>
+    <span>{$t("availability")}</span>
+    <div
+      class="tw-p-4 tw-mt-3 tw-rounded tw-border tw-border-alto tw-flex tw-items-center tw-gap-3"
+    >
+      <img src={IconStock} alt="stock icon" />
+      {#if !stock.in_stock && !stock.allow_backorder}
+        <!-- TO DO add logic for isLocalWarehouse -->
+        <span>{$t("outOfStock")}</span>
+      {:else if (isBulk && (stock.in_stock || stock.allow_backorder)) || (!isBulk && stock.in_stock)}
+        <span>{$t("inStock")}</span>
+      {:else if !isBulk && !stock.in_stock && stock.allow_backorder}
+        <span>{formatDate(stock.in_stock_date)}</span>
+      {/if}
+    </div>
+  </div>
 {/if}
 
 <button type="button" onclick={testPriceCall}>TEST call Price APP</button>

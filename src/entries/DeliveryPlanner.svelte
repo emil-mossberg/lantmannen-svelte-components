@@ -6,9 +6,7 @@
 
   import { useBridgeSingleton } from "../lib/stores/useBridgeSingleton.svelte";
 
-  import IconCart from "../lib/IconsDynamic/IconCart.svelte"
-
-  
+  import IconCart from "../lib/IconsDynamic/IconCart.svelte";
 
   const { cart, isLoggedIn } = useBridgeSingleton;
 
@@ -65,7 +63,7 @@
       items: [
         {
           name: "Galant Ordinär p ss",
-          sku: "404846",
+          sku: "924630",
           quantity: 1000,
           pris: "4 744,00 kr",
         },
@@ -78,17 +76,25 @@
       ],
     },
   ]);
+
+  // TO DO : Could this be a problem with PSS that has same sku twice in cart
+  // TO DO : Use this in ajax call to get deliveries info instead of multiple times inline in template when that ajax call is used
+  const findProductInCart = (sku: string) => {
+    console.log(cart.value?.items.find((item) => item.product_sku === sku));
+
+    return cart.value?.items.find((item) => item.product_sku === sku);
+  };
 </script>
 
 {#snippet header()}
-  Leveransplaneraren  {isLoggedIn}
+  Leveransplaneraren {isLoggedIn}
 {/snippet}
 
 {#snippet body()}
   <div
     class="tw-flex tw-justify-between tw-align-middle tw-px-6 tw-py-4 tw-border-b"
   >
-    {#if cart.value.items}
+    {#if cart.value?.items}
       <span>
         {`${cart.value.items.length} Varor`}
       </span>
@@ -129,18 +135,37 @@
           bind:deliveryFrom={delivery.deliveryDateFrom}
           deliveryTo={delivery.deliveryDateTo}
         />
-        <h6 class="mb-2">Produkter</h6>
         <ul>
           {#each delivery.items as item}
-            <li class="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-mb-3 tw-ml-8">
-              <span class="tw-font-bold tw-text-sm">{item.name}</span>
-              <span class="tw-text-sm tw-text-right"
-                >{`Pris: ${item.pris}`}</span
-              >
-              <span class="tw-text-sm">{`Artikelnummer: ${item.sku}`}</span>
-              <span class="tw-text-sm tw-text-right"
-                >{`Antal: ${item.quantity}`}</span
-              >
+            <li class="tw-flex">
+              <img
+                class="tw-h-[100x] tw-w-[100px]"
+                src={findProductInCart(item.sku)?.product_image.src}
+                alt={findProductInCart(item.sku)?.product_image.alt}
+              />
+              <div>
+                <div>
+                  <span class="tw-font-bold tw-text-sm"
+                    >{findProductInCart(item.sku)?.product_name}</span
+                  >
+                </div>
+                <div>
+                  <span class="tw-text-sm tw-text-right"
+                    >{`Antal: ${findProductInCart(item.sku)?.qty}`}</span
+                  >
+                </div>
+                <div>
+                  <span class="tw-text-sm tw-text-right"
+                    >{`Pris: ${findProductInCart(item.sku)?.product_price_value.incl_tax}`}</span
+                  >
+                </div>
+                <div>
+                  <span class="tw-text-sm"
+                    >{`Artikelnummer: ${findProductInCart(item.sku)?.product_sku}`}</span
+                  >
+                </div>
+                
+              </div>
             </li>
           {/each}
         </ul>
@@ -151,11 +176,14 @@
     <Button
       onclick={() =>
         (window.location.href = window.BASE_URL + "checkout/cart/")}
-    >Gå till varukorgen</Button>
+      >Gå till varukorgen</Button
+    >
   </div>
 {/snippet}
 
 <div class="tw-fixed tw-right-0 tw-top-0 tw-z-[110]">
-  <button class="tw-flex tw-gap-4 tw-px-3 tw-py-2 tw-items-center tw-bg-white"><IconCart /> Leveransplaneraren</button>
+  <button class="tw-flex tw-gap-4 tw-px-3 tw-py-2 tw-items-center tw-bg-white"
+    ><IconCart /> Leveransplaneraren</button
+  >
   <Sheet textButton="Leveransplaneraren" {header} {body} />
 </div>

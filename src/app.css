@@ -54,4 +54,9 @@ svg.magento-svelte-svg {
   background-color: white;
 }
 
+.svelte-component button {
+  min-width: unset;
+}
+
+
 

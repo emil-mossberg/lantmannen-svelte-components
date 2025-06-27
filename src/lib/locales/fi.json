@@ -1,4 +1,8 @@
-{
+{   
+    "availability": "Saatavuus",
+    "inStock": "Varastossa",
+    "outOfStock":"Loppu varastosta",
     "welcome": "Tervetuloa",
-    "sku": "Tuotenumero"
+    "sku": "Tuotenumero",
+    "qtyIncrement": "Vähimmäisostomäärä on {qty}."
 }

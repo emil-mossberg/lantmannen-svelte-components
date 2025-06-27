@@ -1,5 +1,7 @@
 {
     "incVAT": "Inkl. moms",
+    "inStock": "Disponibelt",
+    "outOfStock": "Ej i lager",
     "exVAT": "Ex. moms",
     "welcome": "Välkommen",
     "sku": "Art.no"

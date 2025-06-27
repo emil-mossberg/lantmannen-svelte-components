@@ -40,5 +40,4 @@
     <div>{@render body?.()}</div>
   </div>
 {/if}
-<div>{$t("welcome")}</div>
 <Button onclick={() => (showModal = true)} type="button">{textButton}</Button>

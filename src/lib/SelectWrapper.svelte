@@ -25,7 +25,6 @@
   }: Props = $props();
 
 
-  console.log(sPlaceholder)
     const isStringArray = typeof items[0] === 'string';
     const resolvedLabel = label ?? (isStringArray ? undefined : 'label');
     const resolvedItemId = itemId ?? (isStringArray ? undefined : 'id');

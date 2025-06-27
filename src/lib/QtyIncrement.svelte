@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
   import {
     combine,
     isInteger,
@@ -7,17 +9,18 @@
     qtyIncrements,
   } from "../lib/validators/validators";
 
-  import infoIcon from "../assets/icons/icon-info.svg";
+  import InfoIcon from '../lib/Icons/icon-info.svg'
+  
+  // TO DO Is there a better way to start this?
+  let qty = $state(1) 
 
   type Props = {
-    qty: number;
     qtyIncrement?: number;
-	id: string;
+    id: string;
   };
 
-  let { qtyIncrement = 1, qty = $bindable(), id }: Props = $props();
+  let { qtyIncrement = 1, id }: Props = $props();
 
-  let info = $state("");
   // TO DO can this also be in validation logic
   let error: string | null = $state("");
 
@@ -30,7 +33,6 @@
   );
 
   function validate() {
-    console.log("ran?");
     error = validators(qty);
   }
 
@@ -42,6 +44,10 @@
   const increment = () => {
     qty += qtyIncrement;
   };
+
+  onMount(() => {
+    qty = qtyIncrement
+  })
 </script>
 
 {#snippet qtyButton(
@@ -60,18 +66,6 @@
 <!-- Note on usage of fix for stacking context with z-10 and z-20, this is to manipulate order that elements are on top of each other to fix the box shadow of focus ring -->
 <div class="svelte-component">
   <div class="tw-relative tw-flex tw-rounded">
-    {#if info}
-      <span
-        class="tw-small-label tw-absolute tw-left-1/2 tw-top-[-22px] tw--translate-x-1/2 tw--translate-y-1/2 tw-transform tw-rounded tw-border-2 tw-border-info-border tw-bg-white tw-py-2 tw-pl-8 tw-pr-4"
-      >
-        <img
-          src={infoIcon}
-          alt="info svg"
-          class="tw-absolute tw-left-[6px] tw-top-[4px]"	
-        />
-        <span class="tw-whitespace-nowrap">{info}</span>
-      </span>
-    {/if}
     {@render qtyButton(
       "tw-border-t tw-border-b tw-border-l tw-rounded-bl tw-rounded-tl tw-focus:z-20",
       "-",
@@ -81,8 +75,8 @@
 
     <input
       class="tw-h-[44px] tw-w-[64px] tw-border tw-border-alto tw-text-center tw-text-[0.75rem] tw-focus:z-10"
-	  id={`qty-${id}`}
-	  name="qty"
+      id={`qty-${id}`}
+      name="qty"
       type="number"
       bind:value={qty}
       oninput={validate}
@@ -94,8 +88,10 @@
       "+",
       increment
     )}
+    {#if error}
+      <div class="tw-absolute tw-rounded tw-border-cerulean tw-border-2 tw-py-2 tw-px-4 tw-top-[-64px] tw-bg-white tw-flex tw-items-center tw-gap-2">
+          <img src="{InfoIcon}" alt=""><span class="tw-whitespace-nowrap">{error}</span>
+      </div>
+    {/if}
   </div>
-  {#if error}
-    <p class="tw-text-red-600 tw-text-sm">{error}</p>
-  {/if}
 </div>

@@ -4,7 +4,7 @@
   import type { Snippet } from "svelte";
   import Button from "../lib/Button.svelte";
   import Overlay from "./Overlay.svelte";
-  import IconCart from "../lib/IconsDynamic/IconCart.svelte"
+  import IconCross from "./IconsDynamic/IconCross.svelte";
 
   type Props = {
     textButton: string;
@@ -34,7 +34,7 @@
   >
     <div class="tw-flex tw-justify-between tw-p-6">
       <h5>{@render header?.()}</h5>
-      <button onclick={() => (showSheet = false)}>Stäng</button>
+      <button class="magento-svelte-button-transparent" onclick={() => (showSheet = false)}><IconCross /></button>
     </div>
     {@render body?.()}
   </div>

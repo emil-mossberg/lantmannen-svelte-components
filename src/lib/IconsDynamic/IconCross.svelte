@@ -1,9 +1,9 @@
 <script lang="ts">
   type Props = {
-    parentHover: boolean;
+    parentHover?: boolean;
   };
 
-  let { parentHover }: Props = $props();
+  let { parentHover = false }: Props = $props();
 </script>
 
 <div

@@ -59,9 +59,12 @@ document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
     ? Number(prefSalesQuantityAttr)
     : 1;
   
+  const qtyIncrement = Number(el.getAttribute("data-qty-increment") ?? 1) || 1;
+
+
   mount(ProductBuyBox, {
     target: el,
-    props: { id, prefSalesQuantity, sku, isBulk },
+    props: { id, prefSalesQuantity, sku, isBulk, qtyIncrement },
   });
 });
 
