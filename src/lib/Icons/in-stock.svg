@@ -1,0 +1,13 @@
+<svg width="16" height="17" viewBox="0 0 16 17" fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="shop.lantmannenmaskin" style="mix-blend-mode:darken">
+        <rect y="0.950195" width="16" height="16" fill="url(#pattern0_13778_64920)"/>
+    </g>
+    <defs>
+        <pattern id="pattern0_13778_64920" patternContentUnits="objectBoundingBox" width="1" height="1">
+            <use xlink:href="#image0_13778_64920" transform="translate(-0.676471 -0.441176) scale(0.0294118)"/>
+        </pattern>
+        <image id="image0_13778_64920" data-name="shop.lantmannenmaskin.png" width="64" height="64" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAdlJREFUeF7tW7tyglAQXVupqbGmhho/Asd00fxCrOOY2vxC1C6OfITU0EotNTW0ZJYJBgyTuXN9gHB2hkJmV+497p5zdwd7aZqm1GHrAQBkAEoAHNBhDiSQIFQAKgAVgApABTqMAGQQMggZrFcG3xcLCoJAioV0Xae3+VwqNg+qnQMYAHs0It5MbgwI3y8ab/Tcx9ntAAAyACXQQg4QYTXmidZyAAAQQAAZgBIAB4AEoQJtPQoLiEDWQLUmA0zTJG0wENn3ySc8HsnzvMdvhvhXvKQd5k7yErt5O/yxXFIcx1JrzNtfWYAURaHX2ezfZ98cgKfx+E+auvs9ua5bWtjzZEKapv3OBA6HU2YYpkmDQomEYUib9boUb1kWWcNh6R7PFL622/oBOF8Ep73jOEIDD3YSGZjYtp35FY3BBwDIgAaWQBRFxFfRuP6ZtIpzQS6VqhJgUmUeKJqqqsTXQ5SAiCTkB50qAETi2aexHCCyAQDwc9RFBlTIoEgGoQTAASBBqABksAm9wMt0SkmSiBJ3yc8wjOyz7/tS8f1+nz5Xq3q7QamV3zHo5vOAO+5F6lEAAC9J4SWpel+SkircKwaBA8AB4ABwAP4vcEVSfbivggpABaAC3VaBb860l1+6qKbrAAAAAElFTkSuQmCC"/>
+    </defs>
+</svg>

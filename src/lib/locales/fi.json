@@ -4,5 +4,6 @@
     "outOfStock":"Loppu varastosta",
     "welcome": "Tervetuloa",
     "sku": "Tuotenumero",
-    "qtyIncrement": "Vähimmäisostomäärä on {qty}."
+    "qtyIncInfo" : "Myyntierä: {qty}",
+    "qtyIncrement": "Vähimmäisostomäärä on {qty}"
 }

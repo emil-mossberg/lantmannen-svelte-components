@@ -18,7 +18,6 @@
   const { formatDate } = useBridgeSingleton;
 
   import DeliveryWizard from "./DeliveryWizard.svelte";
-  import Button from "../lib/Button.svelte";
   import QtyIncrement from "../lib/QtyIncrement.svelte";
 
   type Props = {
@@ -53,10 +52,15 @@
   </div>
 {/if}
 
- <div class="tw-flex tw-gap-4">
-  <QtyIncrement qty={20} {qtyIncrement} {id} />
+<div class="tw-flex tw-gap-4">
+  <QtyIncrement {qtyIncrement} {id} />
   <DeliveryWizard {isBulk} />
- </div>
+</div>
+{#if qtyIncrement > 1}
+  <div class="tw-text-sm">
+    {$t("qtyIncInfo", { values: { qty: qtyIncrement } })}
+  </div>
+{/if}
 
 <!-- Stock information  -->
 {#if stock}
