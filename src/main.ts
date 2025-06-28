@@ -61,6 +61,10 @@ document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
   
   const qtyIncrement = Number(el.getAttribute("data-qty-increment") ?? 1) || 1;
 
+  const isNew = el.getAttribute("data-product-is-new") === "1";
+
+  console.log('isNew', isNew);
+
 
   mount(ProductBuyBox, {
     target: el,

@@ -17,8 +17,8 @@
   const { isBulk }: Props = $props();
 
   // TO DO type it
-  let deliveryMethod = $state({});
-  let deliveryAddress = $state({});
+  let deliveryMethod = $state(null);
+  let deliveryAddress = $state(null);
 </script>
 
 {#snippet header()}

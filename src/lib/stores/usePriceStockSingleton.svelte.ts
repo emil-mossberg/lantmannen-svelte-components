@@ -8,6 +8,7 @@ declare global {
 import { useBridgeSingleton } from "./useBridgeSingleton.svelte";
 
 import { type StockType } from "../../schemas/Stock";
+import { type PriceType } from "../../schemas/Price"
 
 import { REST_PRICE, REST_PRICE_GUEST, REST_STOCK_GUEST } from "../constants";
 
@@ -114,7 +115,7 @@ function createFetchManager<T>(params: FetchManagerParams<T>): FetchManager<T> {
 const _usePriceStock = () => {
   const { customer, isLoggedIn, storeId } = useBridgeSingleton;
 
-  const priceManager = createFetchManager<PriceResultItem>({
+  const priceManager = createFetchManager<PriceType>({
     storeId,
     isLoggedIn,
     getCustomerNumber: () => customer.value?.current_company_number ?? null,
@@ -122,7 +123,7 @@ const _usePriceStock = () => {
     bodyWrapperKey: "priceFinderData",
     resultMapper: (response) =>
       response.items.reduce(
-        (acc: Record<string, PriceResultItem>, item: any) => {
+        (acc: Record<string, PriceType>, item: any) => {
           acc[item.product_id] = item;
           return acc;
         },
@@ -132,7 +133,8 @@ const _usePriceStock = () => {
 
   const { data: productPrice, request: requestPrice } = priceManager;
 
-  // TO DO switch type
+  // TO DO : Why do I need same type twice here should not have to same above with price
+
   const stockManager = createFetchManager<StockType>({
     storeId,
     isLoggedIn,
@@ -141,7 +143,7 @@ const _usePriceStock = () => {
     bodyWrapperKey: "stockFinderData",
     resultMapper: (response) =>
       response.items.reduce(
-        (acc: Record<string, PriceResultItem>, item: any) => {
+        (acc: Record<string, StockType>, item: any) => {
           acc[item.item_number] = item;
           return acc;
         },

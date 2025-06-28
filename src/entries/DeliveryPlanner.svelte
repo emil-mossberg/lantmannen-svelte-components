@@ -3,13 +3,11 @@
   import Button from "../lib/components/Button.svelte";
   import SelectDate from "../lib/components/SelectDate.svelte";
   import SelectWrapper from "../lib/components/SelectWrapper.svelte";
-
+  import IconCart from "../lib/IconsDynamic/IconCart.svelte";
   import { useBridgeSingleton } from "../lib/stores/useBridgeSingleton.svelte";
 
-  import IconCart from "../lib/IconsDynamic/IconCart.svelte";
-
   const { cart, isLoggedIn } = useBridgeSingleton;
-console.log('apa')
+
   import {
     bulkDeliveryMethods,
     packageDeliveryMethods,
@@ -22,7 +20,7 @@ console.log('apa')
   };
 
   const { showDeliveryPlanner }: Props = $props();
-
+  console.log(showDeliveryPlanner);
   const deliveries = $state([
     {
       type: "bulk",
