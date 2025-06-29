@@ -2,20 +2,18 @@
   import { slide } from "svelte/transition";
   import { cubicIn } from "svelte/easing";
   import type { Snippet } from "svelte";
-  import Button from "./Button.svelte";
   import Overlay from "./Overlay.svelte";
   import IconCross from "../IconsDynamic/IconCross.svelte";
 
   type Props = {
-    textButton: string;
     header: Snippet;
     body: Snippet;
+    showSheet: boolean;
   };
 
-  const { textButton, header, body }: Props = $props();
+  let { header, body, showSheet = $bindable(false) }: Props = $props();
 
-  let showSheet = $state(false);
-
+  
   // Toggle scrolling when opening modal
   $effect(() => {
     if (showSheet) {
@@ -39,5 +37,3 @@
     {@render body?.()}
   </div>
 {/if}
-
-<Button onclick={() => (showSheet = true)}>{textButton}</Button>

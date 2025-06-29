@@ -7,7 +7,7 @@
 
 	let { children, class: className = "", ...rest }: LmButtonProps = $props();
 
-  // TO DO implement secondary button also and potentially buy bottn
+  // TO DO implement secondary button also and potentially buy button with svg icon
   // TO DO add support for svg icon?
 </script>
 

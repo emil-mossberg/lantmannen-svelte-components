@@ -10,11 +10,10 @@
     textButton: string;
     header: Snippet;
     body: Snippet;
+    showModal?: boolean;
   };
 
-  const { textButton, header, body }: Props = $props();
-
-  let showModal = $state(false);
+  let { textButton, header, body, showModal = $bindable(false) }: Props = $props();
 
   $effect(() => {
     if (showModal) {

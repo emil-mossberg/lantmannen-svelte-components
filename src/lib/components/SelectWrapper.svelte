@@ -9,7 +9,7 @@
     label: string,
     value: {} | null;
     disabled?: boolean;
-    sPlaceholder?: string;
+    placeholder?: string;
     id?: string;
   };
 
@@ -21,7 +21,7 @@
     disabled = false,
     text,
     id = `select-${Math.random().toString(36).substr(2, 9)}`,
-    sPlaceholder 
+    placeholder 
   }: Props = $props();
 
 
@@ -36,7 +36,7 @@
     id={id}
     bind:value
     {items}
-    placeholder={sPlaceholder}
+    {placeholder}
     label={resolvedLabel}
     itemId={resolvedItemId}
     {disabled}

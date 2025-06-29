@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Component, ComponentProps } from 'svelte';
   import SelectWrapper from "../lib/components/SelectWrapper.svelte";
 
     import {
@@ -11,17 +12,23 @@
 
   let parentHover = $state(false);
   let isActive = $state(false);
+
+  import Dynamic from '../lib/components/test/Dynamic.svelte'
+  import Wrapper from '../lib/components/test/Wrapper.svelte'
+
+  function withProps<TComponent extends Component<any>>(
+	component: TComponent,
+	props: ComponentProps<TComponent>
+) {
+  // TO DO what can I do here now?
+}
+
+withProps(Dynamic, { label: 'bar' });
 </script>
 
 <div>SVELTE TESTER!!</div>
-  <SelectWrapper
-    bind:value={test}
-    text="Leveransmethod:"
-    items={bulkDeliveryMethods}
-    label="delivery_method_name"
-    itemId="delivery_method"
-    sPlaceholder="Välj leveransmetod"
-  />
+  
 
+  <Wrapper DynamicComponent={Dynamic} />
 
 

@@ -19,6 +19,16 @@
   // TO DO type it
   let deliveryMethod = $state(null);
   let deliveryAddress = $state(null);
+
+  // TO DO : Add validation of select fields
+  // TO DO : Figure out how to run this and submit form at the same time
+  let showModal = $state(false);
+
+  const validateAndClose = () => {
+    console.log("WIP - DO VALIDATION")
+    showModal = false
+  }
+
 </script>
 
 {#snippet header()}
@@ -32,7 +42,7 @@
     items={isBulk ? bulkDeliveryMethods : packageDeliveryMethods}
     label="delivery_method_name"
     itemId="delivery_method"
-    sPlaceholder="Välj leveransmetod"
+    placeholder="Välj leveransmetod"
   />
   <SelectWrapper
     text="Leveransadress:"
@@ -46,11 +56,12 @@
       : packageAddresses}
     label="address"
     itemId="addressId"
-    sPlaceholder="Valj leveransaddress"
+    placeholder="Valj leveransaddress"
   />
   <Button
+    type="submit"
     class="min-w-[260px]"
   >{`Beställ ${isBulk ? " bulk" : ""}`}</Button>
 {/snippet}
 
-<Modal textButton="Köp produkten" {header} {body} />
+<Modal textButton="Köp produkten" {header} {body} bind:showModal />
