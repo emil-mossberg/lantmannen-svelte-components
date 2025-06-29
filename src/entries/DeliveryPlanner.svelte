@@ -180,9 +180,13 @@
   </div>
 {/snippet}
 
-<button
+
+{#if cart.value?.items.length}
+  <button
   onclick={() => (showSheet = true)}
   class="tw-fixed tw-right-0 tw-top-0 tw-z-[110] tw-flex tw-gap-4 tw-px-3 tw-py-2 tw-items-center tw-bg-white"
   ><IconCart /> Leveransplaneraren</button
 >
 <Sheet {header} {body} bind:showSheet />
+{/if}
+

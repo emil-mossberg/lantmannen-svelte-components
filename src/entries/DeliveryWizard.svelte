@@ -1,34 +1,43 @@
 <script lang="ts">
-  import Button from "../lib/components/Button.svelte";
-  import SelectWrapper from "../lib/components/SelectWrapper.svelte";
-  import Modal from "../lib/components/Modal.svelte";
+  import Button from "../lib/components/Button.svelte"
+  import SelectWrapper from "../lib/components/SelectWrapper.svelte"
+  import Modal from "../lib/components/Modal.svelte"
 
   import {
     bulkDeliveryMethods,
     packageDeliveryMethods,
     bulkAddress,
     packageAddresses,
-  } from "../dummyData";
+  } from "../dummyData"
 
   type Props = {
-    isBulk: boolean;
-  };
+    isBulk: boolean
+  }
 
-  const { isBulk }: Props = $props();
+  const { isBulk }: Props = $props()
 
-  // TO DO type it
-  let deliveryMethod = $state(null);
-  let deliveryAddress = $state(null);
+  // TO DO move types?
+  type DeliveryMethod = {
+    delivery_method: string
+    delivery_method_name: string
+  }
+
+  type DeliveryAddress = {
+    address: string
+    adressId: string
+  }
+
+  let deliveryMethod = $state<DeliveryMethod | null>(null)
+  let deliveryAddress = $state<DeliveryAddress | null>(null)
 
   // TO DO : Add validation of select fields
   // TO DO : Figure out how to run this and submit form at the same time
-  let showModal = $state(false);
+  let showModal = $state(false)
 
   const validateAndClose = () => {
     console.log("WIP - DO VALIDATION")
     showModal = false
   }
-
 </script>
 
 {#snippet header()}
@@ -58,10 +67,9 @@
     itemId="addressId"
     placeholder="Valj leveransaddress"
   />
-  <Button
-    type="submit"
-    class="min-w-[260px]"
-  >{`Beställ ${isBulk ? " bulk" : ""}`}</Button>
+  <Button type="submit" onclick={validateAndClose} class="min-w-[260px]"
+    >{`Beställ ${isBulk ? " bulk" : ""}`}</Button
+  >
 {/snippet}
 
 <Modal textButton="Köp produkten" {header} {body} bind:showModal />

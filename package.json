@@ -8,6 +8,8 @@
     "build": "vite build",
     "build:move": "vite build && cp -r dist/js/* ~/warden/lmagri-cloud-develop/vendor/vaimo/module-lmagriculture-theme-support/view/frontend/web/js/ && cp dist/svelte-bundle.css ~/warden/lmagri-cloud-develop/vendor/vaimo/module-lmagriculture-theme-support/view/frontend/web/css",
     "watch:build:move": "chokidar 'src/**/*' -c 'npm run build:move'",
+    "livereload": "node livereload.js",
+    "dev-delux": "concurrently \"npm run livereload\" \"npm run watch:build:move\"",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json"
   },
@@ -16,6 +18,8 @@
     "@tsconfig/svelte": "^5.0.4",
     "autoprefixer": "^10.4.21",
     "chokidar-cli": "^3.0.0",
+    "concurrently": "^9.2.0",
+    "livereload": "^0.9.3",
     "postcss": "^8.5.4",
     "svelte": "^5.19.6",
     "svelte-check": "^4.1.4",
