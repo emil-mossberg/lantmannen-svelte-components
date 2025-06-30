@@ -35,20 +35,17 @@ const _useBridge = () => {
   function onCartUpdated(e: Event) {
     const customEvent = e as CustomEvent;
     cart.value = customEvent.detail.cart;
-    console.log(cart.value);
   }
 
   function onCustomerUpdated(e: Event) {
     const customEvent = e as CustomEvent;
     customer.value = customEvent.detail.customer;
-    console.log(customer.value);
   }
 
   function handleIntialState(e: Event) {
     const customEvent = e as CustomEvent;
     cart.value = customEvent.detail.cart;
     customer.value = customEvent.detail.customer;
-    console.log(customer.value);
   }
 
   // TO Do use parser here for type safety?
