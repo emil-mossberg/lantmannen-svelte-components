@@ -20,7 +20,7 @@
   };
 
   const { showDeliveryPlanner }: Props = $props();
-  console.log(showDeliveryPlanner);
+  
   const deliveries = $state([
     {
       type: "bulk",
@@ -189,5 +189,4 @@
 >
 <Sheet {header} {body} bind:showSheet />
 {/if}
-<div class="tw-bg-red-800">hohossssss</div>
-<span>HIHIHI11111hohoaaaa111</span>
+
