@@ -10,8 +10,9 @@
         value: {} | null
         disabled?: boolean
         placeholder?: string
-        id?: string
     }
+
+    const id = $props.id()
 
     let {
         label,
@@ -20,7 +21,6 @@
         value = $bindable(),
         disabled = false,
         text,
-        id = `select-${Math.random().toString(36).substr(2, 9)}`,
         placeholder,
     }: Props = $props()
 
@@ -45,6 +45,8 @@
         --item-is-active-color="#201E1A"
         --item-hover-bg="#F4EEE6"
         --item-hover-color="#201E1A"
+        --border-focused="2px solid #0192D0"
+        --padding="0px"
         clearable={false}
     />
 </div>

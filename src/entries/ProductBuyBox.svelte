@@ -47,7 +47,8 @@
     let stock = $derived(productStock.value[sku])
 
     const useModal = $derived(() => {
-        
+        // TO DO temp added
+        return true
         if (isBulk) return true
 
         if (cart.value?.items) {

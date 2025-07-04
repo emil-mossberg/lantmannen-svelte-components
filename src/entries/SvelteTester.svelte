@@ -7,6 +7,7 @@
     packageDeliveryMethods,
   } from "../dummyData";
 
+  import DatePicker from '../lib/components/DatePicker.svelte';
 
   let test = $state();
 
@@ -27,8 +28,8 @@ withProps(Dynamic, { label: 'bar' });
 </script>
 
 <div>SVELTE TESTER!!</div>
-  
+<DatePicker date="2025-06-12"   />
 
-  <Wrapper DynamicComponent={Dynamic} />
+  
 
 
