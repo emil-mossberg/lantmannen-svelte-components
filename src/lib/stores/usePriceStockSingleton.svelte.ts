@@ -104,6 +104,8 @@ function createFetchManager<T>(params: FetchManagerParams<T>): FetchManager<T> {
   }
 
   function request(key: string, quantity: number) {
+
+    // Guard against multiple components requesting the same product
     if (data.value[key]) return;
     queue.set(key, quantity);
     scheduleFetch();

@@ -3,35 +3,24 @@ import './app.css'
 
 import { setupI18n } from './lib/localization'
 
-// Entry level components
-import ProductPageInfo from './entries/ProductPageInfo.svelte'
-import DeliveryPlanner from './entries/DeliveryPlanner.svelte'
 import SvelteTester from './entries/SvelteTester.svelte'
 import ProductBuyBox from './entries/ProductBuyBox.svelte'
+import ProductPriceBox from './entries/ProductPriceBox.svelte'
+import CheckoutAcess from './entries/CheckoutAcess.svelte'
 
-// Logic Product Page Info component
 setupI18n()
-
-const productPageInfo = mount(ProductPageInfo, {
-    target: document.getElementById('product-page-info')!,
-})
-
-// Logic Delivery Planner component
 
 const packageTypeList = document
     .getElementById('svelte-information')
     ?.getAttribute('data-tonnage-package-type')
     ?.split(',')
 
-const plannerMountPoint = document.getElementById('delivery-planner')
+// Logic Checkout acess component, includes logic for delivery planner or old flow
 
-const showDeliveryPlanner = !!plannerMountPoint.dataset.showDeliveryPlanner
+const checkoutAcessMountPoint = document.getElementById('svelte-checkout-acess')
 
-const deliveryPlanner = mount(DeliveryPlanner, {
-    target: plannerMountPoint!,
-    props: {
-        showDeliveryPlanner,
-    },
+const checkoutAcess = mount(CheckoutAcess, {
+    target: checkoutAcessMountPoint!,
 })
 
 // Logic Product Buy Box component(s)
@@ -71,6 +60,28 @@ document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
         props: { id, prefSalesQuantity, sku, isBulk, qtyIncrement },
     })
 })
+
+// Logic Product Price box component
+
+document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
+    const elementId = el.id
+    const id = elementId.replace('svelte-product-price-box-', '')
+
+    const prefSalesQuantityAttr = el.getAttribute('data-pref-sales-quantity')
+    const prefSalesQuantity = prefSalesQuantityAttr
+        ? Number(prefSalesQuantityAttr)
+        : 1
+
+
+    const isNew = el.getAttribute('data-product-is-new') === '1'
+
+
+    mount(ProductPriceBox, {
+        target: el,
+        props: { id, prefSalesQuantity, isNew },
+    })
+})
+
 
 // Logic Svelte Tester component
 

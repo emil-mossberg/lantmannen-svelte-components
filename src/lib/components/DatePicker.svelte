@@ -150,23 +150,47 @@
 
     let inputDate = $state(date)
 
+    function parseAndFormatDateUsingISO(input) {
+        const date = new Date(input)
+        if (isNaN(date.getTime())) return null
+
+        // Get ISO string and take only the date part (first 10 chars)
+        return date.toISOString().slice(0, 10)
+    }
+
     // TO DO : Add other restrictions same as in table
     // TO DO : Padd yy-m-d with 0 for correct format
     // TO DO implement being able to use other format finland
+    const validateInput2 = () => {
+        const inutDateObj = new Date(inputDate)
+
+        if (isNaN(inutDateObj.getTime())) {
+            inputDate = date
+        }
+
+        const time = inutDateObj.getTime()
+
+        if (time > objDateDisabledEpoc) {
+            inputDate = date
+            console.log('time is to late')
+        }
+    }
+
     const validateInput = () => {
-        
-        const regex = /^\d{4}-\d{2}-\d{2}$/;
+        console.log('validate')
+        const regex = /^\d{4}-\d{2}-\d{2}$/
 
         if (!regex.test(inputDate)) {
-            inputDate = date 
+            inputDate = date
         } else {
             date = inputDate
         }
     }
 </script>
+
 <div>TEMP DATE SHOW:{date}</div>
 <div>
-    <input type="text" bind:value={inputDate} onblur="{validateInput}" />
+    <input type="text" bind:value={inputDate} onblur={validateInput2} />
     <table
         class="tw-table-fixed tw-border-separate tw-border tw-border-gray-300 tw-text-center tw-p-4"
     >
@@ -187,7 +211,7 @@
                 <tr>
                     {#each week as day}
                         <td
-                            class={`tw-w-[60px] tw-h-[60px] ${day.selected && 'tw-text-green-pea'} ${!day.enabled && 'tw-bg-gray-300'} ${day.highlight && 'tw-bg-green-300'}`}
+                            class={`tw-w-[60px] tw-h-[60px]  ${day.selected && 'tw-text-green-pea tw-border tw-border-green-pea tw-font-bold'} ${!day.enabled && 'tw-opacity-20'} ${day.highlight && 'tw-bg-green-pea tw-text-white tw-font-bold'}`}
                             onclick={() => selectDate(day.value)}
                             onmouseenter={() => (currentHover = day.value)}
                             onmouseleave={() => (currentHover = '')}

@@ -15,9 +15,8 @@
         testPSSCall,
     } = usePriceStockSingleton
 
-    const { formatDate, cart } = useBridgeSingleton
+    const { formatDate, cart, showDeliveryPlanner } = useBridgeSingleton
 
-    console.log(cart)
 
     import DeliveryWizard from './DeliveryWizard.svelte'
     import QtyIncrement from '../lib/components/QtyIncrement.svelte'
@@ -43,28 +42,21 @@
     requestPrice(id, prefSalesQuantity)
     requestStock(sku, prefSalesQuantity)
 
-    let price = $derived(productPrice.value[id])
     let stock = $derived(productStock.value[sku])
 
+    // Not using this also means not sending any additional form values to backend, this is why it is disabled if setting is not turn on
     const useModal = $derived(() => {
-        // TO DO temp added
-        return true
+        if(!showDeliveryPlanner) return false
         if (isBulk) return true
 
         if (cart.value?.items) {
             return !cart.value?.items.some((item) => item.product_sku === sku)
         }
 
-        return false
+        return true
     })
 </script>
 
-<!-- Price information  -->
-{#if price}
-    <div>
-        {`Id:${id} - Price ${price.price_info.extension_attributes.lma_line_amount}`}
-    </div>
-{/if}
 
 <div class="tw-flex tw-gap-4">
     <QtyIncrement {qtyIncrement} {id} />
