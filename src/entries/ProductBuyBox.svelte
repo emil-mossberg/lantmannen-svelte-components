@@ -5,13 +5,13 @@
     import { useBridgeSingleton } from '../lib/stores/useBridgeSingleton.svelte'
     import { usePriceSingleton } from '../lib/stores/usePriceSingleton.svelte'
 
+    const { stockFetchBatcher } = usePriceSingleton
+
     import IconStock from '../lib/Icons/in-stock.svg'
 
-    const { productStock, requestStock, testPriceCall, testPSSCall } =
-        usePriceStockSingleton
+    const { testPriceCall, testPSSCall } = usePriceStockSingleton
 
     const { formatDate, cart, showDeliveryPlanner } = useBridgeSingleton
-
 
     import DeliveryWizard from './DeliveryWizard.svelte'
     import QtyIncrement from '../lib/components/QtyIncrement.svelte'
@@ -34,10 +34,6 @@
         isBulkInFi = false,
     }: Props = $props()
 
-    requestStock(sku, prefSalesQuantity)
-
-    let stock = $derived(productStock.value[sku])
-
     // Not using this also means not sending any additional form values to backend, this is why it is disabled if setting is not turn on
     const useModal = $derived(() => {
         if (!showDeliveryPlanner) return false
@@ -50,8 +46,10 @@
         return true
     })
 
-    
-</script> 
+    let stockPromise = $state(
+        stockFetchBatcher.getPromise(sku, prefSalesQuantity)
+    )
+</script>
 
 <div>IN HERE</div>
 
@@ -66,8 +64,9 @@
     </div>
 {/if}
 
-<!-- Stock information  -->
-{#if stock}
+{#await stockPromise}
+    Loading Stock Spinner
+{:then stock}
     <div>
         <span>{$t('availability')}</span>
         <div
@@ -84,7 +83,7 @@
             {/if}
         </div>
     </div>
-{/if}
+{/await}
 
 <button type="button" onclick={testPriceCall}>TEST call Price APP</button>
 <button type="button" onclick={testPSSCall}>TEST PSS</button>
