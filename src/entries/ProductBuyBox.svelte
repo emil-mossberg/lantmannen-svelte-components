@@ -3,9 +3,9 @@
 
     import { usePriceStockSingleton } from '../lib/stores/usePriceStockSingleton.svelte'
     import { useBridgeSingleton } from '../lib/stores/useBridgeSingleton.svelte'
-    import { usePriceSingleton } from '../lib/stores/usePriceSingleton.svelte'
+    import { useStockSingleton } from '../lib/stores/useStockSingleton.svelte'
 
-    const { stockFetchBatcher } = usePriceSingleton
+    const { stockFetchBatcher } = useStockSingleton
 
     import IconStock from '../lib/Icons/in-stock.svg'
 
