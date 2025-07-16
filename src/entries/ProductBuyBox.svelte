@@ -12,7 +12,6 @@
 
     const { formatDate, cart, showDeliveryPlanner } = useBridgeSingleton
 
-    const { statusMap } = usePriceSingleton
 
     import DeliveryWizard from './DeliveryWizard.svelte'
     import QtyIncrement from '../lib/components/QtyIncrement.svelte'
@@ -51,13 +50,8 @@
         return true
     })
 
-    $inspect(statusMap)
-    $effect(() => {
-        console.log(statusMap)
-    })
+    
 </script> 
-
-{ statusMap[id]}
 
 <div>IN HERE</div>
 

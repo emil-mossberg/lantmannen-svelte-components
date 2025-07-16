@@ -7,6 +7,9 @@ declare global {
 
 import { REST_PRICE, REST_PRICE_GUEST } from '../constants'
 
+// TO DO both type should have same format
+import { type StockType } from "../../schemas/Stock";
+
 // TO DO this is wrong
 
 type Price = {
@@ -19,24 +22,34 @@ type Resolver = {
     reject: (err: Error) => void
 }
 
-const _usePrice = () => {
-    const queue = new Map<
+class FetchBatcher<T> {
+    private queue = new Map<
         string,
         {
             quantity: number
             resolvers: Resolver[]
         }
     >()
-    let timer: ReturnType<typeof setTimeout> | null = null
 
-    const statusMap = $state<{
+    private timer: ReturnType<typeof setTimeout> | null = null
+
+    public statusMap = $state<{
         value: Map<string, 'pending' | 'fulfilled' | 'rejected'>
     }>({ value: new Map() })
 
-    async function flushQueue() {
-        const currentQueue = new Map(queue)
-        queue.clear()
-        timer = null
+    private url: string
+
+
+    constructor(url: string) {
+      url = url
+    }
+
+    private async flushQueue(): Promise<void> {
+        const currentQueue = new Map(this.queue)
+        this.queue.clear()
+        this.timer = null
+        
+        
 
         // TO DO fix this
         const isLoggedIn = false
@@ -72,6 +85,7 @@ const _usePrice = () => {
             )
 
             const result = await response.json()
+
             // TO DO type this
             // TO DO is it best to convert to string or can I have it as number always if fix else where
             const priceMap = new Map(
@@ -91,46 +105,50 @@ const _usePrice = () => {
                 }
             }
         } catch (e) {
+            console.log('error')
             for (const { resolvers } of currentQueue.values()) {
                 resolvers.forEach(({ reject }) => reject(error))
             }
         }
     }
 
-    function getPricePromise(
-        productId: string,
-        quantity: number
-    ): Promise<Price> {
+    getPromise(productId: string, quantity: number): Promise<T> {
         return new Promise((resolve, reject) => {
-            if (!queue.has(productId)) {
-                queue.set(productId, { quantity, resolvers: [] })
-                statusMap.value.set(productId, 'pending')
-            }
-            const entry = queue.get(productId)!
+            console.log('apa')
+            console.log(this.queue)
 
-            // TO DO remove this
-            // entry.resolvers.push({ resolve, reject })
+            if (!this.queue.has(productId)) {
+                this.queue.set(productId, { quantity, resolvers: [] })
+                this.statusMap.value.set(productId, 'pending')
+            }
+
+            // TO DO get rid of !
+            const entry = this.queue.get(productId)!
 
             entry.resolvers.push({
                 resolve: (price) => {
-                    statusMap.value.set(productId, 'fulfilled')
+                    this.statusMap.value.set(productId, 'fulfilled')
                     resolve(price)
                 },
                 reject: (err) => {
-                    statusMap.value.set(productId, 'rejected')
+                    this.statusMap.value.set(productId, 'rejected')
                     reject(err)
                 },
             })
 
-            if (!timer) {
-                timer = setTimeout(flushQueue, 10) // batch all calls in 10ms window
+            if (!this.timer) {
+                this.timer = setTimeout(this.flushQueue.bind(this), 10) // batch all calls in 10ms window
             }
         })
     }
+}
+
+// TO DO fix this
+const _usePrice = () => {
+    const priceFetchBatcher = new FetchBatcher<Price>()
 
     return {
-        getPricePromise,
-        statusMap,
+        priceFetchBatcher,
     }
 }
 
