@@ -1,8 +1,7 @@
 <script lang="ts">
-    import { usePriceStockSingleton } from '../lib/stores/usePriceStockSingleton.svelte'
+    import { usePriceSingleton } from '../lib/stores/usePriceSingleton.svelte'
 
-    const { productPrice, requestPrice } = usePriceStockSingleton
-
+    const { getPricePromise } = usePriceSingleton
     type Props = {
         id: string
         prefSalesQuantity: number
@@ -11,15 +10,13 @@
 
     const { id, prefSalesQuantity, newProduct = false }: Props = $props()
 
-    // TO DO : I do this derived line in other component, can refactor out somehow
-    let price = $derived(productPrice.value[id])
+    let pricePromise = $state(getPricePromise(id, prefSalesQuantity))
 </script>
 
-<div>IS new {newProduct}</div>
 <div>Product Price box WIP</div>
-<!-- Price information  -->
-{#if price}
-    <div>
-        {`Id:${id} - Price ${price.price_info.extension_attributes.lma_line_amount}`}
-    </div>
-{/if}
+
+{#await pricePromise}
+    LOADING
+{:then price}
+    {price.product_sku}
+{/await}

@@ -3,20 +3,16 @@
 
     import { usePriceStockSingleton } from '../lib/stores/usePriceStockSingleton.svelte'
     import { useBridgeSingleton } from '../lib/stores/useBridgeSingleton.svelte'
+    import { usePriceSingleton } from '../lib/stores/usePriceSingleton.svelte'
 
     import IconStock from '../lib/Icons/in-stock.svg'
 
-    const {
-        productPrice,
-        requestPrice,
-        productStock,
-        requestStock,
-        testPriceCall,
-        testPSSCall,
-    } = usePriceStockSingleton
+    const { productStock, requestStock, testPriceCall, testPSSCall } =
+        usePriceStockSingleton
 
     const { formatDate, cart, showDeliveryPlanner } = useBridgeSingleton
 
+    const { statusMap } = usePriceSingleton
 
     import DeliveryWizard from './DeliveryWizard.svelte'
     import QtyIncrement from '../lib/components/QtyIncrement.svelte'
@@ -39,14 +35,13 @@
         isBulkInFi = false,
     }: Props = $props()
 
-    requestPrice(id, prefSalesQuantity)
     requestStock(sku, prefSalesQuantity)
 
     let stock = $derived(productStock.value[sku])
 
     // Not using this also means not sending any additional form values to backend, this is why it is disabled if setting is not turn on
     const useModal = $derived(() => {
-        if(!showDeliveryPlanner) return false
+        if (!showDeliveryPlanner) return false
         if (isBulk) return true
 
         if (cart.value?.items) {
@@ -55,13 +50,22 @@
 
         return true
     })
-</script>
 
+    $inspect(statusMap)
+    $effect(() => {
+        console.log(statusMap)
+    })
+</script> 
+
+{ statusMap[id]}
+
+<div>IN HERE</div>
 
 <div class="tw-flex tw-gap-4">
     <QtyIncrement {qtyIncrement} {id} />
     <DeliveryWizard {isBulk} useModal={useModal()} />
 </div>
+
 {#if qtyIncrement > 1}
     <div class="tw-text-sm">
         {$t('qtyIncInfo', { values: { qty: qtyIncrement } })}
