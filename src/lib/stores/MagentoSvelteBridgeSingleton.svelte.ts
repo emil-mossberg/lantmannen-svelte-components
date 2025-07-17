@@ -13,6 +13,14 @@ export class MagentoSvelteBridgeSingleton {
         this.svelteBridgeData?.loggedIn
     )
 
+    // TO DO make this less verbose
+    public readonly showListPrice: boolean = this.convertToBoolean(this.svelteBridgeData?.showListPrice)
+    public readonly showVatPercentage: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowVatPercentage)
+    public readonly showInclVatPdp: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowInclVatPdp)
+    public readonly showExclVatPdp: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowExclVatPdp)
+    public readonly showInclVatPlp: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowInclVatPlp)
+    public readonly showExclVatPlp: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowExclVatPlp)
+
     public cart = $state<{ value: CartType | null }>({ value: null })
 
     public customer = $state<{ value: CustomerInfoType | null }>({

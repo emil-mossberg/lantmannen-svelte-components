@@ -2,6 +2,8 @@ import { REST_STOCK_GUEST } from '../constants'
 import FetchBatcher from './FetchBatcher.svelte'
 import { type StockType } from '../../schemas/Stock'
 
+import singletonFactory from './SingletonFactory'
+
 
 class StockFetch {   
     private static instance: StockFetch
@@ -31,4 +33,8 @@ class StockFetch {
     }
 } 
 
+
+
+
 export default StockFetch.get()
+console.log('apa')
