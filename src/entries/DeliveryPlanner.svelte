@@ -4,9 +4,7 @@
     import SelectDate from '../lib/components/SelectDate.svelte'
     import SelectWrapper from '../lib/components/SelectWrapper.svelte'
     import IconCart from '../lib/IconsDynamic/IconCart.svelte'
-    import { useBridgeSingleton } from '../lib/stores/useBridgeSingleton.svelte'
-
-    const { cart, isLoggedIn } = useBridgeSingleton
+    import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
 
     import {
         bulkDeliveryMethods,
@@ -73,27 +71,26 @@
     // TO DO : Could this be a problem with PSS that has same sku twice in cart
     // TO DO : Use this in ajax call to get deliveries info instead of multiple times inline in template when that ajax call is used
     const findProductInCart = (sku: string) => {
-        console.log(cart.value?.items.find((item) => item.product_sku === sku))
 
-        return cart.value?.items.find((item) => item.product_sku === sku)
+        return bridgeSingleton.cart.value?.items.find((item) => item.product_sku === sku)
     }
 
     let showSheet = $state(false)
 </script>
 
 {#snippet header()}
-    Leveransplaneraren {isLoggedIn}
+    Leveransplaneraren 
 {/snippet}
 
 {#snippet body()}
     <div
         class="tw-flex tw-justify-between tw-align-middle tw-px-6 tw-py-4 tw-border-b"
     >
-        {#if cart.value?.items}
+        {#if bridgeSingleton.cart.value?.items}
             <span>
-                {`${cart.value.items.length} Varor`}
+                {`${bridgeSingleton.cart.value.items.length} Varor`}
             </span>
-            <span>{`Total( Excl VAT): ${cart.value.subtotalAmount}`}</span>
+            <span>{`Total( Excl VAT): ${bridgeSingleton.cart.value.subtotalAmount}`}</span>
         {/if}
     </div>
     <ul class="tw-h-full tw-overflow-auto">
@@ -180,7 +177,7 @@
     </div>
 {/snippet}
 
-{#if cart.value && cart.value?.items.length}
+{#if bridgeSingleton.cart.value && bridgeSingleton.cart.value?.items.length}
     <button
         onclick={() => (showSheet = true)}
         class="tw-fixed tw-right-0 tw-top-0 tw-z-[110] tw-flex tw-gap-4 tw-px-3 tw-py-2 tw-items-center tw-bg-white"

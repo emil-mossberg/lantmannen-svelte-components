@@ -1,61 +1,27 @@
-// TO DO move this to correct file
-declare global {
-    interface Window {
-        BASE_URL: string
-    }
-}
-
 import { REST_STOCK_GUEST } from '../constants'
 import FetchBatcher from './FetchBatcher.svelte'
-
-// TO DO both type should have same format
 import { type StockType } from '../../schemas/Stock'
 
-const _useStock = () => {
 
-
-    const stockUrl = `${window.BASE_URL}${REST_STOCK_GUEST}`
-
-    const stockFetchBatcher = new FetchBatcher<StockType>(
-        stockUrl,
-        'stockFinderData',
-        'item_number',
-    )
-
-    return {
-        stockFetchBatcher,
-    }
-}
-
-export const useStockSingleton = _useStock()
-
-
-class PriceFetch {   
-    private static instance: PriceFetch
+class StockFetch {   
+    private static instance: StockFetch
     
-
-    private bridgeInfo: MagentoSvelteBridgeSingleton =
-        MagentoSvelteBridgeSingleton.get()
-
-    public fetchBatcher: FetchBatcher<PriceType>
+    private fetchBatcher: FetchBatcher<StockType>
 
     constructor() {
-        const isLoggedIn = this.bridgeInfo.isLoggedIn
 
-        const priceUrl = `${window.BASE_URL}${
-            isLoggedIn ? REST_PRICE : REST_PRICE_GUEST
-        }`
+       const stockUrl = `${window.BASE_URL}${REST_STOCK_GUEST}`
 
-        this.fetchBatcher = new FetchBatcher<PriceType>(
-            priceUrl,
-            'priceFinderData',
-            'product_id'
+        this.fetchBatcher = new FetchBatcher<StockType>(
+            stockUrl,
+            'stockFinderData',
+            'item_number'
         )
     }
 
-    public static get(): PriceFetch {
+    public static get(): StockFetch {
         if (!this.instance) {
-            this.instance = new PriceFetch()
+            this.instance = new StockFetch()
         }
         return this.instance
     }
@@ -65,4 +31,4 @@ class PriceFetch {
     }
 } 
 
-export default PriceFetch.get()
+export default StockFetch.get()

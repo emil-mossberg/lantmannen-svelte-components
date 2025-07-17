@@ -2,17 +2,13 @@
     import { t } from 'svelte-i18n'
 
     import { usePriceStockSingleton } from '../lib/stores/usePriceStockSingleton.svelte'
-    import { useBridgeSingleton } from '../lib/stores/useBridgeSingleton.svelte'
-    import { useStockSingleton } from '../lib/stores/useStockSingleton.svelte'
-
-    const { stockFetchBatcher } = useStockSingleton
+    import stockFetch from '../lib/stores/useStockSingleton.svelte'
+    import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
 
     import IconStock from '../lib/Icons/in-stock.svg'
 
     const { testPriceCall, testPSSCall } = usePriceStockSingleton
-
-    const { formatDate, cart, showDeliveryPlanner } = useBridgeSingleton
-
+    
     import DeliveryWizard from './DeliveryWizard.svelte'
     import QtyIncrement from '../lib/components/QtyIncrement.svelte'
 
@@ -24,7 +20,7 @@
         qtyIncrement: number
         isBulkInFi?: boolean
     }
-
+    
     const {
         id,
         prefSalesQuantity,
@@ -36,18 +32,18 @@
 
     // Not using this also means not sending any additional form values to backend, this is why it is disabled if setting is not turn on
     const useModal = $derived(() => {
-        if (!showDeliveryPlanner) return false
+        if (!bridgeSingleton.showDeliveryPlanner) return false
         if (isBulk) return true
 
-        if (cart.value?.items) {
-            return !cart.value?.items.some((item) => item.product_sku === sku)
+        if (bridgeSingleton.cart.value?.items) {
+            return !bridgeSingleton.cart.value?.items.some((item) => item.product_sku === sku)
         }
 
         return true
     })
 
     let stockPromise = $state(
-        stockFetchBatcher.getPromise(sku, prefSalesQuantity)
+        stockFetch.getPromise(sku, prefSalesQuantity)
     )
 </script>
 
@@ -79,7 +75,7 @@
             {:else if (isBulk && (stock.in_stock || stock.allow_backorder)) || (!isBulk && stock.in_stock)}
                 <span>{$t('inStock')}</span>
             {:else if !isBulk && !stock.in_stock && stock.allow_backorder}
-                <span>{formatDate(stock.in_stock_date)}</span>
+                <span>{bridgeSingleton.formatDate(stock.in_stock_date)}</span>
             {/if}
         </div>
     </div>

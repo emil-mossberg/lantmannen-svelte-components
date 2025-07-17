@@ -24,9 +24,7 @@ export class MagentoSvelteBridgeSingleton {
     )
 
     constructor() {
-        console.log('BRIDGE SINGLETON')
         // TO Do use parser here for type safety?
-        // TO DO make sure this works
         // cart.value = window.MagentoBridgeState.cart;
         // customer.value = window.MagentoBridgeState.customer;
         // TO DO can I DRY this, not use 3 x
@@ -43,8 +41,6 @@ export class MagentoSvelteBridgeSingleton {
             this.handleIntialState.bind(this)
         )
     }
-
-    // TO DO add rest here from other file
 
     public static get(): MagentoSvelteBridgeSingleton {
         if (!this.instance) {
@@ -76,4 +72,19 @@ export class MagentoSvelteBridgeSingleton {
     public customerNumber() {
         return this.customer.value?.current_company_number ?? null
     }
+
+    public formatDate(date: string) {
+        const locale = 'fi' // TO DO move this into scraping from dom
+
+        if (locale === 'fi') {
+            const [year, month, day] = date.split('-')
+            return `${day}.${month}.${year}`
+        }
+
+        // Default: return as-is (YYYY-MM-DD) for Swedish
+        return date
+    }
 }
+
+
+export default MagentoSvelteBridgeSingleton.get()

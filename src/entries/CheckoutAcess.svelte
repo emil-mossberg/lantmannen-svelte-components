@@ -1,11 +1,10 @@
 <script lang="ts">
-    import { useBridgeSingleton } from '../lib/stores/useBridgeSingleton.svelte'
     import DeliveryPlanner from './DeliveryPlanner.svelte'
+    import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
 
-    const { showDeliveryPlanner } = useBridgeSingleton
 </script>
 
-{#if showDeliveryPlanner}
+{#if bridgeSingleton.showDeliveryPlanner}
     <DeliveryPlanner />
 {:else}
     <div>Old cart flow, implement</div>

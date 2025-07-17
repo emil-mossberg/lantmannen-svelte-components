@@ -1,26 +1,16 @@
-// TO DO move this to correct file
-declare global {
-    interface Window {
-        BASE_URL: string
-    }
-}
-
 import { REST_PRICE, REST_PRICE_GUEST } from '../constants'
 import FetchBatcher from './FetchBatcher.svelte'
 
 import { type PriceType } from '../../schemas/Price'
 import { MagentoSvelteBridgeSingleton } from './MagentoSvelteBridgeSingleton.svelte'
 
-
-// TO DO test this
 class PriceFetch {   
     private static instance: PriceFetch
     
-
     private bridgeInfo: MagentoSvelteBridgeSingleton =
         MagentoSvelteBridgeSingleton.get()
 
-    public fetchBatcher: FetchBatcher<PriceType>
+    private fetchBatcher: FetchBatcher<PriceType>
 
     constructor() {
         const isLoggedIn = this.bridgeInfo.isLoggedIn

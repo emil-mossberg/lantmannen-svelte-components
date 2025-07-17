@@ -73,7 +73,6 @@ export default class FetchBatcher<T extends Record<string, any>> {
 
             const result: FetchResponse<T> = await response.json()
 
-            // TO DO type this
             // TO DO is it best to convert to string or can I have it as number always if fix else where
 
             const itemsMap = new Map(
@@ -110,10 +109,9 @@ export default class FetchBatcher<T extends Record<string, any>> {
             const entry = this.queue.get(productId)!
 
             entry.resolvers.push({
-                resolve: (price) => {
+                resolve: (data) => {
                     this.statusMap.value.set(productId, 'fulfilled')
-                    // TO DO fix using general here
-                    resolve(price)
+                    resolve(data)
                 },
                 reject: (err) => {
                     this.statusMap.value.set(productId, 'rejected')
