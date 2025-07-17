@@ -20,7 +20,7 @@ const _useBridge = () => {
     const showDeliveryPlanner = convertToBoolean(
         svelteBridgeData?.showDeliveryPlanner
     )
-    
+
     // TO DO scrape from DOM
     const locale = 'fi'
 
@@ -38,6 +38,7 @@ const _useBridge = () => {
 
     const customer = $state<{ value: CustomerInfoType | null }>({ value: null })
 
+    
     function onCartUpdated(e: Event) {
         const customEvent = e as CustomEvent
         cart.value = customEvent.detail.cart
@@ -58,10 +59,13 @@ const _useBridge = () => {
     // TO DO make sure this works
     // cart.value = window.MagentoBridgeState.cart;
     // customer.value = window.MagentoBridgeState.customer;
-
+    
     window.addEventListener('magento:cartUpdated', onCartUpdated)
     window.addEventListener('magento:customerUpdated', onCustomerUpdated)
     window.addEventListener('magento:initialState', handleIntialState)
+
+
+
 
     return {
         customer,

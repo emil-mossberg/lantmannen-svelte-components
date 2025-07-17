@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { usePriceSingleton } from '../lib/stores/usePriceSingleton.svelte'
 
-    const { priceFetchBatcher } = usePriceSingleton
+    import priceFetch from '../lib/stores/usePriceSingleton.svelte';
+    
     type Props = {
         id: string
         prefSalesQuantity: number
@@ -10,7 +10,7 @@
 
     const { id, prefSalesQuantity, newProduct = false }: Props = $props()
 
-    let pricePromise = $state(priceFetchBatcher.getPromise(id, prefSalesQuantity))
+    let pricePromise = $state(priceFetch.getPromise(id, prefSalesQuantity))
 </script>
 
 <div>Product Price box WIP</div>

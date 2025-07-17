@@ -5,14 +5,31 @@ declare global {
     }
 }
 
-import { REST_PRICE, REST_PRICE_GUEST } from '../constants'
+import { REST_STOCK_GUEST } from '../constants'
 import FetchBatcher from './FetchBatcher.svelte'
 
-import { type PriceType } from '../../schemas/Price'
-import { MagentoSvelteBridgeSingleton } from './MagentoSvelteBridgeSingleton.svelte'
+// TO DO both type should have same format
+import { type StockType } from '../../schemas/Stock'
+
+const _useStock = () => {
 
 
-// TO DO test this
+    const stockUrl = `${window.BASE_URL}${REST_STOCK_GUEST}`
+
+    const stockFetchBatcher = new FetchBatcher<StockType>(
+        stockUrl,
+        'stockFinderData',
+        'item_number',
+    )
+
+    return {
+        stockFetchBatcher,
+    }
+}
+
+export const useStockSingleton = _useStock()
+
+
 class PriceFetch {   
     private static instance: PriceFetch
     
@@ -49,5 +66,3 @@ class PriceFetch {
 } 
 
 export default PriceFetch.get()
-
-

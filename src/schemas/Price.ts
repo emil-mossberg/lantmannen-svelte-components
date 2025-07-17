@@ -97,4 +97,4 @@ export const ProductSchema = z.object({
 });
 
 // Inferred TypeScript type
-export type Product = z.infer<typeof ProductSchema>;
+export type PriceType = z.infer<typeof ProductSchema>;
