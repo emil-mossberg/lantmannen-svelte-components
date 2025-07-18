@@ -2,9 +2,9 @@
     import { t } from 'svelte-i18n'
 
     import { usePriceStockSingleton } from '../lib/stores/usePriceStockSingleton.svelte'
-    import stockFetch from '../lib/stores/useStockSingleton.svelte'
+    import stockFetch from '../lib/stores/StockFetch.svelte'
     import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
-
+    
     import IconStock from '../lib/Icons/in-stock.svg'
 
     const { testPriceCall, testPSSCall } = usePriceStockSingleton

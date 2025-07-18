@@ -1,6 +1,7 @@
 <script lang="ts">
-    import priceFetch from '../lib/stores/usePriceSingleton.svelte'
     import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
+    import priceFetch from '../lib/stores/PriceFetch.svelte'
+
 
     type Props = {
         id: string

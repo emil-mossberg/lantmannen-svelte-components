@@ -9,37 +9,26 @@ type FetchResponse<T> = {
     items: T[]
 }
 
-export default class FetchBatcher<T extends Record<string, any>> {
-    private queue = new Map<
-        string,
-        {
-            quantity: number
-            resolvers: Resolver<T>[]
-        }
-    >()
+// TO DO why does need to extend Record<string, any>?
+export default abstract class BaseFetch<T extends Record<string, any>> {
+    public bridge = MagentoSvelteBridgeSingleton.get()
 
+    private queue = new Map<string, { quantity: number; resolvers: Resolver<T>[] }>()
     private timer: ReturnType<typeof setTimeout> | null = null
 
-    public statusMap = $state<{
-        value: Map<string, 'pending' | 'fulfilled' | 'rejected'>
-    }>({ value: new Map() })
+    public statusMap = $state<{ value: Map<string, 'pending' | 'fulfilled' | 'rejected'> }>({ value: new Map() })
 
-    private bridgeInfo: MagentoSvelteBridgeSingleton =
-        MagentoSvelteBridgeSingleton.get()
+    protected abstract getUrl(): string
+    protected abstract getFetchKey(): string
+    protected abstract getItemKey(): string
 
-    constructor(
-        private url: string,
-        private fetchKey: string,
-        private itemKey: string,
-    ) {}
-
-    private async flushQueue(): Promise<void> {
+    private async flushQueue(): Promise<void> { 
         const currentQueue = new Map(this.queue)
 
-        const customerNumber = this.bridgeInfo.customerNumber()
+        const customerNumber = this.bridge.customerNumber()
 
-        if (this.bridgeInfo.isLoggedIn && !customerNumber) {
-            setTimeout(this.flushQueue.bind(this), 10)
+        if (this.bridge.isLoggedIn && !customerNumber) {
+            setTimeout(() => this.flushQueue(), 10)
             return
         }
 
@@ -47,20 +36,17 @@ export default class FetchBatcher<T extends Record<string, any>> {
         this.timer = null
 
         const items = Array.from(currentQueue.entries()).map(
-            ([itemNumber, { quantity }]) => ({
-                itemNumber,
-                quantity,
-            })
+            ([itemNumber, { quantity }]) => ({ itemNumber, quantity })
         )
 
         try {
-            const response = await fetch(this.url, {
+            const response = await fetch(this.getUrl(), {
                 method: 'POST',
                 body: JSON.stringify({
-                    [this.fetchKey]: {
+                    [this.getFetchKey()]: {
                         items,
                         customerNumber,
-                        storeId: this.bridgeInfo.storeId,
+                        storeId: this.bridge.storeId,
                     },
                 }),
                 credentials: 'same-origin',
@@ -73,11 +59,7 @@ export default class FetchBatcher<T extends Record<string, any>> {
 
             const result: FetchResponse<T> = await response.json()
 
-            // TO DO is it best to convert to string or can I have it as number always if fix else where
-
-            const itemsMap = new Map(
-                result.items.map((p: T) => [String(p[this.itemKey]), p])
-            )
+            const itemsMap = new Map(result.items.map((p) => [String(p[this.getItemKey()]), p]))
 
             for (const [productId, { resolvers }] of currentQueue.entries()) {
                 const data = itemsMap.get(productId)
@@ -85,29 +67,25 @@ export default class FetchBatcher<T extends Record<string, any>> {
                 if (data) {
                     resolvers.forEach(({ resolve }) => resolve(data))
                 } else {
-                    const error = new Error(
-                        `No data returned for productId: ${productId}`
-                    )
+                    const error = new Error(`No data returned for productId: ${productId}`)
                     resolvers.forEach(({ reject }) => reject(error))
                 }
             }
-        } catch (e) {
+        } catch (error) {
             for (const { resolvers } of currentQueue.values()) {
-                resolvers.forEach(({ reject }) => reject(error))
+                resolvers.forEach(({ reject }) => reject(error as Error))
             }
         }
     }
 
-    getPromise(productId: string, quantity: number): Promise<T> {
+    public getPromise(productId: string, quantity: number): Promise<T> {
         return new Promise((resolve, reject) => {
             if (!this.queue.has(productId)) {
                 this.queue.set(productId, { quantity, resolvers: [] })
                 this.statusMap.value.set(productId, 'pending')
             }
 
-            // TO DO get rid of !
             const entry = this.queue.get(productId)!
-
             entry.resolvers.push({
                 resolve: (data) => {
                     this.statusMap.value.set(productId, 'fulfilled')
@@ -120,7 +98,7 @@ export default class FetchBatcher<T extends Record<string, any>> {
             })
 
             if (!this.timer) {
-                this.timer = setTimeout(this.flushQueue.bind(this), 10) // batch all calls in 10ms window
+                this.timer = setTimeout(() => this.flushQueue(), 10)
             }
         })
     }
