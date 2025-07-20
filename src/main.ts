@@ -81,7 +81,9 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
         Number(el.getAttribute('product-data-qty-increment') ?? 1) || 1
     const palletDiscountInformation = el.getAttribute('data-product-pallet-discount-information')
     const showPalletAttribute = el.getAttribute('data-product-show-pallet-attribute') === '1'
-    
+    const priceBoxUnit = el.getAttribute('data-config-price-box-unit') 
+    const prefSalesQtyUnit = el.getAttribute('data-config-pref-sales-qty-unit')
+
     mount(ProductPriceBox, {
         target: el,
         props: {
@@ -95,7 +97,9 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
             isBuyable,
             qtyIncrement,
             palletDiscountInformation,
-            showPalletAttribute
+            showPalletAttribute,
+            priceBoxUnit,
+            prefSalesQtyUnit,
         },
     })
 })

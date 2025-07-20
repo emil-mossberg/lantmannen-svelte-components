@@ -4,9 +4,10 @@ import { type PriceType } from '../../schemas/Price'
 import singletonFactory from './SingletonFactory'
 
 class PriceFetch extends BaseFetch<PriceType> {
-
     protected getUrl(): string {
-        return `${window.BASE_URL}${this.bridge.isLoggedIn ? REST_PRICE : REST_PRICE_GUEST}`
+        return `${window.BASE_URL}${
+            this.bridge.isLoggedIn ? REST_PRICE : REST_PRICE_GUEST
+        }`
     }
 
     protected getFetchKey(): string {

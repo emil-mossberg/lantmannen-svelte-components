@@ -1,7 +1,7 @@
 <script lang="ts">
     import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
     import priceFetch from '../lib/stores/PriceFetch.svelte'
-
+    import Price from './Price.svelte';
 
     type Props = {
         id: string
@@ -12,9 +12,11 @@
         packagingType: string | null
         unitMeasure: string | null
         basicUnit: string | null
-        qtyIncrement: number 
+        qtyIncrement: number
         palletDiscountInformation: string | null
         showPalletAttribute: boolean
+        priceBoxUnit: string
+        prefSalesQtyUnit: string
     }
 
     const {
@@ -28,17 +30,42 @@
         isBuyable,
         qtyIncrement,
         palletDiscountInformation,
-        showPalletAttribute
+        showPalletAttribute,
+        priceBoxUnit,
+        prefSalesQtyUnit,
     }: Props = $props()
 
     let pricePromise = $state(priceFetch.getPromise(id, prefSalesQuantity))
 </script>
 
-<div>{isBuyable}</div>
-<div>Product Price box WIP</div>
-
 {#await pricePromise}
     LOADING
 {:then price}
-    {price.product_sku}
+    {@const priceInfo = price.price_info.extension_attributes}
+    {@const isPss = !!priceInfo?.lma_campaign_is_pre_season}
+
+    <div class="tw-min-h-[40px] tw-relative">
+        {#if bridgeSingleton.showListPrice && priceInfo.lma_list_price}
+            <div>Implement List price header here</div>
+            <!-- TO DO : Add list price header Headers, check template -->
+        {/if}
+        {#if !isPss}
+            <div>
+                <!-- TO DO : Add  discount, check template -->
+                <!-- TO DO : Format below -->
+                 <Price price={priceInfo.lma_customer_price}/>
+                 <Price price={120000.400}/>
+                {priceInfo.lma_customer_price}
+                {priceBoxUnit}
+            </div>
+        {/if}
+        {#if !isPss || bridgeSingleton.showListPrice}
+            <div>
+                EXCL VAT
+            </div>
+        <!-- TO DO : Add  list price column -->
+         {/if}
+    </div>
+{:catch error}
+    Error loading price: {error.message}
 {/await}

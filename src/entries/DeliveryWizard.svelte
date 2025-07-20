@@ -3,19 +3,26 @@
     import SelectWrapper from '../lib/components/SelectWrapper.svelte'
     import Modal from '../lib/components/Modal.svelte'
 
+    import { type PriceType } from '../schemas/Price'
+
+    import priceFetch from '../lib/stores/PriceFetch.svelte'
+
     import {
         bulkDeliveryMethods,
         packageDeliveryMethods,
         bulkAddress,
         packageAddresses,
     } from '../dummyData'
+    import { onMount } from 'svelte'
 
     type Props = {
         isBulk: boolean
         useModal: boolean
+        id: string
+        prefSalesQuantity: number
     }
 
-    const { isBulk, useModal }: Props = $props()
+    const { isBulk, useModal, id, prefSalesQuantity }: Props = $props()
 
     // TO DO move types?
     type DeliveryMethod = {
@@ -41,13 +48,29 @@
     }
 
     const enableBuyButton = $derived(() => {
-
-        if(!showModal)
-          return false
+        if (!showModal) return false
 
         return !deliveryMethod || !deliveryAddress
     })
+
+    let isPss = $state({ value: false })
+
+    let price = $state<{ value: PriceType | null }>({ value: null })
+
+    // async function getProduct() {
+    //     price.value = await priceFetch.getPromise(id, prefSalesQuantity)
+    //     console.log(price)
+    // }
+
+    $effect(() => {
+        ;(async () => {
+            console.log('apa')
+            price.value = await priceFetch.getPromise(id, prefSalesQuantity)
+        })()
+    })
 </script>
+
+SKU:{price.value?.product_id}
 
 {#snippet buyButton()}
     <Button type="submit" class="min-w-[260px]" disabled={enableBuyButton()}
@@ -88,6 +111,5 @@
 {#if useModal}
     <Modal textButton="Köp produkten" {header} {body} bind:showModal />
 {:else}
-  {@render buyButton()}
+    {@render buyButton()}
 {/if}
-

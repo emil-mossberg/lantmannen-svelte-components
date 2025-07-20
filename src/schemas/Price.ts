@@ -82,6 +82,7 @@ export const ProductSchema = z.object({
       lma_list_price_inc_vat: z.number(),
       lma_list_price_inc_vat_formatted: z.string(),
       lma_is_pallet_discount: z.boolean(),
+      lma_campaign_is_pre_season: z.boolean().optional(),
     }),
   }),
 
