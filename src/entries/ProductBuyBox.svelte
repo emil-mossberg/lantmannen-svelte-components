@@ -62,7 +62,7 @@
 {#await Promise.all([pricePromise, stockPromise])}
     No price or stock yet - add Skeleton
 {:then [price, stock]}
-<!-- TO DO : Swotchj Check PSS boolean -->
+<!-- TO DO : Switch Check PSS boolean -->
 {#if price.price_cached}
         <div>DOING MORE</div>
         {#await pssProto(price)}
