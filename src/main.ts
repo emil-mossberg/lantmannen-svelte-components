@@ -6,6 +6,7 @@ import { setupI18n } from './lib/localization'
 import SvelteTester from './entries/SvelteTester.svelte'
 import ProductBuyBox from './entries/ProductBuyBox.svelte'
 import ProductPriceBox from './entries/ProductPriceBox.svelte'
+import ProductStockBox from './entries/ProductStockBox.svelte'
 import CheckoutAcess from './entries/CheckoutAcess.svelte'
 
 setupI18n()
@@ -53,10 +54,11 @@ document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
 
     const isNew = el.getAttribute('data-product-is-new') === '1'
 
+    const isPdpCard = el.getAttribute('data-is-pdp-card') === '1'
 
     mount(ProductBuyBox, {
         target: el,
-        props: { id, prefSalesQuantity, sku, isBulk, qtyIncrement },
+        props: { id, prefSalesQuantity, sku, isBulk, qtyIncrement, isPdpCard },
     })
 })
 
@@ -79,9 +81,12 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
     const basicUnit = el.getAttribute('data-product-basic-unit')
     const qtyIncrement =
         Number(el.getAttribute('product-data-qty-increment') ?? 1) || 1
-    const palletDiscountInformation = el.getAttribute('data-product-pallet-discount-information')
-    const showPalletAttribute = el.getAttribute('data-product-show-pallet-attribute') === '1'
-    const priceBoxUnit = el.getAttribute('data-config-price-box-unit') 
+    const palletDiscountInformation = el.getAttribute(
+        'data-product-pallet-discount-information'
+    )
+    const showPalletAttribute =
+        el.getAttribute('data-product-show-pallet-attribute') === '1'
+    const priceBoxUnit = el.getAttribute('data-config-price-box-unit')
     const prefSalesQtyUnit = el.getAttribute('data-config-pref-sales-qty-unit')
 
     mount(ProductPriceBox, {
@@ -100,6 +105,34 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
             showPalletAttribute,
             priceBoxUnit,
             prefSalesQtyUnit,
+        },
+    })
+})
+
+// Logic Product Stock box component
+
+document.querySelectorAll('[id^="svelte-product-stock-box-"]').forEach((el) => {
+    const prefSalesQuantityAttr = el.getAttribute(
+        'data-product-pref-sales-quantity'
+    )
+    const prefSalesQuantity = prefSalesQuantityAttr
+        ? Number(prefSalesQuantityAttr)
+        : 1
+
+    const packagingType = el.getAttribute('data-packaging-type')
+        ? el.getAttribute('data-packaging-type')
+        : el.getAttribute('data-packaging-type-se')
+
+    const isBulk = packageTypeList?.includes(packagingType ?? '') ?? false
+
+    const sku = el.getAttribute('data-sku') as string // TO DO is there a better solution?
+
+    mount(ProductStockBox, {
+        target: el,
+        props: {
+            prefSalesQuantity,
+            isBulk,
+            sku,
         },
     })
 })

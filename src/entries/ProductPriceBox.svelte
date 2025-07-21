@@ -1,7 +1,7 @@
 <script lang="ts">
     import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
     import priceFetch from '../lib/stores/PriceFetch.svelte'
-    import Price from './Price.svelte';
+    import Price from '../lib/components/Price.svelte';
 
     type Props = {
         id: string
