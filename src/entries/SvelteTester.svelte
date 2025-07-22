@@ -16,5 +16,22 @@
     }
 
     withProps(Dynamic, { label: 'bar' })
+
+    let count = $state(0)
+
+    const sleep = (ms: number) =>
+        new Promise((resolve) => setTimeout(resolve, ms))
+
+    $effect(() => {
+        console.log(count)
+
+        return () => {
+            console.log('clean up')
+        }
+    })
 </script>
 
+<div>TEST TEST</div>
+
+<div>{count}</div>
+<button onclick={() => count++}>COUNT</button>

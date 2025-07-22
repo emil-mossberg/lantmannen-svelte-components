@@ -5,7 +5,7 @@
 import singletonFactory from './SingletonFactory'
 
 class PssFetch {
-    public async pssProto(id: number) {
+    public async pssProto(id: string) {
         console.log('ProductsId', id)
 
         return fetch(`https://dummyjson.com/products`).then((r) => r.json())

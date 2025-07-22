@@ -69,7 +69,7 @@
         <QtyIncrement {qtyIncrement} {id} />
         <DeliveryWizard
             {isBulk}
-            isPSS={true}
+            isPSS={false}
             useModal={useModal()}
             {id}
             {prefSalesQuantity}

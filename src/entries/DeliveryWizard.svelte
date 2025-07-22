@@ -104,9 +104,10 @@
             itemId="addressId"
             placeholder="Valj leveransaddress"
         />
+        <label for="">Leveransdatum:</label>
         <DatePicker
             date="2025-06-12"
-            dateDisabled="2025-06-24"
+            disabledFrom="2025-06-24"
             hoverDistance={3}
             disabledDates={['2025-06-08', '2025-06-15']}
         />

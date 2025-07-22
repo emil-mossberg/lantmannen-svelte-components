@@ -3,12 +3,12 @@
         date: string
         hoverDistance: number
         disabledDates?: string[]
-        dateDisabled: string // TO DO : should also be numerical?
+        disabledFrom: string // TO DO : should also be numerical?
     }
 
     let {
         date = $bindable(),
-        dateDisabled,
+        disabledFrom,
         disabledDates = [],
         hoverDistance = 1,
     }: Props = $props()
@@ -16,8 +16,8 @@
     let offset = $state(0)
     let currentHover = $state('')
 
-    const objDateDisabled = new Date(dateDisabled)
-    const objDateDisabledEpoc = objDateDisabled.getTime()
+    const objdisabledFrom = new Date(disabledFrom)
+    const objdisabledFromEpoc = objdisabledFrom.getTime()
 
     // TO DO : localize month and weekdays
     let days = 'Mo|Tu|We|Th|Fr|Sa|Su'.split('|')
@@ -56,6 +56,10 @@
         enabled: boolean
         highlight: boolean
         value: string
+    }
+
+    const isDateEnabled = (value: string, time: number) => {
+        return time < objdisabledFromEpoc && !disabledDates.includes(value)
     }
 
     let weeksFrom = $derived.by(() => {
@@ -105,9 +109,7 @@
             var dd = d.getDate(),
                 value = iso(d)
 
-            const enabled =
-                d.getTime() < objDateDisabledEpoc &&
-                !disabledDates.includes(value)
+            const enabled = isDateEnabled(value, d.getTime())
 
             const isHovered = value === currentHoverIso && enabled
 
@@ -150,47 +152,42 @@
 
     let inputDate = $state(date)
 
-    function parseAndFormatDateUsingISO(input) {
-        const date = new Date(input)
-        if (isNaN(date.getTime())) return null
-
-        // Get ISO string and take only the date part (first 10 chars)
-        return date.toISOString().slice(0, 10)
-    }
-
-    // TO DO : Add other restrictions same as in table
-    // TO DO : Padd yy-m-d with 0 for correct format
-    // TO DO implement being able to use other format finland
-    const validateInput2 = () => {
+    function parseValidateAndFormatDate() {
+        
         const inutDateObj = new Date(inputDate)
 
         if (isNaN(inutDateObj.getTime())) {
             inputDate = date
+            return
         }
 
-        const time = inutDateObj.getTime()
+        // TO DO clean up
+        // const formattedDate = inutDateObj.toISOString().slice(0, 10) // 'YYYY-MM-DD'
+        const formattedDate = inutDateObj.toLocaleString().slice(0, 10) // 'YYYY-MM-DD'
+        
+        console.log('Formatted date', formattedDate)
 
-        if (time > objDateDisabledEpoc) {
-            inputDate = date
-            console.log('time is to late')
-        }
-    }
+        const timestamp = inutDateObj.getTime()
 
-    const validateInput = () => {
-        console.log('validate')
-        const regex = /^\d{4}-\d{2}-\d{2}$/
-
-        if (!regex.test(inputDate)) {
+        if (!isDateEnabled(formattedDate, timestamp)) {
             inputDate = date
         } else {
-            date = inputDate
+            // TO DO fix
+            date = formattedDate
+            // inputDate = formattedDate
         }
     }
 </script>
 
-<div>TEMP DATE SHOW:{date}</div>
 <div>
-    <input type="text" bind:value={inputDate} onblur={validateInput2} />
+    <div class="tw-pb-3">
+        <input
+            type="text"
+            bind:value={inputDate}
+            onblur={parseValidateAndFormatDate}
+        />
+    </div>
+
     <table
         class="tw-table-fixed tw-border-separate tw-border tw-border-gray-300 tw-text-center tw-p-4"
     >
