@@ -150,10 +150,18 @@
 
     const year = $derived.by(() => viewDate.getFullYear())
 
+    const canGoForward = $derived.by(() => {
+        const nextMonthStart = new Date(
+            viewDate.getFullYear(),
+            viewDate.getMonth() + 1,
+            1
+        )
+        return nextMonthStart.getTime() < objdisabledFromEpoc
+    })
+
     let inputDate = $state(date)
 
     function parseValidateAndFormatDate() {
-        
         const inutDateObj = new Date(inputDate)
 
         if (isNaN(inutDateObj.getTime())) {
@@ -164,7 +172,7 @@
         // TO DO clean up
         // const formattedDate = inutDateObj.toISOString().slice(0, 10) // 'YYYY-MM-DD'
         const formattedDate = inutDateObj.toLocaleString().slice(0, 10) // 'YYYY-MM-DD'
-        
+
         console.log('Formatted date', formattedDate)
 
         const timestamp = inutDateObj.getTime()
@@ -193,9 +201,21 @@
     >
         <thead>
             <tr>
-                <th class="btn" onclick={() => go(-1)}>&#9664;</th>
                 <th colspan="5">{month} {year}</th>
-                <th class="btn" onclick={() => go(+1)}>&#9654;</th>
+                <th
+                    ><button type="button" onclick={() => go(-1)}
+                        >&#9664;</button
+                    ></th
+                >
+                <th
+                    ><button
+                        type="button"
+                        onclick={() => go(+1)}
+                        disabled={!canGoForward}
+                        class={`${'disabled:tw-opacity-50'}`}
+                        >&#9654;</button
+                    ></th
+                >
             </tr>
         </thead>
         <tbody>
