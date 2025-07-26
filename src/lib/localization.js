@@ -6,10 +6,17 @@ import fi from "./locales/fi.json";
 addMessages("fi", fi);
 addMessages("sv", sv);
 
+// export function setupI18n() {
+//   init({
+//     fallbackLocale: "fi",
+//     initialLocale: "fi",
+//   });
+// }
+
 export function setupI18n() {
   init({
-    fallbackLocale: "fi",
-    initialLocale: "fi",
+    fallbackLocale: "sv",
+    initialLocale: "sv",
   });
 }
 

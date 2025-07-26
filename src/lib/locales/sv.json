@@ -4,5 +4,6 @@
     "outOfStock": "Ej i lager",
     "exVAT": "Ex. moms",
     "welcome": "Välkommen",
-    "sku": "Art.no"
+    "sku": "Art.no",
+    "m4GlobalMessage": "När artiklar som tillhör {name} kampanj lagts i varukorgen kan enbart artiklar i samma kampanj läggas i varukorgen"
 }

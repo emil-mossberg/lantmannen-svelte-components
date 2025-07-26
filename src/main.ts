@@ -8,6 +8,7 @@ import ProductBuyBox from './entries/ProductBuyBox.svelte'
 import ProductPriceBox from './entries/ProductPriceBox.svelte'
 import ProductStockBox from './entries/ProductStockBox.svelte'
 import CheckoutAcess from './entries/CheckoutAcess.svelte'
+import StickyMessages from './entries/StickyMessages.svelte'
 
 setupI18n()
 
@@ -135,6 +136,13 @@ document.querySelectorAll('[id^="svelte-product-stock-box-"]').forEach((el) => {
             sku,
         },
     })
+})
+
+
+// Logic Svelte Sticky message component
+
+const stickyMessages = mount(StickyMessages, {
+    target: document.getElementById('svelte-sticky-messages')!
 })
 
 // Logic Svelte Tester component

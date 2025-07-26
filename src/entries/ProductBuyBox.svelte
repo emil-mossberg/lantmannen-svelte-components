@@ -48,20 +48,17 @@
     let pricePromise = $state(priceFetch.getPromise(id, prefSalesQuantity))
 </script>
 
+{isPdpCard}
+
 {#await Promise.all([pricePromise, stockPromise])}
     No price or stock yet - add Skeleton
 {:then [price, stock]}
     <!-- TO DO : Switch Check PSS boolean -->
     {#if price.price_cached && isPdpCard}
-        {#await pssFetch.pssProto(price.product_id)}
+        {#await pssFetch.pssProto('1')}
             <p>Loading PSS Campaign...</p>
         {:then campaign}
-            <div><strong>HERE should the PSS table for viewing be</strong></div>
-            {#each campaign.products.slice(0, 4) as item}
-                <div>
-                    {item.title}
-                </div>
-            {/each}
+            {campaign.title}
         {/await}
     {/if}
     <div class="tw-flex tw-gap-4">
