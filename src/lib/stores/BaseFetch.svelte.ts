@@ -13,16 +13,17 @@ type FetchResponse<T> = {
 export default abstract class BaseFetch<T extends Record<string, any>> {
     public bridge = MagentoSvelteBridgeSingleton.get()
 
-    private queue = new Map<string, { quantity: number; resolvers: Resolver<T>[] }>()
+    private queue = new Map<
+        string,
+        { quantity: number; resolvers: Resolver<T>[] }
+    >()
     private timer: ReturnType<typeof setTimeout> | null = null
-
-    public statusMap = $state<{ value: Map<string, 'pending' | 'fulfilled' | 'rejected'> }>({ value: new Map() })
 
     protected abstract getUrl(): string
     protected abstract getFetchKey(): string
     protected abstract getItemKey(): string
 
-    private async flushQueue(): Promise<void> { 
+    private async flushQueue(): Promise<void> {
         const currentQueue = new Map(this.queue)
 
         const customerNumber = this.bridge.customerNumber()
@@ -59,7 +60,9 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
 
             const result: FetchResponse<T> = await response.json()
 
-            const itemsMap = new Map(result.items.map((p) => [String(p[this.getItemKey()]), p]))
+            const itemsMap = new Map(
+                result.items.map((p) => [String(p[this.getItemKey()]), p])
+            )
 
             for (const [productId, { resolvers }] of currentQueue.entries()) {
                 const data = itemsMap.get(productId)
@@ -67,7 +70,9 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
                 if (data) {
                     resolvers.forEach(({ resolve }) => resolve(data))
                 } else {
-                    const error = new Error(`No data returned for productId: ${productId}`)
+                    const error = new Error(
+                        `No data returned for productId: ${productId}`
+                    )
                     resolvers.forEach(({ reject }) => reject(error))
                 }
             }
@@ -82,17 +87,14 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
         return new Promise((resolve, reject) => {
             if (!this.queue.has(productId)) {
                 this.queue.set(productId, { quantity, resolvers: [] })
-                this.statusMap.value.set(productId, 'pending')
             }
 
             const entry = this.queue.get(productId)!
             entry.resolvers.push({
                 resolve: (data) => {
-                    this.statusMap.value.set(productId, 'fulfilled')
                     resolve(data)
                 },
                 reject: (err) => {
-                    this.statusMap.value.set(productId, 'rejected')
                     reject(err)
                 },
             })
