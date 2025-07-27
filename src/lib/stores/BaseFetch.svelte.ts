@@ -1,4 +1,4 @@
-import { MagentoSvelteBridgeSingleton } from './MagentoSvelteBridgeSingleton.svelte'
+import MagentoSvelteBridge from './MagentoSvelteBridge.svelte'
 
 type Resolver<T> = {
     resolve: (price: T) => void
@@ -11,7 +11,7 @@ type FetchResponse<T> = {
 
 // TO DO why does need to extend Record<string, any>?
 export default abstract class BaseFetch<T extends Record<string, any>> {
-    public bridge = MagentoSvelteBridgeSingleton.get()
+    public bridge = MagentoSvelteBridge
 
     private queue = new Map<
         string,

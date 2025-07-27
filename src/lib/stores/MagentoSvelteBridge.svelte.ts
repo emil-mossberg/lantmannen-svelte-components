@@ -1,9 +1,8 @@
 import { type CartType } from '../../schemas/Cart'
 import { type CustomerInfoType } from '../../schemas/Customer'
+import singletonFactory from './SingletonFactory'
 
-export class MagentoSvelteBridgeSingleton {
-    private static instance: MagentoSvelteBridgeSingleton
-
+class MagentoSvelteBridge {
     private svelteBridgeData =
         document.getElementById('svelte-information')?.dataset
 
@@ -14,12 +13,24 @@ export class MagentoSvelteBridgeSingleton {
     )
 
     // TO DO make this less verbose
-    public readonly showListPrice: boolean = this.convertToBoolean(this.svelteBridgeData?.showListPrice)
-    public readonly showVatPercentage: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowVatPercentage)
-    public readonly showInclVatPdp: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowInclVatPdp)
-    public readonly showExclVatPdp: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowExclVatPdp)
-    public readonly showInclVatPlp: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowInclVatPlp)
-    public readonly showExclVatPlp: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowExclVatPlp)
+    public readonly showListPrice: boolean = this.convertToBoolean(
+        this.svelteBridgeData?.showListPrice
+    )
+    public readonly showVatPercentage: boolean = this.convertToBoolean(
+        this.svelteBridgeData?.configShowVatPercentage
+    )
+    public readonly showInclVatPdp: boolean = this.convertToBoolean(
+        this.svelteBridgeData?.configShowInclVatPdp
+    )
+    public readonly showExclVatPdp: boolean = this.convertToBoolean(
+        this.svelteBridgeData?.configShowExclVatPdp
+    )
+    public readonly showInclVatPlp: boolean = this.convertToBoolean(
+        this.svelteBridgeData?.configShowInclVatPlp
+    )
+    public readonly showExclVatPlp: boolean = this.convertToBoolean(
+        this.svelteBridgeData?.configShowExclVatPlp
+    )
 
     public cart = $state<{ value: CartType | null }>({ value: null })
 
@@ -48,13 +59,6 @@ export class MagentoSvelteBridgeSingleton {
             'magento:initialState',
             this.handleIntialState.bind(this)
         )
-    }
-
-    public static get(): MagentoSvelteBridgeSingleton {
-        if (!this.instance) {
-            this.instance = new MagentoSvelteBridgeSingleton()
-        }
-        return this.instance
     }
 
     private convertToBoolean(value: string | undefined) {
@@ -94,5 +98,4 @@ export class MagentoSvelteBridgeSingleton {
     }
 }
 
-
-export default MagentoSvelteBridgeSingleton.get()
+export default singletonFactory(() => new MagentoSvelteBridge())()

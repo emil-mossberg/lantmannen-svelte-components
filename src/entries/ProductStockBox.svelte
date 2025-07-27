@@ -2,7 +2,7 @@
     import { t } from 'svelte-i18n'
 
     import stockFetch from '../lib/stores/StockFetch.svelte'
-    import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
+    import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
 
     import IconStock from '../lib/Icons/in-stock.svg'
 

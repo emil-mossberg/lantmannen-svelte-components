@@ -32,9 +32,8 @@ dist-ssr
 
 ```json
 {
-  "recommendations": ["svelte.svelte-vscode"]
+    "recommendations": ["svelte.svelte-vscode"]
 }
-
 ```
 
 # .vscode/settings.json
@@ -45,29 +44,27 @@ dist-ssr
     "prettier.tabWidth": 4,
     "prettier.singleQuote": true
 }
-
 ```
 
 # index.html
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body>
-    <div id="product-page-info"></div>
-    <div id="svelte-checkout-acess"></div>
-    <div id="purchase-demo"></div>
-    <div id="purchase-info-2"></div>
-    <div id="svelte-tester"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+    <body>
+        <div id="product-page-info"></div>
+        <div id="svelte-checkout-acess"></div>
+        <div id="purchase-demo"></div>
+        <div id="purchase-info-2"></div>
+        <div id="svelte-tester"></div>
+        <script type="module" src="/src/main.ts"></script>
+    </body>
 </html>
-
 ```
 
 # livereload.js
@@ -77,72 +74,69 @@ import livereload from 'livereload'
 
 console.log('Starting live reload')
 
-const PROJECT_PATH_JS = '/Users/emil.mossberg/warden/lmagri-cloud-develop/vendor/vaimo/module-lmagriculture-theme-support/view/frontend/web/js'
-const PROJECT_PATH_CS = '/Users/emil.mossberg/warden/lmagri-cloud-develop/vendor/vaimo/module-lmagriculture-theme-support/view/frontend/web/css'
+const PROJECT_PATH_JS =
+    '/Users/emil.mossberg/warden/lmagri-cloud-develop/vendor/vaimo/module-lmagriculture-theme-support/view/frontend/web/js'
+const PROJECT_PATH_CS =
+    '/Users/emil.mossberg/warden/lmagri-cloud-develop/vendor/vaimo/module-lmagriculture-theme-support/view/frontend/web/css'
 
 const server = livereload.createServer()
-server.watch(
-    [PROJECT_PATH_JS, PROJECT_PATH_CS]
-)
-
+server.watch([PROJECT_PATH_JS, PROJECT_PATH_CS])
 ```
 
 # package.json
 
 ```json
 {
-  "name": "svelte-agri-components",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "build:move": "vite build && cp -r dist/js/* ~/warden/lmagri-cloud-develop/vendor/vaimo/module-lmagriculture-theme-support/view/frontend/web/js/ && cp dist/svelte-bundle.css ~/warden/lmagri-cloud-develop/vendor/vaimo/module-lmagriculture-theme-support/view/frontend/web/css",
-    "watch:build:move": "chokidar 'src/**/*' -c 'npm run build:move'",
-    "livereload": "node livereload.js",
-    "dev-delux": "concurrently \"npm run livereload\" \"npm run watch:build:move\"",
-    "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json"
-  },
-  "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^5.0.3",
-    "@tsconfig/svelte": "^5.0.4",
-    "ai-digest": "^1.4.1",
-    "autoprefixer": "^10.4.21",
-    "chokidar-cli": "^3.0.0",
-    "concurrently": "^9.2.0",
-    "livereload": "^0.9.3",
-    "postcss": "^8.5.4",
-    "svelte": "^5.19.6",
-    "svelte-check": "^4.1.4",
-    "svelte-i18n": "^4.0.1",
-    "svelte-select": "^5.8.3",
-    "tailwindcss": "^3.4.17",
-    "typescript": "~5.7.2",
-    "vite": "^6.1.0",
-    "zod": "^3.25.67"
-  }
+    "name": "svelte-agri-components",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "build:move": "vite build && cp -r dist/js/* ~/warden/lmagri-cloud-develop/vendor/vaimo/module-lmagriculture-theme-support/view/frontend/web/js/ && cp dist/svelte-bundle.css ~/warden/lmagri-cloud-develop/vendor/vaimo/module-lmagriculture-theme-support/view/frontend/web/css",
+        "watch:build:move": "chokidar 'src/**/*' -c 'npm run build:move'",
+        "livereload": "node livereload.js",
+        "dev-delux": "concurrently \"npm run livereload\" \"npm run watch:build:move\"",
+        "preview": "vite preview",
+        "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json"
+    },
+    "devDependencies": {
+        "@sveltejs/vite-plugin-svelte": "^5.0.3",
+        "@tsconfig/svelte": "^5.0.4",
+        "ai-digest": "^1.4.1",
+        "autoprefixer": "^10.4.21",
+        "chokidar-cli": "^3.0.0",
+        "concurrently": "^9.2.0",
+        "livereload": "^0.9.3",
+        "postcss": "^8.5.4",
+        "svelte": "^5.19.6",
+        "svelte-check": "^4.1.4",
+        "svelte-i18n": "^4.0.1",
+        "svelte-select": "^5.8.3",
+        "tailwindcss": "^3.4.17",
+        "typescript": "~5.7.2",
+        "vite": "^6.1.0",
+        "zod": "^3.25.67"
+    }
 }
-
 ```
 
 # postcss.config.js
 
 ```js
 export default {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    },
 }
-
 ```
 
 # PROMPT.md
 
 ```md
-# PROMPT TEMPLATE 
+# PROMPT TEMPLATE
 
 I’m working on a Svelte 5 application that is integrated into an existing Adobe Commerce / Magento 2 storefront. The Svelte app is not using SvelteKit, but is instead built as a standalone frontend that is embedded into Magento pages to take over specific UI functionality.
 
@@ -171,24 +165,15 @@ This is a less clean way of accessing the customer-cart
 
 \`\`\`javascript
 require(['Magento_Customer/js/customer-data'], function(customerData) {
-    const cart = customerData.get('cart');
+const cart = customerData.get('cart');
 
     console.log(cart);
 
     const subscription = cart.subscribe(function(newCartData) {
         console.log('Cart updated:', newCartData);
     });
+
 });
-
-
-
-
-
-
-
-
-
-
 ```
 
 # src/app.css
@@ -200,11 +185,9 @@ require(['Magento_Customer/js/customer-data'], function(customerData) {
 @tailwind components;
 @tailwind utilities;
 
-
 .tw-s-overlay {
-  opacity: .4;
+    opacity: 0.4;
 }
-
 
 /* TO DO use variables */
 /* .svelte-component h1 {
@@ -214,107 +197,110 @@ require(['Magento_Customer/js/customer-data'], function(customerData) {
   color: #1e6e37;
 } */
 
-
 /* RESET LIST (All classes should be named magento-svelte for easy removing one day */
 
-.svelte-component input[type="number"] {
-  border-radius: unset;
-  height: auto;
-  width: auto;
+.svelte-component input[type='number'] {
+    border-radius: unset;
+    height: auto;
+    width: auto;
 }
 
 .svelte-component button {
-  pointer-events: unset;
-  opacity: unset;
+    pointer-events: unset;
+    opacity: unset;
 }
 
-.magento-svelte-select input[type="text"] {
-  height: auto;
-  border: unset;
-  position: absolute;
+.magento-svelte-select input[type='text'] {
+    height: auto;
+    border: unset;
+    position: absolute;
 }
 
 button.magento-svelte-button-transparent {
-  background-color: transparent;
-  border-color: transparent;
+    background-color: transparent;
+    border-color: transparent;
 }
 
 button.magento-svelte-button:focus {
-  background-color: #005720;
-  border-color: #005720;
-  color: white;
+    background-color: #005720;
+    border-color: #005720;
+    color: white;
 }
 
 svg.magento-svelte-svg {
-  background-color: white;
+    background-color: white;
 }
 
 .svelte-component button {
-  min-width: unset;
+    min-width: unset;
 }
-
-
-
-
 ```
 
 # src/dummyData.ts
 
 ```ts
-  export const bulkDeliveryMethods = [
-    { delivery_method: "020", delivery_method_name: "Bulk 3 dagar" },
-    { delivery_method: "021", delivery_method_name: "Bulk Fast Dag" },
+export const bulkDeliveryMethods = [
+    { delivery_method: '020', delivery_method_name: 'Bulk 3 dagar' },
+    { delivery_method: '021', delivery_method_name: 'Bulk Fast Dag' },
 
-    { delivery_method: "023", delivery_method_name: "Bulk 2 dagar" },
-  ];
+    { delivery_method: '023', delivery_method_name: 'Bulk 2 dagar' },
+]
 
-  export const packageDeliveryMethods = [
+export const packageDeliveryMethods = [
     {
-      delivery_method: "010",
-      delivery_method_name: "Flak Normal, Lantmännen lossar",
+        delivery_method: '010',
+        delivery_method_name: 'Flak Normal, Lantmännen lossar',
     },
     {
-      delivery_method: "011",
-      delivery_method_name: "Flak Normal, Kund lossar",
+        delivery_method: '011',
+        delivery_method_name: 'Flak Normal, Kund lossar',
     },
     {
-      delivery_method: "012",
-      delivery_method_name: "Flak Express, Kund lossar, Område A",
+        delivery_method: '012',
+        delivery_method_name: 'Flak Express, Kund lossar, Område A',
     },
     {
-      delivery_method: "013",
-      delivery_method_name: "Flak Express Lantmännen lossar Omr A",
+        delivery_method: '013',
+        delivery_method_name: 'Flak Express Lantmännen lossar Omr A',
     },
-    { delivery_method: "040", delivery_method_name: "Egen transport" },
-  ];
+    { delivery_method: '040', delivery_method_name: 'Egen transport' },
+]
 
- export const bulkAddress = [
-  { address: "Dybäcksgatan 5, 216 20 Malmö", siloId: 1, addressId: '101' },
-  { address: "Dybäcksgatan 5, 216 20 Malmö", siloId: 2, addressId: '101' },
-  { address: "Dybäcksgatan 5, 216 20 Malmö", siloId: 3, addressId: '101' },
-  { address: "Dybäcksgatan 5, 216 20 Malmö", siloId: 4, addressId: '101' },
-  {
-    address: "Birger Jarlsgatan 26, 216 12 Limhamn",
-    siloId: 4,
-    addressId: '202',
-  },
-  {
-    address: "Birger Jarlsgatan 26, 216 12 Limhamn",
-    siloId: 5,
-    addressId: '202',
-  },
-  { address: "Lovisas Gata 5, 218 51 Klagshamn", siloId: 7, addressId: '303' },
-  { address: "Lovisas Gata 5, 218 51 Klagshamn", siloId: 8, addressId: '303' },
-  { address: "Paddelgränd 8, 216 11 Limhamn", siloId: 10, addressId: '404' },
-  { address: "Paddelgränd 8, 216 11 Limhamn", siloId: 9, addressId: '404' },
-];
+export const bulkAddress = [
+    { address: 'Dybäcksgatan 5, 216 20 Malmö', siloId: 1, addressId: '101' },
+    { address: 'Dybäcksgatan 5, 216 20 Malmö', siloId: 2, addressId: '101' },
+    { address: 'Dybäcksgatan 5, 216 20 Malmö', siloId: 3, addressId: '101' },
+    { address: 'Dybäcksgatan 5, 216 20 Malmö', siloId: 4, addressId: '101' },
+    {
+        address: 'Birger Jarlsgatan 26, 216 12 Limhamn',
+        siloId: 4,
+        addressId: '202',
+    },
+    {
+        address: 'Birger Jarlsgatan 26, 216 12 Limhamn',
+        siloId: 5,
+        addressId: '202',
+    },
+    {
+        address: 'Lovisas Gata 5, 218 51 Klagshamn',
+        siloId: 7,
+        addressId: '303',
+    },
+    {
+        address: 'Lovisas Gata 5, 218 51 Klagshamn',
+        siloId: 8,
+        addressId: '303',
+    },
+    { address: 'Paddelgränd 8, 216 11 Limhamn', siloId: 10, addressId: '404' },
+    { address: 'Paddelgränd 8, 216 11 Limhamn', siloId: 9, addressId: '404' },
+]
 
 export const packageAddresses = [
-  { address: "Dybäcksgatan 5, 216 20 Malmö", addressId: '101' },
-  { address: "Birger Jarlsgatan 26, 216 12 Limhamn", addressId: '202' },
-  { address: "Lovisas Gata 5, 218 51 Klagshamn", addressId: '303' },
-  { address: "Paddelgränd 8, 216 11 Limhamn", addressId: '404' },
-];
+    { address: 'Dybäcksgatan 5, 216 20 Malmö', addressId: '101' },
+    { address: 'Birger Jarlsgatan 26, 216 12 Limhamn', addressId: '202' },
+    { address: 'Lovisas Gata 5, 218 51 Klagshamn', addressId: '303' },
+    { address: 'Paddelgränd 8, 216 11 Limhamn', addressId: '404' },
+]
 ```
 
 # src/entries/CheckoutAcess.svelte
@@ -322,7 +308,7 @@ export const packageAddresses = [
 ```svelte
 <script lang="ts">
     import DeliveryPlanner from './DeliveryPlanner.svelte'
-    import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
+    import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
 
 </script>
 
@@ -343,7 +329,7 @@ export const packageAddresses = [
     import SelectDate from '../lib/components/SelectDate.svelte'
     import SelectWrapper from '../lib/components/SelectWrapper.svelte'
     import IconCart from '../lib/IconsDynamic/IconCart.svelte'
-    import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
+    import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
 
     import {
         bulkDeliveryMethods,
@@ -418,7 +404,7 @@ export const packageAddresses = [
 </script>
 
 {#snippet header()}
-    Leveransplaneraren 
+    Leveransplaneraren
 {/snippet}
 
 {#snippet body()}
@@ -664,7 +650,7 @@ export const packageAddresses = [
     import stockFetch from '../lib/stores/StockFetch.svelte'
     import priceFetch from '../lib/stores/PriceFetch.svelte'
     import pssFetch from '../lib/stores/PssFetch.svelte'
-    import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
+    import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
 
     import DeliveryWizard from './DeliveryWizard.svelte'
     import QtyIncrement from '../lib/components/QtyIncrement.svelte'
@@ -748,7 +734,7 @@ export const packageAddresses = [
 
 ```svelte
 <script lang="ts">
-    import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
+    import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
     import priceFetch from '../lib/stores/PriceFetch.svelte'
     import Price from '../lib/components/Price.svelte';
 
@@ -828,7 +814,7 @@ export const packageAddresses = [
     import { t } from 'svelte-i18n'
 
     import stockFetch from '../lib/stores/StockFetch.svelte'
-    import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
+    import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
 
     import IconStock from '../lib/Icons/in-stock.svg'
 
@@ -1093,7 +1079,7 @@ export const packageAddresses = [
     let inputDate = $state(date)
 
     function parseValidateAndFormatDate() {
-        
+
         const inutDateObj = new Date(inputDate)
 
         if (isNaN(inutDateObj.getTime())) {
@@ -1104,7 +1090,7 @@ export const packageAddresses = [
         // TO DO clean up
         // const formattedDate = inutDateObj.toISOString().slice(0, 10) // 'YYYY-MM-DD'
         const formattedDate = inutDateObj.toLocaleString().slice(0, 10) // 'YYYY-MM-DD'
-        
+
         console.log('Formatted date', formattedDate)
 
         const timestamp = inutDateObj.getTime()
@@ -1169,7 +1155,7 @@ export const packageAddresses = [
 ```svelte
 <script lang="ts">
   import { t } from "svelte-i18n";
-  
+
   import type { Snippet } from "svelte";
   import Button from "./Button.svelte";
   import IconCross from "../IconsDynamic/IconCross.svelte";
@@ -1222,7 +1208,7 @@ export const packageAddresses = [
     }
 
     const { show, onclick }: Props = $props()
-    
+
 </script>
 
 {#if show}
@@ -1486,7 +1472,7 @@ export const packageAddresses = [
 
   let { header, body, showSheet = $bindable(false) }: Props = $props();
 
-  
+
   // Toggle scrolling when opening modal
   $effect(() => {
     if (showSheet) {
@@ -1565,10 +1551,9 @@ export const packageAddresses = [
 # src/lib/constants.ts
 
 ```ts
-export const REST_PRICE = "rest/V1/lma-api/product-prices/";
-export const REST_PRICE_GUEST = "rest/V1/lma-api/product-prices-guest/";
-export const REST_STOCK_GUEST = "rest/V1/lma-api/product-stock-guest/";
-
+export const REST_PRICE = 'rest/V1/lma-api/product-prices/'
+export const REST_PRICE_GUEST = 'rest/V1/lma-api/product-prices-guest/'
+export const REST_STOCK_GUEST = 'rest/V1/lma-api/product-stock-guest/'
 ```
 
 # src/lib/Icons/icon-info.svg
@@ -1651,7 +1636,7 @@ This is a file of the type: SVG Image
   class={`tw-text-charcoal hover:tw-text-white tw-group tw-grid tw-h-[30px] tw-w-[30px] tw-place-items-center tw-rounded-full tw-border tw-border-transparent hover:-tw-border-tannenbaum hover:tw-bg-tannenbaum tw-transform tw-transition tw-duration-300 ${parentHover ? "tw-border-tannenbaum tw-bg-tannenbaum" : ""}`}
 >
   <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg" class="{`${parentHover ? 'tw-text-white' : ''}`}"
-    
+
     ><path d="M11.95.636l1.414 1.414L2.05 13.364.636 11.95z" fill="currentColor" /><path fill="currentColor"
       d="M2.05.636L13.364 11.95l-1.414 1.414L.636 2.05z"
     /></svg
@@ -1663,13 +1648,13 @@ This is a file of the type: SVG Image
 # src/lib/locales/fi.json
 
 ```json
-{   
+{
     "availability": "Saatavuus",
     "inStock": "Varastossa",
-    "outOfStock":"Loppu varastosta",
+    "outOfStock": "Loppu varastosta",
     "welcome": "Tervetuloa",
     "sku": "Tuotenumero",
-    "qtyIncInfo" : "Myyntierä: {qty}",
+    "qtyIncInfo": "Myyntierä: {qty}",
     "qtyIncrement": "Vähimmäisostomäärä on {qty}"
 }
 ```
@@ -1690,19 +1675,19 @@ This is a file of the type: SVG Image
 # src/lib/localization.js
 
 ```js
-import { init, addMessages } from "svelte-i18n";
+import { init, addMessages } from 'svelte-i18n'
 
-import sv from "./locales/sv.json";
-import fi from "./locales/fi.json";
+import sv from './locales/sv.json'
+import fi from './locales/fi.json'
 
-addMessages("fi", fi);
-addMessages("sv", sv);
+addMessages('fi', fi)
+addMessages('sv', sv)
 
 export function setupI18n() {
-  init({
-    fallbackLocale: "fi",
-    initialLocale: "fi",
-  });
+    init({
+        fallbackLocale: 'fi',
+        initialLocale: 'fi',
+    })
 }
 
 // import { addMessages, init } from 'svelte-i18n';
@@ -1731,7 +1716,7 @@ export function setupI18n() {
 # src/lib/stores/BaseFetch.svelte.ts
 
 ```ts
-import { MagentoSvelteBridgeSingleton } from './MagentoSvelteBridgeSingleton.svelte'
+import { MagentoSvelteBridge } from './MagentoSvelteBridge.svelte'
 
 type Resolver<T> = {
     resolve: (price: T) => void
@@ -1744,18 +1729,23 @@ type FetchResponse<T> = {
 
 // TO DO why does need to extend Record<string, any>?
 export default abstract class BaseFetch<T extends Record<string, any>> {
-    public bridge = MagentoSvelteBridgeSingleton.get()
+    public bridge = MagentoSvelteBridge.get()
 
-    private queue = new Map<string, { quantity: number; resolvers: Resolver<T>[] }>()
+    private queue = new Map<
+        string,
+        { quantity: number; resolvers: Resolver<T>[] }
+    >()
     private timer: ReturnType<typeof setTimeout> | null = null
 
-    public statusMap = $state<{ value: Map<string, 'pending' | 'fulfilled' | 'rejected'> }>({ value: new Map() })
+    public statusMap = $state<{
+        value: Map<string, 'pending' | 'fulfilled' | 'rejected'>
+    }>({ value: new Map() })
 
     protected abstract getUrl(): string
     protected abstract getFetchKey(): string
     protected abstract getItemKey(): string
 
-    private async flushQueue(): Promise<void> { 
+    private async flushQueue(): Promise<void> {
         const currentQueue = new Map(this.queue)
 
         const customerNumber = this.bridge.customerNumber()
@@ -1792,7 +1782,9 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
 
             const result: FetchResponse<T> = await response.json()
 
-            const itemsMap = new Map(result.items.map((p) => [String(p[this.getItemKey()]), p]))
+            const itemsMap = new Map(
+                result.items.map((p) => [String(p[this.getItemKey()]), p])
+            )
 
             for (const [productId, { resolvers }] of currentQueue.entries()) {
                 const data = itemsMap.get(productId)
@@ -1800,7 +1792,9 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
                 if (data) {
                     resolvers.forEach(({ resolve }) => resolve(data))
                 } else {
-                    const error = new Error(`No data returned for productId: ${productId}`)
+                    const error = new Error(
+                        `No data returned for productId: ${productId}`
+                    )
                     resolvers.forEach(({ reject }) => reject(error))
                 }
             }
@@ -1838,14 +1832,14 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
 }
 ```
 
-# src/lib/stores/MagentoSvelteBridgeSingleton.svelte.ts
+# src/lib/stores/MagentoSvelteBridge.svelte.ts
 
 ```ts
 import { type CartType } from '../../schemas/Cart'
 import { type CustomerInfoType } from '../../schemas/Customer'
 
-export class MagentoSvelteBridgeSingleton {
-    private static instance: MagentoSvelteBridgeSingleton
+export class MagentoSvelteBridge {
+    private static instance: MagentoSvelteBridge
 
     private svelteBridgeData =
         document.getElementById('svelte-information')?.dataset
@@ -1857,12 +1851,24 @@ export class MagentoSvelteBridgeSingleton {
     )
 
     // TO DO make this less verbose
-    public readonly showListPrice: boolean = this.convertToBoolean(this.svelteBridgeData?.showListPrice)
-    public readonly showVatPercentage: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowVatPercentage)
-    public readonly showInclVatPdp: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowInclVatPdp)
-    public readonly showExclVatPdp: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowExclVatPdp)
-    public readonly showInclVatPlp: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowInclVatPlp)
-    public readonly showExclVatPlp: boolean = this.convertToBoolean(this.svelteBridgeData?.configShowExclVatPlp)
+    public readonly showListPrice: boolean = this.convertToBoolean(
+        this.svelteBridgeData?.showListPrice
+    )
+    public readonly showVatPercentage: boolean = this.convertToBoolean(
+        this.svelteBridgeData?.configShowVatPercentage
+    )
+    public readonly showInclVatPdp: boolean = this.convertToBoolean(
+        this.svelteBridgeData?.configShowInclVatPdp
+    )
+    public readonly showExclVatPdp: boolean = this.convertToBoolean(
+        this.svelteBridgeData?.configShowExclVatPdp
+    )
+    public readonly showInclVatPlp: boolean = this.convertToBoolean(
+        this.svelteBridgeData?.configShowInclVatPlp
+    )
+    public readonly showExclVatPlp: boolean = this.convertToBoolean(
+        this.svelteBridgeData?.configShowExclVatPlp
+    )
 
     public cart = $state<{ value: CartType | null }>({ value: null })
 
@@ -1893,9 +1899,9 @@ export class MagentoSvelteBridgeSingleton {
         )
     }
 
-    public static get(): MagentoSvelteBridgeSingleton {
+    public static get(): MagentoSvelteBridge {
         if (!this.instance) {
-            this.instance = new MagentoSvelteBridgeSingleton()
+            this.instance = new MagentoSvelteBridge()
         }
         return this.instance
     }
@@ -1937,9 +1943,7 @@ export class MagentoSvelteBridgeSingleton {
     }
 }
 
-
-export default MagentoSvelteBridgeSingleton.get()
-
+export default MagentoSvelteBridge.get()
 ```
 
 # src/lib/stores/PriceFetch.svelte.ts
@@ -1967,7 +1971,6 @@ class PriceFetch extends BaseFetch<PriceType> {
 }
 
 export default singletonFactory(() => new PriceFetch())()
-
 ```
 
 # src/lib/stores/PssFetch.svelte.ts
@@ -1988,7 +1991,6 @@ class PssFetch {
 }
 
 export default singletonFactory(() => new PssFetch())()
-
 ```
 
 # src/lib/stores/SingletonFactory.ts
@@ -2003,7 +2005,6 @@ export default function singletonFactory<T>(creator: () => T): () => T {
         return instance
     }
 }
-
 ```
 
 # src/lib/stores/StockFetch.svelte.ts
@@ -2016,7 +2017,6 @@ import { type StockType } from '../../schemas/Stock'
 import singletonFactory from './SingletonFactory'
 
 class StockFetch extends BaseFetch<StockType> {
-
     protected getUrl(): string {
         return `${window.BASE_URL}${REST_STOCK_GUEST}`
     }
@@ -2125,7 +2125,6 @@ const _usePriceStock = () => {
 }
 
 export const usePriceStockSingleton = _usePriceStock()
-
 ```
 
 # src/lib/utility.ts
@@ -2137,29 +2136,39 @@ export const usePriceStockSingleton = _usePriceStock()
 # src/lib/validators/validators.ts
 
 ```ts
-export type Validator = (value: any) => string | null;
+export type Validator = (value: any) => string | null
 
 // Validator rules
 
-export const required = (message = 'This field is required'): Validator => (value) =>
-	value == null || value === '' ? message : null;
+export const required =
+    (message = 'This field is required'): Validator =>
+    (value) =>
+        value == null || value === '' ? message : null
 
-export const qtyIncrements = (step: number, message?: string): Validator => (value) =>
-	value % step !== 0 ? message ?? `Must be a multiple of ${step}` : null;
+export const qtyIncrements =
+    (step: number, message?: string): Validator =>
+    (value) =>
+        value % step !== 0 ? message ?? `Must be a multiple of ${step}` : null
 
-export const isInteger = (message = 'Must be an integer'): Validator => (value) =>
-	Number.isInteger(Number(value)) ? null : message;
+export const isInteger =
+    (message = 'Must be an integer'): Validator =>
+    (value) =>
+        Number.isInteger(Number(value)) ? null : message
 
-export const min = (minVal: number, message?: string): Validator => (value) =>
-	value < minVal ? message ?? `Must be at least ${minVal}` : null;
+export const min =
+    (minVal: number, message?: string): Validator =>
+    (value) =>
+        value < minVal ? message ?? `Must be at least ${minVal}` : null
 
-export const combine = (...validators: Validator[]): Validator => (value) => {
-	for (const v of validators) {
-		const result = v(value);
-		if (result) return result;
-	}
-	return null;
-};
+export const combine =
+    (...validators: Validator[]): Validator =>
+    (value) => {
+        for (const v of validators) {
+            const result = v(value)
+            if (result) return result
+        }
+        return null
+    }
 ```
 
 # src/main.ts
@@ -2309,225 +2318,224 @@ document.querySelectorAll('[id^="svelte-product-stock-box-"]').forEach((el) => {
 const svelteTester = mount(SvelteTester, {
     target: document.getElementById('svelte-tester')!,
 })
-
 ```
 
 # src/schemas/Cart.ts
 
 ```ts
-import { z } from "zod";
+import { z } from 'zod'
 
 const ProductImageSchema = z.object({
-  src: z.string().url(),
-  alt: z.string(),
-  width: z.number(),
-  height: z.number(),
-});
+    src: z.string().url(),
+    alt: z.string(),
+    width: z.number(),
+    height: z.number(),
+})
 
 const ProductPriceValueSchema = z.object({
-  incl_tax: z.string(), // e.g., "26.5000"
-  excl_tax: z.string(), // e.g., "23.2500"
-});
+    incl_tax: z.string(), // e.g., "26.5000"
+    excl_tax: z.string(), // e.g., "23.2500"
+})
 
 const CartItemSchema = z.object({
-  canApplyMsrp: z.boolean(),
-  configure_url: z.string().url(),
-  is_visible_in_site_visibility: z.boolean(),
-  item_id: z.string(),
-  message: z.string(),
-  options: z.array(z.any()), // You can make this more specific if needed
-  product_brand: z.string(),
-  product_category: z.string(),
-  product_has_url: z.boolean(),
-  product_id: z.string(),
-  product_image: ProductImageSchema,
-  product_name: z.string(),
-  product_price: z.string(), // raw HTML string
-  product_price_value: ProductPriceValueSchema,
-  product_sku: z.string(),
-  product_type: z.string(),
-  product_url: z.string().url(),
-  qty: z.number(),
-});
+    canApplyMsrp: z.boolean(),
+    configure_url: z.string().url(),
+    is_visible_in_site_visibility: z.boolean(),
+    item_id: z.string(),
+    message: z.string(),
+    options: z.array(z.any()), // You can make this more specific if needed
+    product_brand: z.string(),
+    product_category: z.string(),
+    product_has_url: z.boolean(),
+    product_id: z.string(),
+    product_image: ProductImageSchema,
+    product_name: z.string(),
+    product_price: z.string(), // raw HTML string
+    product_price_value: ProductPriceValueSchema,
+    product_sku: z.string(),
+    product_type: z.string(),
+    product_url: z.string().url(),
+    qty: z.number(),
+})
 
 export const CartSchema = z.object({
-  cart_empty_message: z.string(),
-  data_id: z.number(),
-  extra_actions: z.string(),
-  grand_total_excl_tax: z.string(), // HTML string
-  grand_total_incl_tax: z.string(), // HTML string
-  isGuestCheckoutAllowed: z.boolean(),
-  items: z.array(CartItemSchema),
-  possible_onepage_checkout: z.boolean(),
-  storeId: z.string(),
-  subtotal: z.string(), // HTML string
-  subtotalAmount: z.number(),
-  subtotal_excl_tax: z.string(),
-  subtotal_incl_tax: z.string(),
-  summary_count: z.number(),
-  website_id: z.string(),
-});
+    cart_empty_message: z.string(),
+    data_id: z.number(),
+    extra_actions: z.string(),
+    grand_total_excl_tax: z.string(), // HTML string
+    grand_total_incl_tax: z.string(), // HTML string
+    isGuestCheckoutAllowed: z.boolean(),
+    items: z.array(CartItemSchema),
+    possible_onepage_checkout: z.boolean(),
+    storeId: z.string(),
+    subtotal: z.string(), // HTML string
+    subtotalAmount: z.number(),
+    subtotal_excl_tax: z.string(),
+    subtotal_incl_tax: z.string(),
+    summary_count: z.number(),
+    website_id: z.string(),
+})
 
-export type CartItemType = z.infer<typeof CartItemSchema>;
-export type CartType = z.infer<typeof CartSchema>;
+export type CartItemType = z.infer<typeof CartItemSchema>
+export type CartType = z.infer<typeof CartSchema>
 ```
 
 # src/schemas/Customer.ts
 
 ```ts
-import { z } from "zod";
+import { z } from 'zod'
 
 export const CustomerInfoSchema = z.object({
-  assortment: z.string(), // e.g. "000040,LBL1"
-  credit_status: z.string(), // e.g. "0"
-  current_company_number: z.string(), // e.g. "10000003"
-  customer_group: z.string(), // e.g. "140"
-  data_id: z.number(), // e.g. 1750685614
-  e2_customer_list_json: z.string(), // still a string, not parsed
-  fake_campaigns: z.string(), // can be empty
-  firstname: z.string(),
-  fullname: z.string(),
-  payment_method: z.string(),
-  silo_exist: z.boolean(),
-  user_email: z.string().email(),
-  user_first_name: z.string(),
-  user_last_name: z.string(),
-  valid_campaigns: z.string(), // e.g. comma-separated string of IDs
-  websiteId: z.string(),
-});
+    assortment: z.string(), // e.g. "000040,LBL1"
+    credit_status: z.string(), // e.g. "0"
+    current_company_number: z.string(), // e.g. "10000003"
+    customer_group: z.string(), // e.g. "140"
+    data_id: z.number(), // e.g. 1750685614
+    e2_customer_list_json: z.string(), // still a string, not parsed
+    fake_campaigns: z.string(), // can be empty
+    firstname: z.string(),
+    fullname: z.string(),
+    payment_method: z.string(),
+    silo_exist: z.boolean(),
+    user_email: z.string().email(),
+    user_first_name: z.string(),
+    user_last_name: z.string(),
+    valid_campaigns: z.string(), // e.g. comma-separated string of IDs
+    websiteId: z.string(),
+})
 
-export type CustomerInfoType = z.infer<typeof CustomerInfoSchema>;
+export type CustomerInfoType = z.infer<typeof CustomerInfoSchema>
 ```
 
 # src/schemas/Price.ts
 
 ```ts
-import { z } from "zod";
+import { z } from 'zod'
 
 // Zod schema
 export const ProductSchema = z.object({
-  product_id: z.number(),
-  tax_class_id: z.number(),
-  customer_number: z.string(),
-  product_sku: z.string(),
-  price_format: z.string(),
+    product_id: z.number(),
+    tax_class_id: z.number(),
+    customer_number: z.string(),
+    product_sku: z.string(),
+    price_format: z.string(),
 
-  price_info: z.object({
-    final_price: z.number(),
-    max_price: z.number(),
-    max_regular_price: z.number(),
-    minimal_regular_price: z.number(),
-    special_price: z.number().nullable(),
-    minimal_price: z.number(),
-    regular_price: z.number(),
-
-    formatted_prices: z.object({
-      final_price: z.string(),
-      max_price: z.string(),
-      minimal_price: z.string(),
-      max_regular_price: z.string(),
-      minimal_regular_price: z.string().nullable(),
-      special_price: z.string().nullable(),
-      regular_price: z.string(),
-    }),
-
-    extension_attributes: z.object({
-      msrp: z.object({
-        msrp_price: z.string(),
-        is_applicable: z.string(),
-        is_shown_price_on_gesture: z.string(),
-        msrp_message: z.string(),
-        explanation_message: z.string(),
-      }),
-
-      tax_adjustments: z.object({
+    price_info: z.object({
         final_price: z.number(),
         max_price: z.number(),
         max_regular_price: z.number(),
         minimal_regular_price: z.number(),
-        special_price: z.number(),
+        special_price: z.number().nullable(),
         minimal_price: z.number(),
         regular_price: z.number(),
+
         formatted_prices: z.object({
-          final_price: z.string(),
-          max_price: z.string(),
-          minimal_price: z.string(),
-          max_regular_price: z.string(),
-          minimal_regular_price: z.string().nullable(),
-          special_price: z.string(),
-          regular_price: z.string(),
+            final_price: z.string(),
+            max_price: z.string(),
+            minimal_price: z.string(),
+            max_regular_price: z.string(),
+            minimal_regular_price: z.string().nullable(),
+            special_price: z.string().nullable(),
+            regular_price: z.string(),
         }),
-      }),
 
-      weee_attributes: z.array(z.any()),
+        extension_attributes: z.object({
+            msrp: z.object({
+                msrp_price: z.string(),
+                is_applicable: z.string(),
+                is_shown_price_on_gesture: z.string(),
+                msrp_message: z.string(),
+                explanation_message: z.string(),
+            }),
 
-      weee_adjustment: z.string(),
+            tax_adjustments: z.object({
+                final_price: z.number(),
+                max_price: z.number(),
+                max_regular_price: z.number(),
+                minimal_regular_price: z.number(),
+                special_price: z.number(),
+                minimal_price: z.number(),
+                regular_price: z.number(),
+                formatted_prices: z.object({
+                    final_price: z.string(),
+                    max_price: z.string(),
+                    minimal_price: z.string(),
+                    max_regular_price: z.string(),
+                    minimal_regular_price: z.string().nullable(),
+                    special_price: z.string(),
+                    regular_price: z.string(),
+                }),
+            }),
 
-      lma_customer_price: z.number(),
-      lma_customer_price_formatted: z.string(),
-      lma_customer_price_is_campaign: z.boolean(),
-      lma_vat_percentage: z.number(),
-      lma_unit_measure: z.string(),
-      lma_valid_price_inc_vat: z.number(),
-      lma_valid_price_inc_vat_formatted: z.string(),
-      lma_line_amount: z.number(),
-      lma_line_amount_inc_vat: z.number(),
-      lma_quantity: z.number(),
-      lma_price_lookup_done: z.boolean(),
-      lma_custom_price_set: z.boolean(),
-      lma_campaign_price: z.number(),
-      lma_campaign_price_inc_vat: z.number(),
-      lma_profix_price: z.number(),
-      lma_profix_price_inc_vat: z.number(),
-      lma_campaign_payment_terms: z.string(),
-      lma_campaign_fixed_due_date: z.string(),
-      lma_list_price: z.number(),
-      lma_list_price_formatted: z.string(),
-      lma_list_price_inc_vat: z.number(),
-      lma_list_price_inc_vat_formatted: z.string(),
-      lma_is_pallet_discount: z.boolean(),
-      lma_campaign_is_pre_season: z.boolean().optional(),
+            weee_attributes: z.array(z.any()),
+
+            weee_adjustment: z.string(),
+
+            lma_customer_price: z.number(),
+            lma_customer_price_formatted: z.string(),
+            lma_customer_price_is_campaign: z.boolean(),
+            lma_vat_percentage: z.number(),
+            lma_unit_measure: z.string(),
+            lma_valid_price_inc_vat: z.number(),
+            lma_valid_price_inc_vat_formatted: z.string(),
+            lma_line_amount: z.number(),
+            lma_line_amount_inc_vat: z.number(),
+            lma_quantity: z.number(),
+            lma_price_lookup_done: z.boolean(),
+            lma_custom_price_set: z.boolean(),
+            lma_campaign_price: z.number(),
+            lma_campaign_price_inc_vat: z.number(),
+            lma_profix_price: z.number(),
+            lma_profix_price_inc_vat: z.number(),
+            lma_campaign_payment_terms: z.string(),
+            lma_campaign_fixed_due_date: z.string(),
+            lma_list_price: z.number(),
+            lma_list_price_formatted: z.string(),
+            lma_list_price_inc_vat: z.number(),
+            lma_list_price_inc_vat_formatted: z.string(),
+            lma_is_pallet_discount: z.boolean(),
+            lma_campaign_is_pre_season: z.boolean().optional(),
+        }),
     }),
-  }),
 
-  price_cached: z.boolean(),
-  order_date: z.string(),
-  campaign_cat_id: z.number(),
-  campaign_type: z.string(),
-  promotion_id: z.string(),
-  product_group: z.string(),
-  immediate_delivery_while_pss: z.boolean(),
-  promotion_id_period: z.null(),
-  transaction_reason: z.string(),
-});
+    price_cached: z.boolean(),
+    order_date: z.string(),
+    campaign_cat_id: z.number(),
+    campaign_type: z.string(),
+    promotion_id: z.string(),
+    product_group: z.string(),
+    immediate_delivery_while_pss: z.boolean(),
+    promotion_id_period: z.null(),
+    transaction_reason: z.string(),
+})
 
 // Inferred TypeScript type
-export type PriceType = z.infer<typeof ProductSchema>;
+export type PriceType = z.infer<typeof ProductSchema>
 ```
 
 # src/schemas/Stock.ts
 
 ```ts
-import { z } from "zod";
+import { z } from 'zod'
 
 const StockSchema = z.object({
-  allow_backorder: z.boolean(),
-  current_available_stock: z.string(), 
-  data_from_cache: z.boolean(),
-  express_delivery: z.boolean(),
-  in_stock: z.boolean(),
-  in_stock_date: z.string(), 
-  item_number: z.string(), 
-  order_date: z.string(), 
-  package_delivery: z.boolean(),
-  pickup_delivery: z.boolean(),
-  product_id: z.string().nullable(),
-  quantity: z.number(),
-  stock_levels_hidden: z.boolean(),
-  unit_measure: z.string(), 
-});
+    allow_backorder: z.boolean(),
+    current_available_stock: z.string(),
+    data_from_cache: z.boolean(),
+    express_delivery: z.boolean(),
+    in_stock: z.boolean(),
+    in_stock_date: z.string(),
+    item_number: z.string(),
+    order_date: z.string(),
+    package_delivery: z.boolean(),
+    pickup_delivery: z.boolean(),
+    product_id: z.string().nullable(),
+    quantity: z.number(),
+    stock_levels_hidden: z.boolean(),
+    unit_measure: z.string(),
+})
 
-export type StockType = z.infer<typeof StockSchema>;
+export type StockType = z.infer<typeof StockSchema>
 ```
 
 # src/vite-env.d.ts
@@ -2535,7 +2543,6 @@ export type StockType = z.infer<typeof StockSchema>;
 ```ts
 /// <reference types="svelte" />
 /// <reference types="vite/client" />
-
 
 declare global {
     interface Window {
@@ -2550,11 +2557,10 @@ declare global {
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 
 export default {
-  // Consult https://svelte.dev/docs#compile-time-svelte-preprocess
-  // for more information about preprocessors
-  preprocess: vitePreprocess(),
+    // Consult https://svelte.dev/docs#compile-time-svelte-preprocess
+    // for more information about preprocessors
+    preprocess: vitePreprocess(),
 }
-
 ```
 
 # tailwind.config.js
@@ -2562,106 +2568,102 @@ export default {
 ```js
 /** @type {import('tailwindcss').Config} */
 export default {
-  prefix: 'tw-',
-  content: ["./src/**/*.{html,js,svelte,ts}"],
-  theme: {
-    extend: {
-      colors: {
-        "green-pea": "#1E6E37",
-        sand: "#ECE2D6",
-        "sand-light": "#F4EEE6",
-        "sand-dark": "#E2D4C2",
-        "forest-green": "#23A73F",
-        "yellow-green": "#D7E187",
-        alto: "#D6D6D6",
-        swirl: "#D4CEC4",
-        oxley: "#7C9E87",
-        charcoal: "#201E1A",
-        black: "#000",
-        tannenbaum: "#005720",
-        mercury: "#E6E6E6",
-        cerulean: "#0192D0",
-        "yellow-sea": "#FAAF00",
-        "alizarin-crimson": "#EF2834",
-        desert: "#B95D25",
-        monza: "#CE0B17",
-        nobel: "#B3B3B3",
-        "steel-blue": "#4B7DB9",
-      },
+    prefix: 'tw-',
+    content: ['./src/**/*.{html,js,svelte,ts}'],
+    theme: {
+        extend: {
+            colors: {
+                'green-pea': '#1E6E37',
+                sand: '#ECE2D6',
+                'sand-light': '#F4EEE6',
+                'sand-dark': '#E2D4C2',
+                'forest-green': '#23A73F',
+                'yellow-green': '#D7E187',
+                alto: '#D6D6D6',
+                swirl: '#D4CEC4',
+                oxley: '#7C9E87',
+                charcoal: '#201E1A',
+                black: '#000',
+                tannenbaum: '#005720',
+                mercury: '#E6E6E6',
+                cerulean: '#0192D0',
+                'yellow-sea': '#FAAF00',
+                'alizarin-crimson': '#EF2834',
+                desert: '#B95D25',
+                monza: '#CE0B17',
+                nobel: '#B3B3B3',
+                'steel-blue': '#4B7DB9',
+            },
+        },
     },
-  },
-  plugins: [],
-};
-
+    plugins: [],
+}
 ```
 
 # tsconfig.app.json
 
 ```json
 {
-  "extends": "@tsconfig/svelte/tsconfig.json",
-  "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "resolveJsonModule": true,
-    /**
-     * Typecheck JS in `.svelte` and `.js` files by default.
-     * Disable checkJs if you'd like to use dynamic types in JS.
-     * Note that setting allowJs false does not prevent the use
-     * of JS in `.svelte` files.
-     */
-    "allowJs": true,
-    "checkJs": true,
-    "isolatedModules": true,
-    "moduleDetection": "force"
-  },
-  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"]
+    "extends": "@tsconfig/svelte/tsconfig.json",
+    "compilerOptions": {
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "module": "ESNext",
+        "resolveJsonModule": true,
+        /**
+         * Typecheck JS in `.svelte` and `.js` files by default.
+         * Disable checkJs if you'd like to use dynamic types in JS.
+         * Note that setting allowJs false does not prevent the use
+         * of JS in `.svelte` files.
+         */
+        "allowJs": true,
+        "checkJs": true,
+        "isolatedModules": true,
+        "moduleDetection": "force"
+    },
+    "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"]
 }
-
 ```
 
 # tsconfig.json
 
 ```json
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+    "files": [],
+    "references": [
+        { "path": "./tsconfig.app.json" },
+        { "path": "./tsconfig.node.json" }
+    ]
 }
-
 ```
 
 # tsconfig.node.json
 
 ```json
 {
-  "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-    "target": "ES2022",
-    "lib": ["ES2023"],
-    "module": "ESNext",
-    "skipLibCheck": true,
+    "compilerOptions": {
+        "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+        "target": "ES2022",
+        "lib": ["ES2023"],
+        "module": "ESNext",
+        "skipLibCheck": true,
 
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
+        /* Bundler mode */
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "isolatedModules": true,
+        "moduleDetection": "force",
+        "noEmit": true,
 
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
-  },
-  "include": ["vite.config.ts"]
+        /* Linting */
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedSideEffectImports": true
+    },
+    "include": ["vite.config.ts"]
 }
-
 ```
 
 # vite.config.ts
@@ -2670,20 +2672,17 @@ export default {
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 
-
 export default defineConfig({
-  plugins: [svelte()],
-  build: {
-    sourcemap: true,
-    rollupOptions: {
-      output: {
-        entryFileNames: "js/svelte-index.min.js",
-        chunkFileNames: "js/svelte-chunk.js",
-        assetFileNames: "svelte-bundle.css",
-      }
-    }
-  }
+    plugins: [svelte()],
+    build: {
+        sourcemap: true,
+        rollupOptions: {
+            output: {
+                entryFileNames: 'js/svelte-index.min.js',
+                chunkFileNames: 'js/svelte-chunk.js',
+                assetFileNames: 'svelte-bundle.css',
+            },
+        },
+    },
 })
-
 ```
-

@@ -4,7 +4,7 @@
     import stockFetch from '../lib/stores/StockFetch.svelte'
     import priceFetch from '../lib/stores/PriceFetch.svelte'
     import pssFetch from '../lib/stores/PssFetch.svelte'
-    import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
+    import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
 
     import DeliveryWizard from './DeliveryWizard.svelte'
     import QtyIncrement from '../lib/components/QtyIncrement.svelte'

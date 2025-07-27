@@ -4,7 +4,7 @@
     import SelectDate from '../lib/components/SelectDate.svelte'
     import SelectWrapper from '../lib/components/SelectWrapper.svelte'
     import IconCart from '../lib/IconsDynamic/IconCart.svelte'
-    import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
+    import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
 
     import {
         bulkDeliveryMethods,
@@ -12,7 +12,6 @@
         bulkAddress,
         packageAddresses,
     } from '../dummyData'
-
 
     const deliveries = $state([
         {
@@ -71,15 +70,16 @@
     // TO DO : Could this be a problem with PSS that has same sku twice in cart
     // TO DO : Use this in ajax call to get deliveries info instead of multiple times inline in template when that ajax call is used
     const findProductInCart = (sku: string) => {
-
-        return bridgeSingleton.cart.value?.items.find((item) => item.product_sku === sku)
+        return bridgeSingleton.cart.value?.items.find(
+            (item) => item.product_sku === sku
+        )
     }
 
     let showSheet = $state(false)
 </script>
 
 {#snippet header()}
-    Leveransplaneraren 
+    Leveransplaneraren
 {/snippet}
 
 {#snippet body()}
@@ -90,7 +90,9 @@
             <span>
                 {`${bridgeSingleton.cart.value.items.length} Varor`}
             </span>
-            <span>{`Total( Excl VAT): ${bridgeSingleton.cart.value.subtotalAmount}`}</span>
+            <span
+                >{`Total( Excl VAT): ${bridgeSingleton.cart.value.subtotalAmount}`}</span
+            >
         {/if}
     </div>
     <ul class="tw-h-full tw-overflow-auto">

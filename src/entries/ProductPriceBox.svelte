@@ -1,7 +1,7 @@
 <script lang="ts">
-    import bridgeSingleton from '../lib/stores/MagentoSvelteBridgeSingleton.svelte'
+    import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
     import priceFetch from '../lib/stores/PriceFetch.svelte'
-    import Price from '../lib/components/Price.svelte';
+    import Price from '../lib/components/Price.svelte'
 
     type Props = {
         id: string
@@ -53,18 +53,16 @@
             <div>
                 <!-- TO DO : Add  discount, check template -->
                 <!-- TO DO : Format below -->
-                 <Price price={priceInfo.lma_customer_price}/>
-                 <Price price={120000.400}/>
+                <Price price={priceInfo.lma_customer_price} />
+                <Price price={120000.4} />
                 {priceInfo.lma_customer_price}
                 {priceBoxUnit}
             </div>
         {/if}
         {#if !isPss || bridgeSingleton.showListPrice}
-            <div>
-                EXCL VAT
-            </div>
-        <!-- TO DO : Add  list price column -->
-         {/if}
+            <div>EXCL VAT</div>
+            <!-- TO DO : Add  list price column -->
+        {/if}
     </div>
 {:catch error}
     Error loading price: {error.message}
