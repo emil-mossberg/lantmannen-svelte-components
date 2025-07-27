@@ -37,4 +37,3 @@
         </div>
     </div>
 {/await}
-<div>TRIGGER!!</div>

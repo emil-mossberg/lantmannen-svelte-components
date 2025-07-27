@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { t } from 'svelte-i18n'
+
     import Button from '../lib/components/Button.svelte'
     import SelectWrapper from '../lib/components/SelectWrapper.svelte'
     import DatePicker from '../lib/components/DatePicker.svelte'
@@ -51,7 +53,36 @@
         return !deliveryMethod || !deliveryAddress
     })
 
+    const selectPSS = (campaignId: string) => {
+        console.log('campaignId', campaignId)
+        // TO DO Set up selecting PSS
+        pssSeleced = true
+    }
+
     let pssSeleced = $state(false)
+    let pssCampaignHoverId = $state<null | string>(null)
+
+    // TO DO type this
+    function getTooltipMessage(item) {
+        if (
+            pssFetch.cartInfo?.cart_has_pay_campaign &&
+            item.campaign_type !== pssFetch.paymentCampaign
+        ) {
+            return $t('M4DisabledCartM4', {
+                values: { name: item.campaign_name },
+            })
+        }
+
+        if (
+            !pssFetch.cartInfo?.cart_has_pay_campaign &&
+            !pssFetch.cartInfo?.cart_is_empty &&
+            item.campaign_type === pssFetch.paymentCampaign
+        ) {
+            return $t('M4DisabledCartNoM4')
+        }
+
+        return null
+    }
 </script>
 
 {#snippet buyButton()}
@@ -64,23 +95,54 @@
     {`Beställ ${isBulk ? ' bulk' : ''}`}
 {/snippet}
 
+{#snippet tooltipWarning(text: string)}
+    <span
+        class="tw-absolute tw-z-10 tw-bg-white tw-max-w-[300px] tw-left-1/2 tw--translate-x-1/2 tw-top-6 tw-p-4 tw-border tw-border-cerulean rounded"
+    >
+        <span
+            class="tw-absolute tw--top-2 tw-left-1/2 tw-w-4 tw-h-4 tw-bg-white
+             tw-border-l tw-border-t tw-border-cerulean
+             tw--translate-x-1/2 tw-rotate-45 z-[-1]"
+        ></span>
+        {text}</span
+    >
+{/snippet}
+
 {#snippet body()}
     {#if isPSS && !pssSeleced}
-        {#await pssFetch.pssProto(id)}
+        <!-- {#await pssFetch.pssProto(id)} -->
+        {#await pssFetch.pssProto('1')}
             <p>Loading PSS Campaign...</p>
         {:then campaign}
             <div>HERE should the PSS table for selecting</div>
-            {#each campaign.products as item}
-                <div>
-                    {item.title}
-                </div>
-            {/each}
+            {campaign.json.title}
+
+            <ul>
+                {#each campaign.tempPSSDummy as item}
+                    <li
+                        class="tw-p-4 tw-flex tw-justify-between tw-items-center tw-relative tw-m-0"
+                        onmouseenter={() =>
+                            (pssCampaignHoverId = item.campaign_id)}
+                        onmouseleave={() => (pssCampaignHoverId = null)}
+                    >
+                        {item.campaign_name}
+                        <Button
+                            onclick={() => {
+                                selectPSS(item.campaign_id)
+                            }}>{$t('select')}</Button
+                        >
+                        <!-- {#if item.campaign_id === pssCampaignHoverId} -->
+                        {#if true}
+                            {#if getTooltipMessage(item)}
+                                {@render tooltipWarning(
+                                    getTooltipMessage(item)
+                                )}
+                            {/if}
+                        {/if}
+                    </li>
+                {/each}
+            </ul>
         {/await}
-        ITS a PSS please <Button
-            onclick={() => {
-                pssSeleced = true
-            }}>Select PSS</Button
-        >
     {:else}
         <SelectWrapper
             text="Leveransmethod:"

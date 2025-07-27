@@ -56,9 +56,9 @@
     <!-- TO DO : Switch Check PSS boolean -->
     {#if price.price_cached && isPdpCard}
         {#await pssFetch.pssProto('1')}
-            <p>Loading PSS Campaign...</p>
+            <p>Loading PSS Campaign View table...</p>
         {:then campaign}
-            {campaign.title}
+            {campaign.json.title}
         {/await}
     {/if}
     <div class="tw-flex tw-gap-4">
@@ -66,7 +66,7 @@
         <QtyIncrement {qtyIncrement} {id} />
         <DeliveryWizard
             {isBulk}
-            isPSS={false}
+            isPSS={true}
             useModal={useModal()}
             {id}
             {prefSalesQuantity}
