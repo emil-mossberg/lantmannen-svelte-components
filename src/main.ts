@@ -75,7 +75,6 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
         ? Number(prefSalesQuantityAttr)
         : 1
     const newProduct = el.getAttribute('data-product-is-new') === '1'
-    const isBuyable = el.getAttribute('data-product-is-buyable') === '1'
     const unitMeasure = el.getAttribute('data-product-unit-measure')
     const packagingType = el.getAttribute('data-product-packaging-type')
     const qtyIncrement =
@@ -96,7 +95,6 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
             newProduct,
             unitMeasure,
             packagingType,
-            isBuyable,
             qtyIncrement,
             palletDiscountInformation,
             showPalletAttribute,

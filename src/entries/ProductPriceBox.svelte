@@ -11,7 +11,6 @@
         id: string
         prefSalesQty: number
         newProduct: boolean
-        isBuyable: boolean
         packagingType: string | null
         unitMeasure: string | null
         qtyIncrement: number
@@ -27,7 +26,6 @@
         unitMeasure,
         packagingType,
         newProduct = false,
-        isBuyable,
         qtyIncrement,
         palletDiscountInformation,
         showPalletAttribute,
@@ -49,8 +47,8 @@
     }
 </script>
 
-{#snippet PriceWUnit(price: number)}
-    <Price {price} {priceBoxUnit} />
+{#snippet PriceWUnit(price: number, disabledPrice = false)}
+    <Price {price} {priceBoxUnit} {disabledPrice} />
 {/snippet}
 
 {#snippet DiscountBox(text: string)}
@@ -85,11 +83,9 @@
             <!-- REGULAR PRICE COLUMN -->
             <div class="tw-w-1/2 tw-mr-4">
                 {#if hasDiscountPrice(price)}
-                    <!-- TO DO is this correct design for discountPrice -->
-
                     {@render PriceWUnit(campaignPrice)}
                 {/if}
-                {@render PriceWUnit(customerPrice)}
+                {@render PriceWUnit(customerPrice, hasDiscountPrice(price))}
             </div>
         {/if}
         {#if bridgeSingleton.showListPrice && listPrice}
@@ -97,12 +93,8 @@
             <div>
                 {#if hasProfixPrice(price)}
                     {@render PriceWUnit(profixPrice)}
-
-                    <!-- TO DO improve only needing list price once here, I think its due to using strikethrough in first instance -->
-                    {@render PriceWUnit(listPrice)}
-                {:else}
-                    {@render PriceWUnit(listPrice)}
                 {/if}
+                {@render PriceWUnit(listPrice, hasProfixPrice(price))}
             </div>
         {/if}
         {#if !isPss || bridgeSingleton.showListPrice}
@@ -117,7 +109,7 @@
 {/snippet}
 
 {#await pricePromise}
-    LOADING
+    Price spinner
 {:then price}
     {@const isPss =
         !!price.price_info.extension_attributes?.lma_campaign_is_pre_season}

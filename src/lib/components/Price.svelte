@@ -4,9 +4,10 @@
     type Props = {
         price: number
         priceBoxUnit?: string
+        disabledPrice?: boolean
     }
 
-    const { price, priceBoxUnit }: Props = $props()
+    const { price, priceBoxUnit, disabledPrice = false }: Props = $props()
     const formatMap = {
         fi_FI: {
             code: 'fi-FI',
@@ -28,9 +29,9 @@
     })
 </script>
 
-<div class="tw-flex">
+<div class={`tw-flex tw-items-center ${disabledPrice ? 'tw-line-through' : ''}`}>
     <span
-        class="tw-font-lantmannenSerif tw-font-bold tw-text-[1.125rem] tw-leading-[1.2]"
+        class={`tw-font-lantmannenSerif tw-font-bold tw-text-[1.125rem] tw-leading-[1.2] ${disabledPrice ? 'tw-text-xs tw-leading-6 tw-font-normal' : ''}`}
     >
         {formattedPrice}
     </span>
