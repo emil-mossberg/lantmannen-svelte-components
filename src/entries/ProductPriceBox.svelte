@@ -12,7 +12,6 @@
         prefSalesQuantity: number
         newProduct: boolean
         isBuyable: boolean
-        spun: string | null
         packagingType: string | null
         unitMeasure: string | null
         qtyIncrement: number
@@ -25,7 +24,6 @@
     const {
         id,
         prefSalesQuantity,
-        spun,
         unitMeasure,
         packagingType,
         newProduct = false,
@@ -55,59 +53,86 @@
     <Price {price} {priceBoxUnit} />
 {/snippet}
 
-{#snippet PriceRow(price: Price)}
-    ROW!!!
-    {@render PriceWUnit(price)}
+{#snippet PriceRow(
+    price: PriceType,
+    isPss: boolean,
+    withVat: boolean,
+    vatLabel: string
+)}
+    {@const priceInfo = price.price_info.extension_attributes}
+    {@const suffix = withVat ? '_inc_vat' : ''}
+    {@const customerPrice =
+        priceInfo[withVat ? 'lma_valid_price_inc_vat' : 'lma_customer_price']}
+    {@const listPrice = priceInfo[`lma_list_price${suffix}`]}
+    {@const profixPrice = priceInfo[`lma_profix_price${suffix}`]}
+    {@const campaignPrice = priceInfo[`lma_campaign_price${suffix}`]}
+    {#if bridgeSingleton.showListPrice && priceInfo.lma_list_price}
+        <div>Implement List price header here</div>
+        <!-- TO DO : Add list price header Headers, check template -->
+    {/if}
+    <!-- NO VAT PRICE ROW -->
+    <div class="tw-flex tw-py-2">
+        {#if !isPss}
+            <!-- REGULAR PRICE COLUMN -->
+            <div class="tw-w-1/2 tw-mr-4">
+                {#if hasDiscountPrice(price)}
+                    <!-- TO DO is this correct design for discountPrice -->
+
+                    {@render PriceWUnit(campaignPrice)}
+                {/if}
+                {@render PriceWUnit(customerPrice)}
+            </div>
+        {/if}
+        {#if bridgeSingleton.showListPrice && listPrice}
+            <!-- LIST PRICE COLUMN -->
+            <div>
+                {#if hasProfixPrice(price)}
+                    {@render PriceWUnit(profixPrice)}
+
+                    <!-- TO DO improve only needing list price once here, I think its due to using strikethrough in first instance -->
+                    {@render PriceWUnit(listPrice)}
+                {:else}
+                    {@render PriceWUnit(listPrice)}
+                {/if}
+            </div>
+        {/if}
+        {#if !isPss || bridgeSingleton.showListPrice}
+            <!-- PRICE LABEL COLUMN -->
+            <div class="tw-w-1/2 tw-text-right">
+                <span class="tw-font-normal tw-text-xs tw-leading-6">
+                    {vatLabel}
+                </span>
+            </div>
+        {/if}
+    </div>
 {/snippet}
 
 {#await pricePromise}
     LOADING
 {:then price}
-    {@const priceInfo = price.price_info.extension_attributes}
-    {@const isPss = !!priceInfo?.lma_campaign_is_pre_season}
+    {@const isPss =
+        !!price.price_info.extension_attributes?.lma_campaign_is_pre_season}
 
     <div class="tw-min-h-[40px] tw-relative">
-        {@render PriceRow(42424242)}
-        {#if bridgeSingleton.showListPrice && priceInfo.lma_list_price}
-            <div>Implement List price header here</div>
-            <!-- TO DO : Add list price header Headers, check template -->
-        {/if}
-        <!-- NO VAT PRICE ROW -->
-        <div class="tw-flex tw-border-b tw-border-alto tw-py-2">
-            {#if !isPss}
-                <!-- REGULAR PRICE COLUMN -->
-                <div class="tw-w-1/2 tw-mr-4">
-                    {#if hasDiscountPrice(price)}
-                        <!-- TO DO is this correct design for discountPrice -->
-
-                        {@render PriceWUnit(priceInfo.lma_campaign_price)}
-                    {/if}
-                    {@render PriceWUnit(priceInfo.lma_customer_price)}
-                </div>
-            {/if}
-            {#if bridgeSingleton.showListPrice && priceInfo.lma_list_price}
-                <!-- LIST PRICE COLUMN -->
-                <div>
-                    {#if hasProfixPrice(price)}
-                        {@render PriceWUnit(priceInfo.lma_profix_price)}
-
-                        <!-- TO DO improve only needing list price once here, I think its due to using strikethrough in first instance -->
-                        {@render PriceWUnit(priceInfo.lma_list_price)}
-                    {:else}
-                        {@render PriceWUnit(priceInfo.lma_list_price)}
-                    {/if}
-                </div>
-            {/if}
-            {#if !isPss || bridgeSingleton.showListPrice}
-                <!-- PRICE LABEL COLUMN -->
-                <div class="tw-w-1/2 tw-text-right">
-                    <span class="tw-font-normal tw-text-sm tw-leading-6">
-                        {$t('exclVAT')}
-                    </span>
-                </div>
-            {/if}
+        <div class="tw-border-b tw-border-alto">
+            {@render PriceRow(price, isPss, false, $t('exclVAT'))}
         </div>
+
+        {@render PriceRow(
+            price,
+            isPss,
+            true,
+            bridgeSingleton.showVatPercentage
+                ? `${$t('inclVAT')} (${[
+                      price.price_info.extension_attributes.lma_vat_percentage,
+                  ]} %)`
+                : $t('inclVAT')
+        )}
     </div>
+    {#if showPalletAttribute}
+        <div>{palletDiscountInformation}</div>
+    {/if}
+
 {:catch error}
     Error loading price: {error.message}
 {/await}

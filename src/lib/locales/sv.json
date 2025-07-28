@@ -9,5 +9,6 @@
     "M4DisabledCartM4": "Artiklar som inte tillhör {name} kampanjen kan inte läggas i varukorgen förrän en order är lagd eller varukorgen är tom",
     "M4DisabledCartNoM4": "Denna artikel kan endast köpas ihop med andra artiklar i samma kampanj. Ta bort andra artiklar från varukorgen för att kunna lägga till denna artikel.",
     "select": "Välj",
-    "exclVAT": "Ex. moms"
+    "exclVAT": "Ex. moms",
+    "inclVAT":"Ink. moms"
 }
