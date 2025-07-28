@@ -15,7 +15,6 @@
         spun: string | null
         packagingType: string | null
         unitMeasure: string | null
-        basicUnit: string | null
         qtyIncrement: number
         palletDiscountInformation: string | null
         showPalletAttribute: boolean
@@ -29,7 +28,6 @@
         spun,
         unitMeasure,
         packagingType,
-        basicUnit,
         newProduct = false,
         isBuyable,
         qtyIncrement,
@@ -53,6 +51,15 @@
     }
 </script>
 
+{#snippet PriceWUnit(price: number)}
+    <Price {price} {priceBoxUnit} />
+{/snippet}
+
+{#snippet PriceRow(price: Price)}
+    ROW!!!
+    {@render PriceWUnit(price)}
+{/snippet}
+
 {#await pricePromise}
     LOADING
 {:then price}
@@ -60,6 +67,7 @@
     {@const isPss = !!priceInfo?.lma_campaign_is_pre_season}
 
     <div class="tw-min-h-[40px] tw-relative">
+        {@render PriceRow(42424242)}
         {#if bridgeSingleton.showListPrice && priceInfo.lma_list_price}
             <div>Implement List price header here</div>
             <!-- TO DO : Add list price header Headers, check template -->
@@ -68,35 +76,34 @@
         <div class="tw-flex tw-border-b tw-border-alto tw-py-2">
             {#if !isPss}
                 <!-- REGULAR PRICE COLUMN -->
-                <div>
+                <div class="tw-w-1/2 tw-mr-4">
                     {#if hasDiscountPrice(price)}
                         <!-- TO DO is this correct design for discountPrice -->
-                        <Price price={priceInfo.lma_campaign_price} />
-                        {priceBoxUnit}
+
+                        {@render PriceWUnit(priceInfo.lma_campaign_price)}
                     {/if}
-                    <Price price={priceInfo.lma_customer_price} />
-                    {priceBoxUnit}
+                    {@render PriceWUnit(priceInfo.lma_customer_price)}
                 </div>
             {/if}
             {#if bridgeSingleton.showListPrice && priceInfo.lma_list_price}
                 <!-- LIST PRICE COLUMN -->
                 <div>
                     {#if hasProfixPrice(price)}
-                        <Price price={priceInfo.lma_profix_price} />
-                        {priceBoxUnit}
+                        {@render PriceWUnit(priceInfo.lma_profix_price)}
+
                         <!-- TO DO improve only needing list price once here, I think its due to using strikethrough in first instance -->
-                        <Price price={priceInfo.lma_list_price} />
-                        {priceBoxUnit}
+                        {@render PriceWUnit(priceInfo.lma_list_price)}
                     {:else}
-                        <Price price={priceInfo.lma_list_price} />
-                        {priceBoxUnit}
+                        {@render PriceWUnit(priceInfo.lma_list_price)}
                     {/if}
                 </div>
             {/if}
             {#if !isPss || bridgeSingleton.showListPrice}
                 <!-- PRICE LABEL COLUMN -->
-                <div>
-                    {$t('exclVAT')}
+                <div class="tw-w-1/2 tw-text-right">
+                    <span class="tw-font-normal tw-text-sm tw-leading-6">
+                        {$t('exclVAT')}
+                    </span>
                 </div>
             {/if}
         </div>

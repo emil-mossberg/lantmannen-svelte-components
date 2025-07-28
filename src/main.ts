@@ -79,7 +79,6 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
     const spun = el.getAttribute('data-product-spun')
     const unitMeasure = el.getAttribute('data-product-unit-measure')
     const packagingType = el.getAttribute('data-product-packaging-type')
-    const basicUnit = el.getAttribute('data-product-basic-unit')
     const qtyIncrement =
         Number(el.getAttribute('product-data-qty-increment') ?? 1) || 1
     const palletDiscountInformation = el.getAttribute(
@@ -87,8 +86,8 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
     )
     const showPalletAttribute =
         el.getAttribute('data-product-show-pallet-attribute') === '1'
-    const priceBoxUnit = el.getAttribute('data-config-price-box-unit')
-    const prefSalesQtyUnit = el.getAttribute('data-config-pref-sales-qty-unit')
+    const priceBoxUnit = el.getAttribute('data-config-price-box-unit') ?? ''
+    const prefSalesQtyUnit = el.getAttribute('data-config-pref-sales-qty-unit') ?? ''
 
     mount(ProductPriceBox, {
         target: el,
@@ -99,7 +98,6 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
             spun,
             unitMeasure,
             packagingType,
-            basicUnit,
             isBuyable,
             qtyIncrement,
             palletDiscountInformation,

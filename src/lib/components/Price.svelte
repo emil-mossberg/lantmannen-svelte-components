@@ -3,11 +3,10 @@
 
     type Props = {
         price: number
-        basicUnit?: string
+        priceBoxUnit?: string
     }
 
-    const { price, basicUnit }: Props = $props()
-
+    const { price, priceBoxUnit }: Props = $props()
     const formatMap = {
         fi_FI: {
             code: 'fi-FI',
@@ -29,11 +28,14 @@
     })
 </script>
 
-<div
-    class="tw-font-lantmannenSerif tw-font-bold tw-text-[1.125rem] tw-leading-[1.2]"
->
-    {formattedPrice}
-    {#if basicUnit}
-        {basicUnit}
-    {/if}
+<div class="tw-flex">
+    <span
+        class="tw-font-lantmannenSerif tw-font-bold tw-text-[1.125rem] tw-leading-[1.2]"
+    >
+        {formattedPrice}
+    </span>
+
+    <span class="tw-font-normal tw-text-sm tw-leading-6">
+        {priceBoxUnit ? `/${priceBoxUnit}` : ''}
+    </span>
 </div>
