@@ -1,5 +1,6 @@
 import { type CartType } from '../../schemas/Cart'
 import { type CustomerInfoType } from '../../schemas/Customer'
+import { type LocaleCode } from '../../schemas/Locale'
 import singletonFactory from './SingletonFactory'
 
 class MagentoSvelteBridge {
@@ -7,6 +8,9 @@ class MagentoSvelteBridge {
         document.getElementById('svelte-information')?.dataset
 
     public readonly storeId: number = Number(this.svelteBridgeData?.storeId)
+
+    // TO DO validate this with zod
+    public readonly locale: LocaleCode = this.svelteBridgeData?.locale as LocaleCode
 
     public readonly isLoggedIn: boolean = this.convertToBoolean(
         this.svelteBridgeData?.loggedIn
@@ -86,9 +90,7 @@ class MagentoSvelteBridge {
     }
 
     public formatDate(date: string) {
-        const locale = 'fi' // TO DO move this into scraping from dom
-
-        if (locale === 'fi') {
+        if (this.locale === 'fi_FI') {
             const [year, month, day] = date.split('-')
             return `${day}.${month}.${year}`
         }

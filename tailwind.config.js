@@ -27,6 +27,10 @@ export default {
         "steel-blue": "#4B7DB9",
       },
     },
+    fontFamily: {
+				lantmannenSerif: ['LantmannenSerif', 'serif'],
+				lantmannenSans: ['LantmannenSans', 'sans-serif'],
+			},
   },
   plugins: [],
 };

@@ -3,14 +3,14 @@
 
     import pssFetch from '../lib/stores/PssFetch.svelte'
 
-    import IconCaution from '../lib/Icons/icon-caution.svg'
+    import IconInfo from '../lib/Icons/icon-info.svg'
 </script>
 
 {#if pssFetch.cartInfo?.cart_has_pay_campaign}
     <div
-        class="tw-border-2 tw-border-yellow-sea tw-rounded tw-p-4 tw-shadow-lg tw-flex tw-gap-2 tw-items-center"
+        class="tw-border-2 tw-border-cerulean tw-rounded tw-p-4 tw-shadow-lg tw-flex tw-gap-2 tw-items-center"
     >
-        <img src={IconCaution} alt="caution icon" />
+        <img src={IconInfo} alt="info icon" />
         {$t('m4GlobalMessage', {
             values: { name: pssFetch.cartInfo?.pay_campaign_name },
         })}

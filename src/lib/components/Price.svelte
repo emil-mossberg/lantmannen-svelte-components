@@ -1,4 +1,6 @@
 <script lang="ts">
+    import bridgeSingleton from '../stores/MagentoSvelteBridge.svelte'
+
     type Props = {
         price: number
         basicUnit?: string
@@ -6,22 +8,19 @@
 
     const { price, basicUnit }: Props = $props()
 
-    // TO DO take a locale also dynamically
-    const tempFormat = 'fi'
-
     const formatMap = {
-        fi: {
+        fi_FI: {
             code: 'fi-FI',
             currency: 'EUR',
         },
-        se: {
+        sv_SE: {
             code: 'SV-SE',
             currency: 'SEK',
         },
     }
 
     const formattedPrice = $derived.by(() => {
-        const format = formatMap[tempFormat]
+        const format = formatMap[bridgeSingleton.locale]
 
         return new Intl.NumberFormat(format.code, {
             style: 'currency',
@@ -30,5 +29,11 @@
     })
 </script>
 
-<div>PRICE</div>
-<div>{formattedPrice}</div>
+<div
+    class="tw-font-lantmannenSerif tw-font-bold tw-text-[1.125rem] tw-leading-[1.2]"
+>
+    {formattedPrice}
+    {#if basicUnit}
+        {basicUnit}
+    {/if}
+</div>

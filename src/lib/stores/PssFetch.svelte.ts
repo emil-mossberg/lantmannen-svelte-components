@@ -1,5 +1,5 @@
 import singletonFactory from './SingletonFactory'
-
+import { type CartInformation } from '../../schemas/CartInformation'
 
 const tempPSSDummy = [
   {
@@ -39,12 +39,6 @@ function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-type CartInformation = {
-    cart_has_pay_campaign: boolean
-    cart_is_empty: boolean
-    pay_campaign_id: string
-    pay_campaign_name: string
-}
 
 class PssFetch {
 
@@ -53,15 +47,7 @@ class PssFetch {
     public cartInfo = $state<null | CartInformation>(null)
 
     constructor() {
-        console.log('fetch constructor')
-
         // TO DO pull in setting for checking this not, exists in magento already
-        console.log('WINDOW', window)
-        window.addEventListener('DOMContentLoaded', () => console.log('apa'))
-    }
-
-    testFunction () {
-        console.log('call!!d')
     }
 
     setCartInfo(info: CartInformation) {

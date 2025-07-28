@@ -7,6 +7,8 @@
     import Modal from '../lib/components/Modal.svelte'
     import pssFetch from '../lib/stores/PssFetch.svelte'
 
+    import { type Campaign } from '../schemas/Campaign'
+
     import {
         bulkDeliveryMethods,
         packageDeliveryMethods,
@@ -62,8 +64,7 @@
     let pssSeleced = $state(false)
     let pssCampaignHoverId = $state<null | string>(null)
 
-    // TO DO type this
-    function getTooltipMessage(item) {
+    function getTooltipMessage(item: Campaign) {
         if (
             pssFetch.cartInfo?.cart_has_pay_campaign &&
             item.campaign_type !== pssFetch.paymentCampaign
@@ -97,13 +98,8 @@
 
 {#snippet tooltipWarning(text: string)}
     <span
-        class="tw-absolute tw-z-10 tw-bg-white tw-max-w-[300px] tw-left-1/2 tw--translate-x-1/2 tw-top-6 tw-p-4 tw-border tw-border-cerulean rounded"
+        class="tw-absolute tw-z-10 tw-bg-white tw-max-w-[300px] tw-left-1/2 tw--translate-x-1/2 tw-top-6 tw-p-4 tw-border-2 tw-border-cerulean rounded"
     >
-        <span
-            class="tw-absolute tw--top-2 tw-left-1/2 tw-w-4 tw-h-4 tw-bg-white
-             tw-border-l tw-border-t tw-border-cerulean
-             tw--translate-x-1/2 tw-rotate-45 z-[-1]"
-        ></span>
         {text}</span
     >
 {/snippet}
@@ -131,12 +127,10 @@
                                 selectPSS(item.campaign_id)
                             }}>{$t('select')}</Button
                         >
-                        <!-- {#if item.campaign_id === pssCampaignHoverId} -->
-                        {#if true}
-                            {#if getTooltipMessage(item)}
-                                {@render tooltipWarning(
-                                    getTooltipMessage(item)
-                                )}
+                        {#if item.campaign_id === pssCampaignHoverId}
+                            {@const tooltip = getTooltipMessage(item)}
+                            {#if tooltip}
+                                {@render tooltipWarning(tooltip)}
                             {/if}
                         {/if}
                     </li>
