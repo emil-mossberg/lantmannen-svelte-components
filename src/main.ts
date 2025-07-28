@@ -71,7 +71,7 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
     const prefSalesQuantityAttr = el.getAttribute(
         'data-product-pref-sales-quantity'
     )
-    const prefSalesQuantity = prefSalesQuantityAttr
+    const prefSalesQty = prefSalesQuantityAttr
         ? Number(prefSalesQuantityAttr)
         : 1
     const newProduct = el.getAttribute('data-product-is-new') === '1'
@@ -92,7 +92,7 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
         target: el,
         props: {
             id,
-            prefSalesQuantity,
+            prefSalesQty,
             newProduct,
             unitMeasure,
             packagingType,

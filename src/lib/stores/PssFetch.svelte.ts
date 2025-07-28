@@ -55,7 +55,6 @@ class PssFetch {
     }
 
     public async pssProto(id: string) {
-        // await sleep(2000)
 
         try {
             const response = await fetch(`https://dummyjson.com/products/${id}`)

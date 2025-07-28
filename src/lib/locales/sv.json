@@ -10,5 +10,9 @@
     "M4DisabledCartNoM4": "Denna artikel kan endast köpas ihop med andra artiklar i samma kampanj. Ta bort andra artiklar från varukorgen för att kunna lägga till denna artikel.",
     "select": "Välj",
     "exclVAT": "Ex. moms",
-    "inclVAT":"Ink. moms"
-}
+    "inclVAT": "Ink. moms",
+    "orderNowPay": "Beställ nu, betala {date} ",
+    "paymentTerms": "Betalningsvillkor ",
+    "bestPricePalletQty": "Pris vid helpall: {qty}",
+    "palletQty": "Helpallskvantitet: {qty}"
+}   

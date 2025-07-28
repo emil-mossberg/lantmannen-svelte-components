@@ -35,7 +35,7 @@
         {formattedPrice}
     </span>
 
-    <span class="tw-font-normal tw-text-xs tw-leading-6">
+    <span class="tw-text-xs tw-leading-6">
         {priceBoxUnit ? `/${priceBoxUnit}` : ''}
     </span>
 </div>
