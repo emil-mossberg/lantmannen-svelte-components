@@ -1,6 +1,7 @@
 import singletonFactory from './SingletonFactory'
 import MagentoSvelteBridge from './MagentoSvelteBridge.svelte'
 import { type CartInformation } from '../../schemas/CartInformation'
+import { type Campaign } from '../../schemas/Campaign'
 
 const tempPSSDummy = [
     {
@@ -52,6 +53,7 @@ class PssFetch {
         this.cartInfo = info
     }
 
+    // TO DO implement checking if loaded already if not fetch it and save
     public async fetchPSSCampaigns(id: string) {
         const body = {
             priceFinderData: {
@@ -62,12 +64,10 @@ class PssFetch {
                         isBuyable: 1,
                     },
                 ],
-                customerNumber: '10000003',
+                customerNumber: this.bridge.customerNumber(), // TO DO double check this always works
                 storeId: this.bridge.storeId,
             },
         }
-
-        console.log('BODY', body);
 
         try {
             const response = await fetch(
@@ -84,9 +84,11 @@ class PssFetch {
                 }
             )
 
-            const json = await response.json()
+            // TO DO fix validating with zod
+            const data: Campaign = await response.json()
 
-            console.log(json)
+            console.log(data)
+            return data
         } catch (error) {
             throw error
         }

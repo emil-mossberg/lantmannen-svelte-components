@@ -8,6 +8,8 @@
 
     import DeliveryWizard from './DeliveryWizard.svelte'
     import QtyIncrement from '../lib/components/QtyIncrement.svelte'
+    import Price from '../lib/components/Price.svelte'
+    import getItems from 'svelte-select/get-items'
 
     type Props = {
         id: string
@@ -17,6 +19,7 @@
         qtyIncrement: number
         isBulkFi: boolean
         isPdpCard?: boolean
+        priceBoxUnit: string
     }
 
     const {
@@ -27,6 +30,7 @@
         qtyIncrement,
         isBulkFi,
         isPdpCard = false,
+        priceBoxUnit,
     }: Props = $props()
 
     // Not using this also means not sending any additional form values to backend, this is why it is disabled if setting is not turn on
@@ -59,17 +63,24 @@
 {#await Promise.all([pricePromise, stockPromise])}
     No price or stock yet - add Skeleton
 {:then [price, stock]}
-    <!-- TO DO : Switch Check PSS boolean -->
-    {#if price.price_cached && isPdpCard}
+    {#if price.price_info.extension_attributes.lma_campaign_is_pre_season && isPdpCard}
         {#await pssFetch.fetchPSSCampaigns(id)}
-            <p>Loading PSS Campaign View table...</p>
-        {:then campaign}
-            DONE
-        {/await}
-        {#await pssFetch.pssProto('1')}
-            <p>Loading PSS Campaign View table...</p>
-        {:then campaign}
-            {campaign.json.title}
+            <p>PSS Spinner</p>
+        {:then data}
+            <ul>
+                {#each data.items as campaign}
+                    <li class="tw-border tw-flex tw-border-alto tw-p-4 tw-mb-4 tw-justify-between">
+                        <h6>{campaign.campaign_name}</h6>
+                        <Price
+                            price={campaign.prices[0].price_info
+                                .extension_attributes.lma_campaign_price}
+                            isCampaignPrice={true}
+                            {priceBoxUnit}
+                        />
+                        <span class="tw-text-xs tw-leading-6">{$t('exVAT')}</span>
+                    </li>
+                {/each}
+            </ul>
         {/await}
     {/if}
     <div class="tw-flex tw-gap-4">

@@ -59,6 +59,8 @@ document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
 
     const isPdpCard = el.getAttribute('data-is-pdp-card') === '1'
 
+    const priceBoxUnit = el.getAttribute('data-config-price-box-unit') ?? ''
+
     mount(ProductBuyBox, {
         target: el,
         props: {
@@ -69,6 +71,7 @@ document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
             isBulkFi,
             qtyIncrement,
             isPdpCard,
+            priceBoxUnit
         },
     })
 })

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const StockSchema = z.object({
+export const StockSchema = z.object({
   allow_backorder: z.boolean(),
   current_available_stock: z.string(), 
   data_from_cache: z.boolean(),

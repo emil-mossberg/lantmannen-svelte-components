@@ -75,19 +75,17 @@
 
     <!-- NO VAT PRICE ROW -->
     <div class="tw-flex tw-py-2">
-        {#if !isPss}
-            <!-- REGULAR PRICE COLUMN -->
-            <div class="tw-flex-1 tw-mr-4">
-                {#if discountPrice}
-                    <Price
-                        price={campaignPrice}
-                        {priceBoxUnit}
-                        isCampaignPrice={true}
-                    />
-                {/if}
-                <Price price={customerPrice} disabledPrice={discountPrice} />
-            </div>
-        {/if}
+        <!-- REGULAR PRICE COLUMN -->
+        <div class="tw-flex-1 tw-mr-4">
+            {#if discountPrice}
+                <Price
+                    price={campaignPrice}
+                    {priceBoxUnit}
+                    isCampaignPrice={true}
+                />
+            {/if}
+            <Price price={customerPrice} disabledPrice={discountPrice} />
+        </div>
         {#if bridgeSingleton.showListPrice && listPrice}
             <!-- LIST PRICE COLUMN -->
             <div class="tw-flex-1 tw-mr-4">

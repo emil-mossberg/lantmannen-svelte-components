@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // Zod schema
-export const ProductSchema = z.object({
+export const PriceSchema = z.object({
   product_id: z.number(),
   tax_class_id: z.number(),
   customer_number: z.string(),
@@ -97,5 +97,4 @@ export const ProductSchema = z.object({
   transaction_reason: z.string(),
 });
 
-// Inferred TypeScript type
-export type PriceType = z.infer<typeof ProductSchema>;
+export type PriceType = z.infer<typeof PriceSchema>;
