@@ -18,7 +18,7 @@ class MagentoSvelteBridge {
 
     // TO DO make this less verbose
     public readonly showListPrice: boolean = this.convertToBoolean(
-        this.svelteBridgeData?.showListPrice
+        this.svelteBridgeData?.configShowListPrice
     )
     public readonly showVatPercentage: boolean = this.convertToBoolean(
         this.svelteBridgeData?.configShowVatPercentage

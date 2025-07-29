@@ -14,5 +14,8 @@
     "orderNowPay": "Beställ nu, betala {date} ",
     "paymentTerms": "Betalningsvillkor ",
     "bestPricePalletQty": "Pris vid helpall: {qty}",
-    "palletQty": "Helpallskvantitet: {qty}"
-}   
+    "palletQty": "Helpallskvantitet: {qty}",
+    "discountPrice": "Rabatterat pris",
+    "normalPrice": "Ert pris",
+    "listPrice": "Rek. utpris"
+}

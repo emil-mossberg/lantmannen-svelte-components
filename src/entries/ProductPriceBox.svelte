@@ -49,10 +49,6 @@
     }
 </script>
 
-{#snippet PriceWUnit(price: number, disabledPrice = false)}
-    <Price {price} {priceBoxUnit} {disabledPrice} />
-{/snippet}
-
 {#snippet DiscountBox(text: string)}
     <div
         class="tw-border tw-border-desert tw-text-desert tw-flex tw-justify-center tw-p-1 tw-my-2 tw-font-normal tw-text-xs tw-leading-6"
@@ -69,39 +65,50 @@
 )}
     {@const priceInfo = price.price_info.extension_attributes}
     {@const suffix = withVat ? '_inc_vat' : ''}
-    <!-- NOTE inconsistent naming here -->
+    <!-- NOTE inconsistent naming here from backend -->
     {@const customerPrice =
         priceInfo[withVat ? 'lma_valid_price_inc_vat' : 'lma_customer_price']}
     {@const listPrice = priceInfo[`lma_list_price${suffix}`]}
     {@const profixPrice = priceInfo[`lma_profix_price${suffix}`]}
     {@const campaignPrice = priceInfo[`lma_campaign_price${suffix}`]}
-    {#if bridgeSingleton.showListPrice && priceInfo.lma_list_price}
-        <div>Implement List price header here</div>
-        <!-- TO DO : Add list price header Headers, check template -->
-    {/if}
+    {@const discountPrice = hasDiscountPrice(price)}
+
     <!-- NO VAT PRICE ROW -->
     <div class="tw-flex tw-py-2">
         {#if !isPss}
             <!-- REGULAR PRICE COLUMN -->
-            <div class="tw-w-1/2 tw-mr-4">
-                {#if hasDiscountPrice(price)}
-                    {@render PriceWUnit(campaignPrice)}
+            <div class="tw-flex-1 tw-mr-4">
+                {#if discountPrice}
+                    <Price
+                        price={campaignPrice}
+                        {priceBoxUnit}
+                        isCampaignPrice={true}
+                    />
                 {/if}
-                {@render PriceWUnit(customerPrice, hasDiscountPrice(price))}
+                <Price price={customerPrice} disabledPrice={discountPrice} />
             </div>
         {/if}
         {#if bridgeSingleton.showListPrice && listPrice}
             <!-- LIST PRICE COLUMN -->
-            <div>
+            <div class="tw-flex-1 tw-mr-4">
                 {#if hasProfixPrice(price)}
-                    {@render PriceWUnit(profixPrice)}
+                    <Price
+                        price={profixPrice}
+                        {priceBoxUnit}
+                        isCampaignPrice={true}
+                    />
                 {/if}
-                {@render PriceWUnit(listPrice, hasProfixPrice(price))}
+                <Price
+                    price={listPrice}
+                    headerStyling={false}
+                    {priceBoxUnit}
+                    disabledPrice={hasProfixPrice(price)}
+                />
             </div>
         {/if}
         {#if !isPss || bridgeSingleton.showListPrice}
             <!-- PRICE LABEL COLUMN -->
-            <div class="tw-w-1/2 tw-text-right">
+            <div class="tw-flex-1 tw-mr-4 tw-text-right">
                 <span class="tw-font-normal tw-text-xs tw-leading-6">
                     {vatLabel}
                 </span>
@@ -117,6 +124,26 @@
         !!price.price_info.extension_attributes?.lma_campaign_is_pre_season}
 
     <div class="tw-min-h-[40px] tw-relative">
+        {#if bridgeSingleton.showListPrice && price.price_info.extension_attributes?.lma_list_price}
+            <div class="tw-flex">
+                <div
+                    class="tw-flex-1 tw-mr-4 tw-text-xs tw-leading-6 tw-font-bold"
+                >
+                    {hasDiscountPrice(price)
+                        ? $t('discountPrice')
+                        : $t('normalPrice')}
+                </div>
+                <div
+                    class="tw-flex-1 tw-mr-4 tw-text-xs tw-leading-6 tw-font-bold"
+                >
+                    {price.price_info.extension_attributes?.lma_list_price
+                        ? $t('listPrice')
+                        : ''}
+                </div>
+                <div class="tw-flex-1 tw-mr-4"></div>
+            </div>
+        {/if}
+
         <div class="tw-border-b tw-border-alto">
             {@render PriceRow(price, isPss, false, $t('exclVAT'))}
         </div>

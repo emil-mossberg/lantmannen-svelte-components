@@ -5,9 +5,17 @@
         price: number
         priceBoxUnit?: string
         disabledPrice?: boolean
+        isCampaignPrice?: boolean
+        headerStyling?: boolean
     }
 
-    const { price, priceBoxUnit, disabledPrice = false }: Props = $props()
+    const {
+        price,
+        priceBoxUnit,
+        disabledPrice = false,
+        isCampaignPrice = false,
+        headerStyling = true
+    }: Props = $props()
     const formatMap = {
         fi_FI: {
             code: 'fi-FI',
@@ -29,9 +37,11 @@
     })
 </script>
 
-<div class={`tw-flex tw-items-center ${disabledPrice ? 'tw-line-through' : ''}`}>
+<div
+    class={`tw-flex tw-items-center ${disabledPrice ? 'tw-line-through' : ''}`}
+>
     <span
-        class={`tw-font-lantmannenSerif tw-font-bold tw-text-[1.125rem] tw-leading-[1.2] ${disabledPrice ? 'tw-text-xs tw-leading-6 tw-font-normal' : ''}`}
+        class={`${ headerStyling ? 'tw-font-lantmannenSerif tw-font-bold tw-text-[1.125rem] tw-leading-[1.2]' : 'tw-text-xs tw-leading-6'} ${disabledPrice && 'tw-text-xs tw-leading-6 tw-font-normal'} ${isCampaignPrice && 'tw-text-desert'}`}
     >
         {formattedPrice}
     </span>
