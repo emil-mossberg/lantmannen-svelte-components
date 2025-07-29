@@ -3,40 +3,11 @@ import MagentoSvelteBridge from './MagentoSvelteBridge.svelte'
 import { type CartInformation } from '../../schemas/CartInformation'
 import { type Campaign } from '../../schemas/Campaign'
 
-const tempPSSDummy = [
-    {
-        campaign_id: 'ML12',
-        campaign_name: 'Sträckfilm Betala 251210 Leverans Okt',
-        campaign_period_type: null,
-        campaign_type: 'M4',
-        order_date: '2025-10-25',
-    },
-    {
-        campaign_id: 'ML17',
-        campaign_name: 'Sträckfilm Betala 251210 Leverans Aug',
-        campaign_period_type: null,
-        campaign_type: 'M4',
-        order_date: '2025-08-25',
-    },
-    {
-        campaign_id: 'ML18',
-        campaign_name: 'Sträckfilm Betala 251210 Leverans Sep',
-        campaign_period_type: null,
-        campaign_type: 'M4',
-        order_date: '2025-09-25',
-    },
-    {
-        campaign_id: 'MM01',
-        campaign_name: 'Gödsel 15öre/kg Leverans augusti',
-        campaign_period_type: null,
-        campaign_type: 'M5',
-        order_date: '2025-08-25',
-    },
-]
-
-// TO DO remove for cartInfoing
-function sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms))
+// TO DO move to file or come up with better solution
+type PSSRequest = {
+    id: string
+    quantity: number
+    isBuyable: 1 | 0 // This is odd, not sure better way to write it, it should always be 1 if can call API
 }
 
 class PssFetch {
@@ -44,6 +15,8 @@ class PssFetch {
     public bridge = MagentoSvelteBridge
 
     public cartInfo = $state<null | CartInformation>(null)
+
+    private cache = new Map<string, Campaign>()
 
     constructor() {
         // TO DO pull in setting for checking this not, exists in magento already
@@ -53,18 +26,27 @@ class PssFetch {
         this.cartInfo = info
     }
 
-    // TO DO implement checking if loaded already if not fetch it and save
-    public async fetchPSSCampaigns(id: string) {
+    public async fetchPSSCampaigns(request?: PSSRequest) {
+        const useCache = !!request
+
+        if (request && this.cache.has(request.id)) {
+            return this.cache.get(request.id)!
+        }
+
+        const items = request
+            ? [
+                  {
+                      itemNumber: parseInt(request.id),
+                      quantity: request.quantity,
+                      isBuyable: request.isBuyable,
+                  },
+              ]
+            : []
+
         const body = {
             priceFinderData: {
-                items: [
-                    {
-                        itemNumber: parseInt(id),
-                        quantity: 1,
-                        isBuyable: 1,
-                    },
-                ],
-                customerNumber: this.bridge.customerNumber(), // TO DO double check this always works
+                items,
+                customerNumber: this.bridge.customerNumber(),
                 storeId: this.bridge.storeId,
             },
         }
@@ -87,29 +69,12 @@ class PssFetch {
             // TO DO fix validating with zod
             const data: Campaign = await response.json()
 
-            console.log(data)
-            return data
-        } catch (error) {
-            throw error
-        }
-    }
-
-    public async pssProto(id: string) {
-        try {
-            const response = await fetch(`https://dummyjson.com/products/${id}`)
-            const json = await response.json()
-
-            this.setCartInfo({
-                cart_has_pay_campaign: true,
-                cart_is_empty: false,
-                pay_campaign_id: json.sku,
-                pay_campaign_name: `Payment name ${json.title}`,
-            })
-
-            return {
-                json,
-                tempPSSDummy,
+            if (useCache) {
+                this.cache.set(request.id, data)
             }
+
+            this.setCartInfo(data.cart_information)
+            return data
         } catch (error) {
             throw error
         }

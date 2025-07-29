@@ -8,7 +8,9 @@
     import InfoBox from '../lib/components/InfoBox.svelte'
     import pssFetch from '../lib/stores/PssFetch.svelte'
 
-    import { type Campaign } from '../schemas/Campaign'
+    import { type Campaign, type CampaignItem } from '../schemas/Campaign'
+    import { type DeliveryMethod } from '../schemas/DeliveryMethod'
+    import { type DeliveryAddress } from '../schemas/DeliveryAddress'
 
     import {
         bulkDeliveryMethods,
@@ -22,21 +24,12 @@
         useModal: boolean
         id: string
         prefSalesQuantity: number
+        isBuyable: boolean
         isPSS: boolean
     }
 
-    const { isBulk, useModal, id, prefSalesQuantity, isPSS }: Props = $props()
+    const { isBulk, useModal, id, prefSalesQuantity, isBuyable, isPSS }: Props = $props()
 
-    // TO DO move types?
-    type DeliveryMethod = {
-        delivery_method: string
-        delivery_method_name: string
-    }
-
-    type DeliveryAddress = {
-        address: string
-        adressId: string
-    }
 
     let deliveryMethod = $state<DeliveryMethod | null>(null)
     let deliveryAddress = $state<DeliveryAddress | null>(null)
@@ -60,7 +53,7 @@
 
     let campaignId: string | null = $state(null)
 
-    const disableCampaign = (campaign: Campaign) => {
+    const disableCampaign = (campaign: CampaignItem) => {
         return (
             (pssFetch.cartInfo?.cart_has_pay_campaign &&
                 campaign.campaign_type !== pssFetch.paymentCampaign) ||
@@ -70,7 +63,7 @@
         )
     }
 
-    const getDisabledReasonMessage = (campaigns: Campaign[]) => {
+    const getDisabledReasonMessage = (campaigns: CampaignItem[]) => {
         if (
             pssFetch.cartInfo?.cart_has_pay_campaign &&
             campaigns.filter(
@@ -154,18 +147,17 @@
         </div>
     {/if}
     {#if isPSS && pssPage}
-        <!-- {#await pssFetch.pssProto(id)} -->
-        {#await pssFetch.pssProto('1')}
+        {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQuantity > 1 ? prefSalesQuantity : 1, isBuyable: isBuyable ? 1 : 0 } )}
             <p>Loading PSS Campaign...</p>
         {:then campaign}
-            {@const text = getDisabledReasonMessage(campaign.tempPSSDummy)}
+            {@const text = getDisabledReasonMessage(campaign.items)}
 
             {#if text}
                 <InfoBox {text} />
             {/if}
 
             <ul class="tw-mt-4">
-                {#each campaign.tempPSSDummy as item}
+                {#each campaign.items as item}
                     {@const disabled = disableCampaign(item)}
                     <li
                         class={`tw-p-4 tw-mb-4  tw-flex tw-justify-between tw-items-center tw-relative tw-m-0 tw-border tw-border-alto ${disabled && 'tw-opacity-50'}`}

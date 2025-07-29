@@ -1,9 +1,9 @@
 import BaseFetch from './BaseFetch.svelte'
 import { REST_PRICE, REST_PRICE_GUEST } from '../constants'
-import { type PriceType } from '../../schemas/Price'
+import { type Price } from '../../schemas/Price'
 import singletonFactory from './SingletonFactory'
 
-class PriceFetch extends BaseFetch<PriceType> {
+class PriceFetch extends BaseFetch<Price> {
     protected getUrl(): string {
         return `${window.BASE_URL}${
             this.bridge.isLoggedIn ? REST_PRICE : REST_PRICE_GUEST

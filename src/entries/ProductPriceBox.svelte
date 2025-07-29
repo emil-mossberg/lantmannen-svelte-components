@@ -3,9 +3,9 @@
 
     import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
     import priceFetch from '../lib/stores/PriceFetch.svelte'
-    import Price from '../lib/components/Price.svelte'
+    import PriceShow from '../lib/components/PriceShow.svelte'
 
-    import { type PriceType } from '../schemas/Price'
+    import { type Price } from '../schemas/Price'
 
     type Props = {
         id: string
@@ -37,14 +37,14 @@
             : priceFetch.getPromise(id, prefSalesQty)
     )
 
-    const hasDiscountPrice = (price: PriceType) => {
+    const hasDiscountPrice = (price: Price) => {
         return (
             !!price.price_info.extension_attributes.lma_campaign_price &&
             price.price_info.extension_attributes.lma_campaign_is_pre_season
         )
     }
 
-    const hasProfixPrice = (price: PriceType) => {
+    const hasProfixPrice = (price: Price) => {
         return !!price.price_info.extension_attributes.lma_profix_price
     }
 </script>
@@ -58,7 +58,7 @@
 {/snippet}
 
 {#snippet PriceRow(
-    price: PriceType,
+    price: Price,
     isPss: boolean,
     withVat: boolean,
     vatLabel: string
@@ -78,25 +78,25 @@
         <!-- REGULAR PRICE COLUMN -->
         <div class="tw-flex-1 tw-mr-4">
             {#if discountPrice}
-                <Price
+                <PriceShow
                     price={campaignPrice}
                     {priceBoxUnit}
                     isCampaignPrice={true}
                 />
             {/if}
-            <Price price={customerPrice} disabledPrice={discountPrice} />
+            <PriceShow price={customerPrice} disabledPrice={discountPrice} />
         </div>
         {#if bridgeSingleton.showListPrice && listPrice}
             <!-- LIST PRICE COLUMN -->
             <div class="tw-flex-1 tw-mr-4">
                 {#if hasProfixPrice(price)}
-                    <Price
+                    <PriceShow
                         price={profixPrice}
                         {priceBoxUnit}
                         isCampaignPrice={true}
                     />
                 {/if}
-                <Price
+                <PriceShow
                     price={listPrice}
                     headerStyling={false}
                     {priceBoxUnit}

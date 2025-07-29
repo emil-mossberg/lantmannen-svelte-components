@@ -58,6 +58,7 @@ document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
     const isNew = el.getAttribute('data-product-is-new') === '1'
 
     const isPdpCard = el.getAttribute('data-is-pdp-card') === '1'
+    const isBuyable = el.getAttribute('data-is-buyable') === '1'
 
     const priceBoxUnit = el.getAttribute('data-config-price-box-unit') ?? ''
 
@@ -71,7 +72,8 @@ document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
             isBulkFi,
             qtyIncrement,
             isPdpCard,
-            priceBoxUnit
+            priceBoxUnit,
+            isBuyable
         },
     })
 })

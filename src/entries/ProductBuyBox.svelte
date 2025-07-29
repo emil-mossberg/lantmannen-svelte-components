@@ -8,8 +8,7 @@
 
     import DeliveryWizard from './DeliveryWizard.svelte'
     import QtyIncrement from '../lib/components/QtyIncrement.svelte'
-    import Price from '../lib/components/Price.svelte'
-    import getItems from 'svelte-select/get-items'
+    import PriceShow from '../lib/components/PriceShow.svelte'
 
     type Props = {
         id: string
@@ -20,6 +19,7 @@
         isBulkFi: boolean
         isPdpCard?: boolean
         priceBoxUnit: string
+        isBuyable: boolean
     }
 
     const {
@@ -31,7 +31,9 @@
         isBulkFi,
         isPdpCard = false,
         priceBoxUnit,
+        isBuyable,
     }: Props = $props()
+
 
     // Not using this also means not sending any additional form values to backend, this is why it is disabled if setting is not turn on
     const useModal = $derived(() => {
@@ -63,34 +65,40 @@
 {#await Promise.all([pricePromise, stockPromise])}
     No price or stock yet - add Skeleton
 {:then [price, stock]}
-    {#if price.price_info.extension_attributes.lma_campaign_is_pre_season && isPdpCard}
-        {#await pssFetch.fetchPSSCampaigns(id)}
+    {@const isPss =
+        !!price.price_info.extension_attributes.lma_campaign_is_pre_season}
+    {#if isPss && isPdpCard}
+        {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQuantity > 1 ? prefSalesQuantity : 1, isBuyable: isBuyable ? 1 : 0 } )}
             <p>PSS Spinner</p>
         {:then data}
             <ul>
                 {#each data.items as campaign}
-                    <li class="tw-border tw-flex tw-border-alto tw-p-4 tw-mb-4 tw-justify-between">
+                    <li
+                        class="tw-border tw-flex tw-border-alto tw-p-4 tw-mb-4 tw-justify-between"
+                    >
                         <h6>{campaign.campaign_name}</h6>
-                        <Price
+                        <PriceShow
                             price={campaign.prices[0].price_info
                                 .extension_attributes.lma_campaign_price}
                             isCampaignPrice={true}
                             {priceBoxUnit}
                         />
-                        <span class="tw-text-xs tw-leading-6">{$t('exVAT')}</span>
+                        <span class="tw-text-xs tw-leading-6"
+                            >{$t('exVAT')}</span
+                        >
                     </li>
                 {/each}
             </ul>
         {/await}
     {/if}
     <div class="tw-flex tw-gap-4">
-        <!-- TO DO : Dynamic PSS boolean here -->
         <QtyIncrement {qtyIncrement} {id} />
         <DeliveryWizard
             {isBulk}
-            isPSS={true}
+            isPSS={isPss}
             useModal={useModal()}
             {id}
+            {isBuyable}
             {prefSalesQuantity}
         />
     </div>
