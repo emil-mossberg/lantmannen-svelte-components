@@ -113,11 +113,13 @@
     text: string,
     done: boolean,
     current: boolean,
+    disabled: boolean,
     onclick: () => void
 )}
     <button
         class="tw-flex tw-items-center tw-justify-center tw-gap-3 tw-border-none hover:tw-bg-white hover:tw-border-none  focus:tw-bg-white focus:tw-border-none"
         type="button"
+        {disabled}
         {onclick}
     >
         <div
@@ -137,6 +139,7 @@
                 $t('selectCampaign'),
                 !!campaignId,
                 pssPage,
+                false,
                 () => (pssPage = true)
             )}
             <div class="tw-w-[40px] tw-h-px tw-bg-alto"></div>
@@ -145,6 +148,7 @@
                 $t('selectDeliveryInfo'),
                 false,
                 !pssPage,
+                !campaignId,
                 () => (pssPage = false)
             )}
         </div>

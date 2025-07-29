@@ -1,10 +1,10 @@
 import { REST_STOCK_GUEST } from '../constants'
 import BaseFetch from './BaseFetch.svelte'
-import { type StockType } from '../../schemas/Stock'
+import { type Stock } from '../../schemas/Stock'
 
 import singletonFactory from './SingletonFactory'
 
-class StockFetch extends BaseFetch<StockType> {
+class StockFetch extends BaseFetch<Stock> {
 
     protected getUrl(): string {
         return `${window.BASE_URL}${REST_STOCK_GUEST}`

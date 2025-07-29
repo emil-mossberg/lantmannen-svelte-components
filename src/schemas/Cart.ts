@@ -51,5 +51,5 @@ export const CartSchema = z.object({
   website_id: z.string(),
 });
 
-export type CartItemType = z.infer<typeof CartItemSchema>;
-export type CartType = z.infer<typeof CartSchema>;
+export type CartItem = z.infer<typeof CartItemSchema>;
+export type Cart = z.infer<typeof CartSchema>;

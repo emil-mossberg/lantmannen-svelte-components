@@ -1,5 +1,5 @@
-import { type CartType } from '../../schemas/Cart'
-import { type CustomerInfoType } from '../../schemas/Customer'
+import { type Cart } from '../../schemas/Cart'
+import { type CustomerInfo } from '../../schemas/Customer'
 import { type LocaleCode } from '../../schemas/Locale'
 import singletonFactory from './SingletonFactory'
 
@@ -10,7 +10,8 @@ class MagentoSvelteBridge {
     public readonly storeId: number = Number(this.svelteBridgeData?.storeId)
 
     // TO DO validate this with zod
-    public readonly locale: LocaleCode = this.svelteBridgeData?.locale as LocaleCode
+    public readonly locale: LocaleCode = this.svelteBridgeData
+        ?.locale as LocaleCode
 
     public readonly isLoggedIn: boolean = this.convertToBoolean(
         this.svelteBridgeData?.loggedIn
@@ -36,9 +37,9 @@ class MagentoSvelteBridge {
         this.svelteBridgeData?.configShowExclVatPlp
     )
 
-    public cart = $state<{ value: CartType | null }>({ value: null })
+    public cart = $state<{ value: Cart | null }>({ value: null })
 
-    public customer = $state<{ value: CustomerInfoType | null }>({
+    public customer = $state<{ value: CustomerInfo | null }>({
         value: null,
     })
 

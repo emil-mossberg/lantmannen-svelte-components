@@ -17,4 +17,4 @@ export const StockSchema = z.object({
   unit_measure: z.string(), 
 });
 
-export type StockType = z.infer<typeof StockSchema>;
+export type Stock = z.infer<typeof StockSchema>;
