@@ -87,7 +87,7 @@
 </script>
 
 {#snippet buyButton()}
-    <Button type="submit" class="min-w-[260px]" disabled={enableBuyButton()}
+    <Button fullWidth={true} type="submit" class="min-w-[260px]" disabled={enableBuyButton()}
         >{`Beställ ${isBulk ? ' bulk' : ''}`}</Button
     >
 {/snippet}
@@ -110,7 +110,7 @@
         {#await pssFetch.pssProto('1')}
             <p>Loading PSS Campaign...</p>
         {:then campaign}
-            <div>HERE should the PSS table for selecting</div>
+
             {campaign.json.title}
 
             <ul>

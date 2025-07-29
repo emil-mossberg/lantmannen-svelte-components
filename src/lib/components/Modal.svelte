@@ -39,4 +39,4 @@
     <div>{@render body?.()}</div>
   </div>
 {/if}
-<Button onclick={() => (showModal = true)} type="button">{textButton}</Button>
+<Button onclick={() => (showModal = true)} type="button" fullWidth={true}>{textButton}</Button>

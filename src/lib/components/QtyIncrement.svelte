@@ -67,14 +67,14 @@
 <div class="svelte-component">
     <div class="tw-relative tw-flex tw-rounded">
         {@render qtyButton(
-            'tw-border-t tw-border-b tw-border-l tw-rounded-bl tw-rounded-tl tw-focus:z-20',
+            'tw-border-0 tw-border-t tw-border-b tw-border-l tw-rounded-bl tw-rounded-tl tw-focus:z-20',
             '-',
             decrement,
             qty <= qtyIncrement
         )}
 
         <input
-            class="tw-h-[44px] tw-w-[64px] tw-border tw-border-alto tw-text-center tw-text-[0.75rem] tw-focus:z-10"
+            class="tw-h-[44px] !tw-w-[64px] tw-border tw-border-alto tw-text-center tw-text-[0.75rem] tw-focus:z-10"
             id={`qty-${id}`}
             name="qty"
             type="number"
@@ -84,7 +84,7 @@
         />
 
         {@render qtyButton(
-            'tw-border-t tw-border-b tw-border-r tw-rounded-br tw-rounded-tr',
+            'tw-border-0 tw-border-t tw-border-b tw-border-r tw-rounded-br tw-rounded-tr',
             '+',
             increment
         )}
