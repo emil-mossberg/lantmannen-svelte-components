@@ -37,6 +37,12 @@ class MagentoSvelteBridge {
         this.svelteBridgeData?.configShowExclVatPlp
     )
 
+    public readonly paymentCampaignEnabled: boolean = this.convertToBoolean(
+        this.svelteBridgeData?.configPaymentCampaignEnabled
+    )
+
+    public readonly paymentCampaign: string = this.svelteBridgeData?.configPaymentCampaign as string // TO DO better solution
+
     public cart = $state<{ value: Cart | null }>({ value: null })
 
     public customer = $state<{ value: CustomerInfo | null }>({
@@ -52,6 +58,7 @@ class MagentoSvelteBridge {
         // cart.value = window.MagentoBridgeState.cart;
         // customer.value = window.MagentoBridgeState.customer;
         // TO DO can I DRY this, not use 3 x
+        
         window.addEventListener(
             'magento:cartUpdated',
             this.onCartUpdated.bind(this)

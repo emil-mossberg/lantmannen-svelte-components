@@ -1,23 +1,25 @@
 <script lang="ts">
     import { t } from 'svelte-i18n'
 
-    import Button from '../lib/components/Button.svelte'
-    import SelectWrapper from '../lib/components/SelectWrapper.svelte'
-    import DatePicker from '../lib/components/DatePicker.svelte'
-    import Modal from '../lib/components/Modal.svelte'
-    import InfoBox from '../lib/components/InfoBox.svelte'
-    import pssFetch from '../lib/stores/PssFetch.svelte'
+    import Button from './Button.svelte'
+    import SelectWrapper from './SelectWrapper.svelte'
+    import DatePicker from './DatePicker.svelte'
+    import Modal from './Modal.svelte'
+    import InfoBox from './InfoBox.svelte'
+    import PssList from './PSSList.svelte'
+    import pssFetch from '../stores/PssFetch.svelte'
+    import svelteBridge from '../stores/MagentoSvelteBridge.svelte'
 
-    import { type Campaign, type CampaignItem } from '../schemas/Campaign'
-    import { type DeliveryMethod } from '../schemas/DeliveryMethod'
-    import { type DeliveryAddress } from '../schemas/DeliveryAddress'
+    import { type Campaign, type CampaignItem } from '../../schemas/Campaign'
+    import { type DeliveryMethod } from '../../schemas/DeliveryMethod'
+    import { type DeliveryAddress } from '../../schemas/DeliveryAddress'
 
     import {
         bulkDeliveryMethods,
         packageDeliveryMethods,
         bulkAddress,
         packageAddresses,
-    } from '../dummyData'
+    } from '../../dummyData'
 
     type Props = {
         isBulk: boolean
@@ -26,10 +28,18 @@
         prefSalesQuantity: number
         isBuyable: boolean
         isPSS: boolean
+        priceBoxUnit: string
     }
 
-    const { isBulk, useModal, id, prefSalesQuantity, isBuyable, isPSS }: Props = $props()
-
+    const {
+        isBulk,
+        useModal,
+        id,
+        prefSalesQuantity,
+        isBuyable,
+        isPSS,
+        priceBoxUnit,
+    }: Props = $props()
 
     let deliveryMethod = $state<DeliveryMethod | null>(null)
     let deliveryAddress = $state<DeliveryAddress | null>(null)
@@ -53,21 +63,12 @@
 
     let campaignId: string | null = $state(null)
 
-    const disableCampaign = (campaign: CampaignItem) => {
-        return (
-            (pssFetch.cartInfo?.cart_has_pay_campaign &&
-                campaign.campaign_type !== pssFetch.paymentCampaign) ||
-            (!pssFetch.cartInfo?.cart_has_pay_campaign &&
-                !pssFetch.cartInfo?.cart_is_empty &&
-                campaign.campaign_type === pssFetch.paymentCampaign)
-        )
-    }
-
     const getDisabledReasonMessage = (campaigns: CampaignItem[]) => {
         if (
             pssFetch.cartInfo?.cart_has_pay_campaign &&
             campaigns.filter(
-                (campaign) => campaign.campaign_type != pssFetch.paymentCampaign
+                (campaign) =>
+                    campaign.campaign_type != svelteBridge.paymentCampaign
             )
         ) {
             return $t('M4DisabledCartM4', {
@@ -77,7 +78,8 @@
             !pssFetch.cartInfo?.cart_has_pay_campaign &&
             !pssFetch.cartInfo?.cart_is_empty &&
             campaigns.filter(
-                (campaign) => campaign.campaign_type != pssFetch.paymentCampaign
+                (campaign) =>
+                    campaign.campaign_type != svelteBridge.paymentCampaign
             )
         ) {
             return $t('M4DisabledCartNoM4')
@@ -110,13 +112,13 @@
     onclick: () => void
 )}
     <button
-        class="tw-flex tw-items-center tw-justify-center tw-gap-3 tw-border-none hover:tw-bg-white hover:tw-border-none  focus:tw-bg-white focus:tw-border-none"
+        class="tw-flex tw-items-center tw-justify-center tw-gap-3 tw-border-none hover:tw-bg-white hover:tw-border-none focus:tw-bg-white focus:tw-border-none"
         type="button"
         {disabled}
         {onclick}
     >
         <div
-            class="{`tw-flex tw-items-center tw-justify-center tw-w-[32px] tw-h-[32px] tw-rounded-full tw-border tw-border-charcoal tw-font-bold ${current && 'tw-bg-tannenbaum tw-text-white'} ${done && 'tw-bg-charcoal tw-text-white'}`}"
+            class={`tw-flex tw-items-center tw-justify-center tw-w-[32px] tw-h-[32px] tw-rounded-full tw-border tw-border-charcoal tw-font-bold ${current && 'tw-bg-tannenbaum tw-text-white'} ${done && 'tw-bg-charcoal tw-text-white'}`}
         >
             {count}
         </div>
@@ -155,23 +157,12 @@
             {#if text}
                 <InfoBox {text} />
             {/if}
-
-            <ul class="tw-mt-4">
-                {#each campaign.items as item}
-                    {@const disabled = disableCampaign(item)}
-                    <li
-                        class={`tw-p-4 tw-mb-4  tw-flex tw-justify-between tw-items-center tw-relative tw-m-0 tw-border tw-border-alto ${disabled && 'tw-opacity-50'}`}
-                    >
-                        <h6>{item.campaign_name}</h6>
-                        <input
-                            type="radio"
-                            bind:group={campaignId}
-                            value={item.campaign_id}
-                            {disabled}
-                        />
-                    </li>
-                {/each}
-            </ul>
+            <PssList
+                campaigns={campaign}
+                {priceBoxUnit}
+                bind:campaignId
+                enableRadio={true}
+            />
             <Button
                 fullWidth={true}
                 disabled={!campaignId}

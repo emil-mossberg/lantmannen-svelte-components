@@ -6,9 +6,9 @@
     import pssFetch from '../lib/stores/PssFetch.svelte'
     import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
 
-    import DeliveryWizard from './DeliveryWizard.svelte'
+    import DeliveryWizard from '../lib/components/DeliveryWizard.svelte'
     import QtyIncrement from '../lib/components/QtyIncrement.svelte'
-    import PriceShow from '../lib/components/PriceShow.svelte'
+    import PssList from '../lib/components/PSSList.svelte'
 
     type Props = {
         id: string
@@ -71,24 +71,8 @@
         {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQuantity > 1 ? prefSalesQuantity : 1, isBuyable: isBuyable ? 1 : 0 } )}
             <p>PSS Spinner</p>
         {:then data}
-            <ul>
-                {#each data.items as campaign}
-                    <li
-                        class="tw-border tw-flex tw-border-alto tw-p-4 tw-mb-4 tw-justify-between"
-                    >
-                        <h6>{campaign.campaign_name}</h6>
-                        <PriceShow
-                            price={campaign.prices[0].price_info
-                                .extension_attributes.lma_campaign_price}
-                            isCampaignPrice={true}
-                            {priceBoxUnit}
-                        />
-                        <span class="tw-text-xs tw-leading-6"
-                            >{$t('exVAT')}</span
-                        >
-                    </li>
-                {/each}
-            </ul>
+        <PssList campaigns={data} {priceBoxUnit} />
+            
         {/await}
     {/if}
     <div class="tw-flex tw-gap-4">
@@ -100,6 +84,7 @@
             {id}
             {isBuyable}
             {prefSalesQuantity}
+            {priceBoxUnit}
         />
     </div>
     {#if qtyIncrement > 1}

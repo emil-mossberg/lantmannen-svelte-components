@@ -62,7 +62,10 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
             })
 
             const result: FetchResponse<T> = await response.json()
+            console.log(this.getFetchKey())
+            window.dispatchEvent(new CustomEvent(`${this.getFetchKey()}-fetched`));
 
+            
             const itemsMap = new Map(
                 result.items.map((p) => [String(p[this.getItemKey()]), p])
             )

@@ -11,7 +11,6 @@ type PSSRequest = {
 }
 
 class PssFetch {
-    public paymentCampaign = 'M4' // TO DO move this to where?
     public bridge = MagentoSvelteBridge
 
     public cartInfo = $state<null | CartInformation>(null)
@@ -19,7 +18,17 @@ class PssFetch {
     private cache = new Map<string, Campaign>()
 
     constructor() {
-        // TO DO pull in setting for checking this not, exists in magento already
+
+        // Set this up to check m4 messages if setting is enabled
+        if (this.bridge.paymentCampaignEnabled) {
+            window.addEventListener('magento:cartUpdated', () => {
+                this.fetchPSSCampaigns()
+            })
+
+            window.addEventListener('priceFinderData-fetched', () => {
+                this.fetchPSSCampaigns()
+            })
+        }
     }
 
     setCartInfo(info: CartInformation) {
@@ -66,7 +75,7 @@ class PssFetch {
                 }
             )
 
-            // TO DO fix validating with zod
+            // TO DO fix validating with zod also if its called with empty data then it wont return any data
             const data: Campaign = await response.json()
 
             if (useCache) {
