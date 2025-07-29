@@ -1,6 +1,8 @@
 import { type Cart } from '../../schemas/Cart'
 import { type CustomerInfo } from '../../schemas/Customer'
 import { type LocaleCode } from '../../schemas/Locale'
+import { validateWithSchema } from '../helpers'
+import { localeCodeSchema } from '../../schemas/Locale'
 import singletonFactory from './SingletonFactory'
 
 class MagentoSvelteBridge {
@@ -9,9 +11,7 @@ class MagentoSvelteBridge {
 
     public readonly storeId: number = Number(this.svelteBridgeData?.storeId)
 
-    // TO DO validate this with zod
-    public readonly locale: LocaleCode = this.svelteBridgeData
-        ?.locale as LocaleCode
+    public readonly locale: LocaleCode = validateWithSchema(localeCodeSchema, this.svelteBridgeData?.locale)
 
     public readonly isLoggedIn: boolean = this.convertToBoolean(
         this.svelteBridgeData?.loggedIn
@@ -54,6 +54,7 @@ class MagentoSvelteBridge {
     )
 
     constructor() {
+        console.log(this.locale)
         // TO Do use parser here for type safety?
         // cart.value = window.MagentoBridgeState.cart;
         // customer.value = window.MagentoBridgeState.customer;
