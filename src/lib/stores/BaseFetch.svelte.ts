@@ -15,7 +15,7 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
 
     private queue = new Map<
         string,
-        { quantity: number; resolvers: Resolver<T>[] }
+        { quantity: number; unitMeasure?: string; resolvers: Resolver<T>[] }
     >()
     private timer: ReturnType<typeof setTimeout> | null = null
 
@@ -36,8 +36,18 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
         this.queue.clear()
         this.timer = null
 
+        // const items = Array.from(currentQueue.entries()).map(
+        //     ([itemNumber, { quantity, unitMeasure }]) => ({
+        //                const base = { itemNumber, quantity }
+        //             return unitMeasure ? { ...base, unitMeasure } : base
+        //     })
+        // )
+
         const items = Array.from(currentQueue.entries()).map(
-            ([itemNumber, { quantity }]) => ({ itemNumber, quantity })
+            ([itemNumber, { quantity, unitMeasure }]) => {
+                const base = { itemNumber, quantity }
+                return unitMeasure ? { ...base, unitMeasure } : base
+            }
         )
 
         try {
@@ -83,10 +93,18 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
         }
     }
 
-    public getPromise(productId: string, quantity: number): Promise<T> {
+    public getPromise(
+        productId: string,
+        quantity: number,
+        unitMeasure?: string
+    ): Promise<T> {
         return new Promise((resolve, reject) => {
             if (!this.queue.has(productId)) {
-                this.queue.set(productId, { quantity, resolvers: [] })
+                this.queue.set(productId, {
+                    quantity,
+                    unitMeasure,
+                    resolvers: [],
+                })
             }
 
             const entry = this.queue.get(productId)!

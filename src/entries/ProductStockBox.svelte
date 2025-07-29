@@ -8,13 +8,18 @@
 
     type Props = {
         isBulk: boolean
+        isBulkFi: boolean
         sku: string
         prefSalesQuantity: number
     }
 
-    const { prefSalesQuantity, sku, isBulk }: Props = $props()
+    const { prefSalesQuantity, sku, isBulk, isBulkFi }: Props = $props()
 
-    let stockPromise = $state(stockFetch.getPromise(sku, prefSalesQuantity))
+    let stockPromise = $state(
+        isBulkFi
+            ? stockFetch.getPromise(sku, prefSalesQuantity, 'TO')
+            : stockFetch.getPromise(sku, prefSalesQuantity)
+    )
 </script>
 
 {#await stockPromise}
@@ -32,7 +37,9 @@
             {:else if (isBulk && (stock.in_stock || stock.allow_backorder)) || (!isBulk && stock.in_stock)}
                 <span class="tw-text-xs tw-leading-6">{$t('inStock')}</span>
             {:else if !isBulk && !stock.in_stock && stock.allow_backorder}
-                <span class="tw-text-xs tw-leading-6">{bridgeSingleton.formatDate(stock.in_stock_date)}</span>
+                <span class="tw-text-xs tw-leading-6"
+                    >{bridgeSingleton.formatDate(stock.in_stock_date)}</span
+                >
             {/if}
         </div>
     </div>

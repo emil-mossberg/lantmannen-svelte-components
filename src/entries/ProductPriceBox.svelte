@@ -11,29 +11,31 @@
         id: string
         prefSalesQty: number
         newProduct: boolean
-        packagingType: string | null
-        unitMeasure: string | null
         qtyIncrement: number
         palletDiscountInformation: string | null
         showPalletAttribute: boolean
         priceBoxUnit: string
         prefSalesQtyUnit: string
+        isBulkFi: boolean
     }
 
     const {
         id,
         prefSalesQty,
-        unitMeasure,
-        packagingType,
         newProduct = false,
         qtyIncrement,
         palletDiscountInformation,
         showPalletAttribute,
         priceBoxUnit,
         prefSalesQtyUnit,
+        isBulkFi,
     }: Props = $props()
 
-    let pricePromise = $state(priceFetch.getPromise(id, prefSalesQty))
+    let pricePromise = $state(
+        isBulkFi
+            ? priceFetch.getPromise(id, prefSalesQty, 'TO')
+            : priceFetch.getPromise(id, prefSalesQty)
+    )
 
     const hasDiscountPrice = (price: PriceType) => {
         return (

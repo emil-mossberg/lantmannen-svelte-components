@@ -15,7 +15,7 @@
         prefSalesQuantity: number
         isBulk: boolean
         qtyIncrement: number
-        isBulkInFi?: boolean
+        isBulkFi: boolean
         isPdpCard?: boolean
     }
 
@@ -25,7 +25,7 @@
         sku,
         isBulk,
         qtyIncrement,
-        isBulkInFi = false,
+        isBulkFi,
         isPdpCard = false,
     }: Props = $props()
 
@@ -43,9 +43,17 @@
         return true
     })
 
-    let stockPromise = $state(stockFetch.getPromise(sku, prefSalesQuantity))
+    let stockPromise = $state(
+        isBulkFi
+            ? stockFetch.getPromise(sku, prefSalesQuantity, 'TO')
+            : stockFetch.getPromise(sku, prefSalesQuantity)
+    )
 
-    let pricePromise = $state(priceFetch.getPromise(id, prefSalesQuantity))
+    let pricePromise = $state(
+        isBulkFi
+            ? priceFetch.getPromise(id, prefSalesQuantity, 'TO')
+            : priceFetch.getPromise(id, prefSalesQuantity)
+    )
 </script>
 
 {isPdpCard}
