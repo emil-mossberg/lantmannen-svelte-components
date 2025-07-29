@@ -56,13 +56,16 @@
     )
 </script>
 
-{isPdpCard}
-
 {#await Promise.all([pricePromise, stockPromise])}
     No price or stock yet - add Skeleton
 {:then [price, stock]}
     <!-- TO DO : Switch Check PSS boolean -->
     {#if price.price_cached && isPdpCard}
+        {#await pssFetch.fetchPSSCampaigns(id)}
+            <p>Loading PSS Campaign View table...</p>
+        {:then campaign}
+            DONE
+        {/await}
         {#await pssFetch.pssProto('1')}
             <p>Loading PSS Campaign View table...</p>
         {:then campaign}

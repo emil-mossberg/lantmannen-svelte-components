@@ -5,6 +5,7 @@
     import SelectWrapper from '../lib/components/SelectWrapper.svelte'
     import DatePicker from '../lib/components/DatePicker.svelte'
     import Modal from '../lib/components/Modal.svelte'
+    import InfoBox from '../lib/components/InfoBox.svelte'
     import pssFetch from '../lib/stores/PssFetch.svelte'
 
     import { type Campaign } from '../schemas/Campaign'
@@ -55,29 +56,36 @@
         return !deliveryMethod || !deliveryAddress
     })
 
-    const selectPSS = (campaignId: string) => {
-        console.log('campaignId', campaignId)
-        // TO DO Set up selecting PSS
-        pssSeleced = true
+    let pssPage = $state(true)
+
+    let campaignId: string | null = $state(null)
+
+    const disableCampaign = (campaign: Campaign) => {
+        return (
+            (pssFetch.cartInfo?.cart_has_pay_campaign &&
+                campaign.campaign_type !== pssFetch.paymentCampaign) ||
+            (!pssFetch.cartInfo?.cart_has_pay_campaign &&
+                !pssFetch.cartInfo?.cart_is_empty &&
+                campaign.campaign_type === pssFetch.paymentCampaign)
+        )
     }
 
-    let pssSeleced = $state(false)
-    let pssCampaignHoverId = $state<null | string>(null)
-
-    function getTooltipMessage(item: Campaign) {
+    const getDisabledReasonMessage = (campaigns: Campaign[]) => {
         if (
             pssFetch.cartInfo?.cart_has_pay_campaign &&
-            item.campaign_type !== pssFetch.paymentCampaign
+            campaigns.filter(
+                (campaign) => campaign.campaign_type != pssFetch.paymentCampaign
+            )
         ) {
             return $t('M4DisabledCartM4', {
-                values: { name: item.campaign_name },
+                values: { name: pssFetch.cartInfo.pay_campaign_name },
             })
-        }
-
-        if (
+        } else if (
             !pssFetch.cartInfo?.cart_has_pay_campaign &&
             !pssFetch.cartInfo?.cart_is_empty &&
-            item.campaign_type === pssFetch.paymentCampaign
+            campaigns.filter(
+                (campaign) => campaign.campaign_type != pssFetch.paymentCampaign
+            )
         ) {
             return $t('M4DisabledCartNoM4')
         }
@@ -87,7 +95,11 @@
 </script>
 
 {#snippet buyButton()}
-    <Button fullWidth={true} type="submit" class="min-w-[260px]" disabled={enableBuyButton()}
+    <Button
+        fullWidth={true}
+        type="submit"
+        class="min-w-[260px]"
+        disabled={enableBuyButton()}
         >{`Beställ ${isBulk ? ' bulk' : ''}`}</Button
     >
 {/snippet}
@@ -96,46 +108,80 @@
     {`Beställ ${isBulk ? ' bulk' : ''}`}
 {/snippet}
 
-{#snippet tooltipWarning(text: string)}
-    <span
-        class="tw-absolute tw-z-10 tw-bg-white tw-max-w-[300px] tw-left-1/2 tw--translate-x-1/2 tw-top-6 tw-p-4 tw-border-2 tw-border-cerulean rounded"
+{#snippet stepButton(
+    count: number,
+    text: string,
+    done: boolean,
+    current: boolean,
+    onclick: () => void
+)}
+    <button
+        class="tw-flex tw-items-center tw-justify-center tw-gap-3 tw-border-none hover:tw-bg-white hover:tw-border-none  focus:tw-bg-white focus:tw-border-none"
+        type="button"
+        {onclick}
     >
-        {text}</span
-    >
+        <div
+            class="{`tw-flex tw-items-center tw-justify-center tw-w-[32px] tw-h-[32px] tw-rounded-full tw-border tw-border-charcoal tw-font-bold ${current && 'tw-bg-tannenbaum tw-text-white'} ${done && 'tw-bg-charcoal tw-text-white'}`}"
+        >
+            {count}
+        </div>
+        {text}
+    </button>
 {/snippet}
 
 {#snippet body()}
-    {#if isPSS && !pssSeleced}
+    {#if isPSS}
+        <div class="tw-flex tw-gap-4 tw-justify-center tw-items-center tw-mb-6">
+            {@render stepButton(
+                1,
+                $t('selectCampaign'),
+                !!campaignId,
+                pssPage,
+                () => (pssPage = true)
+            )}
+            <div class="tw-w-[40px] tw-h-px tw-bg-alto"></div>
+            {@render stepButton(
+                2,
+                $t('selectDeliveryInfo'),
+                false,
+                !pssPage,
+                () => (pssPage = false)
+            )}
+        </div>
+    {/if}
+    {#if isPSS && pssPage}
         <!-- {#await pssFetch.pssProto(id)} -->
         {#await pssFetch.pssProto('1')}
             <p>Loading PSS Campaign...</p>
         {:then campaign}
+            {@const text = getDisabledReasonMessage(campaign.tempPSSDummy)}
 
-            {campaign.json.title}
+            {#if text}
+                <InfoBox {text} />
+            {/if}
 
-            <ul>
+            <ul class="tw-mt-4">
                 {#each campaign.tempPSSDummy as item}
+                    {@const disabled = disableCampaign(item)}
                     <li
-                        class="tw-p-4 tw-flex tw-justify-between tw-items-center tw-relative tw-m-0"
-                        onmouseenter={() =>
-                            (pssCampaignHoverId = item.campaign_id)}
-                        onmouseleave={() => (pssCampaignHoverId = null)}
+                        class={`tw-p-4 tw-mb-4  tw-flex tw-justify-between tw-items-center tw-relative tw-m-0 tw-border tw-border-alto ${disabled && 'tw-opacity-50'}`}
                     >
-                        {item.campaign_name}
-                        <Button
-                            onclick={() => {
-                                selectPSS(item.campaign_id)
-                            }}>{$t('select')}</Button
-                        >
-                        {#if item.campaign_id === pssCampaignHoverId}
-                            {@const tooltip = getTooltipMessage(item)}
-                            {#if tooltip}
-                                {@render tooltipWarning(tooltip)}
-                            {/if}
-                        {/if}
+                        <h6>{item.campaign_name}</h6>
+                        <input
+                            type="radio"
+                            bind:group={campaignId}
+                            value={item.campaign_id}
+                            {disabled}
+                        />
                     </li>
                 {/each}
             </ul>
+            <Button
+                fullWidth={true}
+                disabled={!campaignId}
+                onclick={() => (pssPage = false)}
+                >{$t('selectDeliveryInfo')}</Button
+            >
         {/await}
     {:else}
         <SelectWrapper

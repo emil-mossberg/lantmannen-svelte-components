@@ -30,9 +30,9 @@
 <Overlay show={showModal} />
 {#if showModal}
   <div
-    class="tw-fixed tw-top-1/2 tw-left-1/2 tw-transform tw--translate-x-1/2 tw--translate-y-1/2 tw-z-[120] tw-bg-white tw-p-6 tw-border tw-w-[500px]"
+    class="tw-fixed tw-top-1/2 tw-left-1/2 tw-transform tw--translate-x-1/2 tw--translate-y-1/2 tw-z-[120] tw-bg-white tw-p-6 tw-border tw-w-[700px] tw-min-h-[900px]"
   >
-    <div class="tw-flex tw-justify-between mb-4">
+    <div class="tw-flex tw-justify-between tw-mb-4">
       <h5>{@render header?.()}</h5>
       <button class="magento-svelte-button-transparent" onclick={() => (showModal = false)}><IconCross /> </button>
     </div>

@@ -17,5 +17,7 @@
     "palletQty": "Helpallskvantitet: {qty}",
     "discountPrice": "Rabatterat pris",
     "normalPrice": "Ert pris",
-    "listPrice": "Rek. utpris"
+    "listPrice": "Rek. utpris",
+    "selectCampaign": "Välj kampanj",
+    "selectDeliveryInfo": "Välj leveransinfo"
 }

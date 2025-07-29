@@ -36,13 +36,6 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
         this.queue.clear()
         this.timer = null
 
-        // const items = Array.from(currentQueue.entries()).map(
-        //     ([itemNumber, { quantity, unitMeasure }]) => ({
-        //                const base = { itemNumber, quantity }
-        //             return unitMeasure ? { ...base, unitMeasure } : base
-        //     })
-        // )
-
         const items = Array.from(currentQueue.entries()).map(
             ([itemNumber, { quantity, unitMeasure }]) => {
                 const base = { itemNumber, quantity }
