@@ -163,7 +163,7 @@
         <label for="">Leveransdatum:</label>
         <DatePicker
             date="2025-08-03"
-            disabledFrom="2025-08-24"
+            disabledFrom="2025-09-24"
             hoverDistance={3}
             disabledDates={['2025-08-08', '2025-08-15']}
         />

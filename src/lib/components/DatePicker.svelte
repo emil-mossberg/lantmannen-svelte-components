@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { onMount } from 'svelte'
-
+    import { toUtcDateString, toUtcMidnightTimestamp} from '../helpers'
     type Day = {
         date: number
         selected: boolean
@@ -28,13 +27,15 @@
     let offset = $state(0)
     let currentHover = $state('')
 
-    const objdisabledFromEpoc = new Date(disabledFrom).getTime()
+    // Disabled from date UTC timestamp (last millisecond before midnight of disabledFrom day)
+    const objdisabledFromEpoc = toUtcMidnightTimestamp(disabledFrom) - 1
 
-    // Set disable date to day before initial date
+    // Disabled before date UTC timestamp (day before current selected date)
     const objdisabledBeforeEpoc = (() => {
-        const d = new Date(date)
-        d.setDate(d.getDate() - 1)
-        return d.getTime()
+        const [yearStr, monthStr, dayStr] = date.split('-')
+        const dt = new Date(toUtcMidnightTimestamp(date))
+        dt.setUTCDate(dt.getUTCDate() - 1)
+        return dt.getTime()
     })()
 
     // TO DO : localize month and weekdays
@@ -70,18 +71,13 @@
         return viewDate
     })
 
-    const isDateEnabled = (value: string, time: number) => {
+    const isDateEnabled = (time: number) => {
+        const dateString = toUtcDateString(time)
 
-        if (value === '2025-08-24') {
-            console.log(value)
-            console.log('from', objdisabledFromEpoc)
-            console.log('time', time)
-        }
-        
         return (
             time <= objdisabledFromEpoc &&
-            time >= objdisabledBeforeEpoc &&
-            !disabledDates.includes(value)
+            time > objdisabledBeforeEpoc &&
+            !disabledDates.includes(dateString)
         )
     }
 
@@ -119,9 +115,6 @@
         endOfCalendar.setDate(endOffset)
 
         var d = new Date(startOfCalendar.getTime()),
-            // TO DO can I remove this
-            M = viewDate.getMonth(),
-            Y = viewDate.getFullYear(),
             week: Day[] = [],
             weeks = [week]
 
@@ -133,7 +126,7 @@
             var dd = d.getDate(),
                 value = iso(d)
 
-            const enabled = isDateEnabled(value, d.getTime())
+            const enabled = isDateEnabled(toUtcMidnightTimestamp(value))
 
             const isHovered = value === currentHoverIso && enabled
 
@@ -193,20 +186,18 @@
             return
         }
 
-        // TO DO clean up
-        // const formattedDate = inutDateObj.toISOString().slice(0, 10) // 'YYYY-MM-DD'
-        const formattedDate = inutDateObj.toLocaleString().slice(0, 10) // 'YYYY-MM-DD'
+        const formattedDate = inutDateObj.toISOString().slice(0, 10) // 'YYYY-MM-DD'
 
-        console.log('Formatted date', formattedDate)
+        // const formattedDate = inutDateObj.toLocaleString().slice(0, 10) // 'YYYY-MM-DD'
 
         const timestamp = inutDateObj.getTime()
 
-        if (!isDateEnabled(formattedDate, timestamp)) {
+        if (!isDateEnabled(timestamp)) {
             inputDate = date
         } else {
-            // TO DO fix
+            console.log(formattedDate)
             date = formattedDate
-            // inputDate = formattedDate
+            inputDate = formattedDate
         }
     }
 </script>
@@ -224,6 +215,11 @@
     <div class="tw-pb-3">
         <input
             type="text"
+            onkeydown="{(e) => {
+                  if (e.key === 'Enter') {
+            e.preventDefault()
+        }
+            }}"
             bind:value={inputDate}
             onblur={parseValidateAndFormatDate}
         />
@@ -234,18 +230,13 @@
     >
         <thead>
             <tr>
-                <th
-                 class="!tw-px-0 tw-text-left"
-                    >
+                <th class="!tw-px-0 tw-text-left">
                     {@render arrowButton(offset === 0, '◄', () => {
                         go(-1)
                     })}
-                    </th
-                >
+                </th>
                 <th colspan="5" class="tw-text-center">{monthText} {year}</th>
-                <th
-                    class="!tw-px-0 tw-text-right"
-                    >
+                <th class="!tw-px-0 tw-text-right">
                     {@render arrowButton(!canGoForward, '►', () => {
                         go(+1)
                     })}
