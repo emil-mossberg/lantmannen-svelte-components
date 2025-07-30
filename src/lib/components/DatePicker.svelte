@@ -1,5 +1,26 @@
 <script lang="ts">
-    import { toUtcDateString, toUtcMidnightTimestamp} from '../helpers'
+    import { toUtcDateString, toUtcMidnightTimestamp } from '../helpers'
+    import { t } from 'svelte-i18n'
+
+    import IconArrow from '../Icons/icon-arrow.svg'
+
+    const DAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'] as const
+
+    const MONTHS = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+    ] as const
+
     type Day = {
         date: number
         selected: boolean
@@ -10,14 +31,14 @@
 
     // All dates are on the format string format XXXX-XX-XX
     type Props = {
-        date: string // TO DO rename to delivery date? since its the bindable
+        deliveryDate: string
         hoverDistance: number
         disabledDates?: string[]
         disabledFrom: string
     }
 
     let {
-        date = $bindable(),
+        deliveryDate = $bindable(),
         disabledFrom,
         disabledDates = [],
         hoverDistance = 1,
@@ -32,14 +53,10 @@
 
     // Disabled before date UTC timestamp (day before current selected date)
     const objdisabledBeforeEpoc = (() => {
-        const dt = new Date(toUtcMidnightTimestamp(date))
+        const dt = new Date(toUtcMidnightTimestamp(deliveryDate))
         dt.setUTCDate(dt.getUTCDate() - 1)
         return dt.getTime()
     })()
-
-    // TO DO : localize month and weekdays
-    let days = 'Mo|Tu|We|Th|Fr|Sa|Su'.split('|')
-    let months = 'Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec'.split('|')
 
     // Converts a Date obj to XXXX-XX-XX
     const iso = (date: Date) => {
@@ -54,7 +71,7 @@
     }
 
     const selectDate = (newValue: string) => {
-        date = newValue
+        deliveryDate = newValue
         offset = 0
     }
 
@@ -64,7 +81,7 @@
 
     // Derived from current selected date and offset, used to generate curently displayed grid of dates
     let viewDate = $derived.by(() => {
-        let viewDate = new Date(date)
+        let viewDate = new Date(deliveryDate)
 
         viewDate.setMonth(viewDate.getMonth() + offset)
         return viewDate
@@ -84,8 +101,6 @@
         const START = 1 // Start week on monday
 
         const startOfCalendar = new Date(viewDate.getTime())
-
-        // TO DO understand how this aligns back to first visible in month even if before the month
 
         // Set to first day of month
         startOfCalendar.setDate(1)
@@ -141,7 +156,7 @@
 
             const day = {
                 date: dd,
-                selected: date === value,
+                selected: deliveryDate === value,
                 enabled,
                 highlight,
                 value,
@@ -161,7 +176,7 @@
     })
 
     let monthText = $derived.by(() => {
-        return months[viewDate.getMonth()]
+        return $t(MONTHS[viewDate.getMonth()])
     })
 
     const year = $derived.by(() => viewDate.getFullYear())
@@ -175,38 +190,42 @@
         return nextMonthStart.getTime() < objdisabledFromEpoc
     })
 
-    let inputDate = $state(date)
+    let inputDate = $state(deliveryDate)
 
     function parseValidateAndFormatDate() {
         const inutDateObj = new Date(inputDate)
 
         if (isNaN(inutDateObj.getTime())) {
-            inputDate = date
+            inputDate = deliveryDate
             return
         }
 
-        const formattedDate = inutDateObj.toISOString().slice(0, 10) // 'YYYY-MM-DD'
+        const formattedDate = inutDateObj.toISOString().slice(0, 10) // Give date format 'YYYY-MM-DD'
 
         // const formattedDate = inutDateObj.toLocaleString().slice(0, 10) // 'YYYY-MM-DD'
 
         const timestamp = inutDateObj.getTime()
 
         if (!isDateEnabled(timestamp)) {
-            inputDate = date
+            inputDate = deliveryDate
         } else {
-            console.log(formattedDate)
-            date = formattedDate
+            deliveryDate = formattedDate
             inputDate = formattedDate
         }
     }
 </script>
 
-{#snippet arrowButton(disabled: boolean, text: string, onclick: () => void)}
-    <button
-        type="button"
-        {onclick}
-        {disabled}
-        class={`${'disabled:tw-opacity-50'}`}>{text}</button
+{#snippet arrowButton(
+    disabled: boolean,
+    onclick: () => void,
+    leftArrow: boolean = false
+)}
+    <button type="button" {onclick} {disabled} class="tw-clear-button">
+        <img
+            src={IconArrow}
+            alt="arrow icon"
+            class={`tw-h-[20px] ${leftArrow && 'tw--rotate-180'}`}
+        /></button
     >
 {/snippet}
 
@@ -214,11 +233,11 @@
     <div class="tw-pb-3">
         <input
             type="text"
-            onkeydown="{(e) => {
-                  if (e.key === 'Enter') {
-            e.preventDefault()
-        }
-            }}"
+            onkeydown={(e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault()
+                }
+            }}
             bind:value={inputDate}
             onblur={parseValidateAndFormatDate}
         />
@@ -230,29 +249,33 @@
         <thead>
             <tr>
                 <th class="!tw-px-0 tw-text-left">
-                    {@render arrowButton(offset === 0, '◄', () => {
-                        go(-1)
-                    })}
+                    {@render arrowButton(
+                        offset === 0,
+                        () => {
+                            go(-1)
+                        },
+                        true
+                    )}
                 </th>
                 <th colspan="5" class="tw-text-center">{monthText} {year}</th>
                 <th class="!tw-px-0 tw-text-right">
-                    {@render arrowButton(!canGoForward, '►', () => {
+                    {@render arrowButton(!canGoForward, () => {
                         go(+1)
                     })}
                 </th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                {#each days as day}
-                    <th>{day}</th>
+            <tr class="!tw-bg-white">
+                {#each DAYS as day}
+                    <th>{$t(day)}</th>
                 {/each}
             </tr>
             {#each weeksFrom as week}
-                <tr>
+                <tr class="!tw-bg-white">
                     {#each week as day}
                         <td
-                            class={`tw-w-[60px] tw-h-[60px]  ${day.selected && 'tw-text-green-pea tw-border tw-border-green-pea tw-font-bold'} ${!day.enabled && 'tw-opacity-20'} ${day.highlight && 'tw-bg-green-pea tw-text-white tw-font-bold'}`}
+                            class={`!tw-align-middle ${day.selected && 'tw-text-green-pea tw-border tw-border-green-pea tw-font-bold'} ${!day.enabled && 'tw-opacity-20'} ${day.highlight && 'tw-bg-green-pea tw-text-white tw-font-bold'}`}
                             onclick={() => selectDate(day.value)}
                             onmouseenter={() => (currentHover = day.value)}
                             onmouseleave={() => (currentHover = '')}

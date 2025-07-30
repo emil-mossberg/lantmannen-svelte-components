@@ -57,6 +57,7 @@
     })
 
     let pssPage = $state(true)
+    let deliveryDate = $state('2025-08-03')
 
     let campaignId: string | null = $state(null)
 </script>
@@ -161,16 +162,18 @@
             placeholder="Valj leveransaddress"
         />
         <label for="">Leveransdatum:</label>
-        <DatePicker
-            date="2025-08-03"
+        <div class="tw-mb-6">
+            <DatePicker
+            bind:deliveryDate={deliveryDate}
             disabledFrom="2025-09-24"
             hoverDistance={3}
             disabledDates={['2025-08-08', '2025-08-15']}
         />
+        </div>
+        
         {@render buyButton()}
     {/if}
 {/snippet}
-
 {#if useModal}
     <Modal textButton="Köp produkten" {header} {body} bind:showModal />
 {:else}

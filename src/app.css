@@ -5,6 +5,15 @@
 @tailwind utilities;
 
 
+
+
+@layer utilities {
+  /* Used to clear styling on button that has inner visual elements */
+  .tw-clear-button {
+    @apply tw-border-none hover:tw-bg-transparent hover:tw-border-none focus:tw-bg-transparent focus:tw-border-none disabled:tw-opacity-50;
+  }
+}
+
 .tw-s-overlay {
   opacity: .4;
 }
