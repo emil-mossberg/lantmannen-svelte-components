@@ -32,7 +32,6 @@
 
     // Disabled before date UTC timestamp (day before current selected date)
     const objdisabledBeforeEpoc = (() => {
-        const [yearStr, monthStr, dayStr] = date.split('-')
         const dt = new Date(toUtcMidnightTimestamp(date))
         dt.setUTCDate(dt.getUTCDate() - 1)
         return dt.getTime()
