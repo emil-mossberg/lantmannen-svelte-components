@@ -19,5 +19,7 @@
     "normalPrice": "Ert pris",
     "listPrice": "Rek. utpris",
     "selectCampaign": "Välj kampanj",
-    "selectDeliveryInfo": "Välj leveransinfo"
+    "selectDeliveryInfo": "Välj leveransinfo",
+    "order" : "Beställ {type}",
+    "bulk" : "bulk"
 }

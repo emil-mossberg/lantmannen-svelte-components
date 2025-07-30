@@ -95,12 +95,12 @@
         type="submit"
         class="min-w-[260px]"
         disabled={enableBuyButton()}
-        >{`Beställ ${isBulk ? ' bulk' : ''}`}</Button
+        >{$t('order', { values: { type: isBulk ? $t('bulk') : '' } })}</Button
     >
 {/snippet}
 
 {#snippet header()}
-    {`Beställ ${isBulk ? ' bulk' : ''}`}
+    {$t('order', { values: { type: isBulk ? $t('bulk') : '' } })}
 {/snippet}
 
 {#snippet stepButton(

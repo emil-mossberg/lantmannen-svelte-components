@@ -22,7 +22,6 @@
         component: TComponent,
         props: ComponentProps<TComponent>
     ) {
-        // TO DO what can I do here now?
     }
 
     withProps(Dynamic, { label: 'bar' })

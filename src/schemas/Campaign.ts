@@ -7,10 +7,10 @@ import { StockSchema } from './Stock'
 export const CampaignItemSchema = z.object({
     campaign_id: z.string(),
     campaign_name: z.string(),
-    campaign_period_type: z.null(), // or z.string().nullable() if it might become a string
+    campaign_period_type:  z.string().nullable(), 
     campaign_type: z.string(),
-    order_date: z.string(), // optionally use z.coerce.date() if you want to parse it
-    period: z.string().nullable(), // TO DO fix this, dont think its string
+    order_date: z.string(), 
+    period: z.string().nullable(), 
     prices: z.array(PriceSchema),
     stocks: z.array(StockSchema),
 })
