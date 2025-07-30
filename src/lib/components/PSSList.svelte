@@ -3,6 +3,7 @@
     import svelteBridge from '../stores/MagentoSvelteBridge.svelte'
 
     import PriceShow from './PriceShow.svelte'
+    import InfoBox from './InfoBox.svelte'
 
     import { type Campaign, type CampaignItem } from '../../schemas/Campaign'
 
@@ -20,6 +21,7 @@
         enableRadio = false,
     }: Props = $props()
 
+    // TO DO can I DRY this and next function, has shared logic
     const disableCampaign = (item: CampaignItem, campaign: Campaign) => {
         return (
             (campaign.cart_information.cart_has_pay_campaign &&
@@ -32,21 +34,21 @@
         )
     }
 
-        const getDisabledReasonMessage = (campaigns: CampaignItem[]) => {
+    const getDisabledReasonMessage = (campaign: Campaign) => {
         if (
-            pssFetch.cartInfo?.cart_has_pay_campaign &&
-            campaigns.filter(
+            campaign.cart_information.cart_has_pay_campaign &&
+            campaign.items.filter(
                 (campaign) =>
                     campaign.campaign_type != svelteBridge.paymentCampaign
             )
         ) {
             return $t('M4DisabledCartM4', {
-                values: { name: pssFetch.cartInfo.pay_campaign_name },
+                values: { name: campaign.cart_information.pay_campaign_name },
             })
         } else if (
-            !pssFetch.cartInfo?.cart_has_pay_campaign &&
-            !pssFetch.cartInfo?.cart_is_empty &&
-            campaigns.filter(
+            !campaign.cart_information.cart_has_pay_campaign &&
+            !campaign.cart_information.cart_is_empty &&
+            campaign.items.filter(
                 (campaign) =>
                     campaign.campaign_type != svelteBridge.paymentCampaign
             )
@@ -56,9 +58,18 @@
 
         return null
     }
+
+    // TO DO change to derived
+    const text = $state(getDisabledReasonMessage(campaigns))
 </script>
-<div>LIST HERE</div>
+
 <ul class="tw-mt-4">
+    {#if text}
+        <div class="tw-mb-4">
+            <InfoBox {text} />
+        </div>
+        
+    {/if}
     {#each campaigns.items as item}
         {@const disabled = disableCampaign(item, campaigns)}
         <li

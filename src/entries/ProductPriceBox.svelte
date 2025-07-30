@@ -3,7 +3,9 @@
 
     import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
     import priceFetch from '../lib/stores/PriceFetch.svelte'
+    import pssFetch from '../lib/stores/PssFetch.svelte';
     import PriceShow from '../lib/components/PriceShow.svelte'
+    
 
     import { type Price } from '../schemas/Price'
 
@@ -120,7 +122,6 @@
 {:then price}
     {@const isPss =
         !!price.price_info.extension_attributes?.lma_campaign_is_pre_season}
-
     <div class="tw-min-h-[40px] tw-relative">
         {#if bridgeSingleton.showListPrice && price.price_info.extension_attributes?.lma_list_price}
             <div class="tw-flex">

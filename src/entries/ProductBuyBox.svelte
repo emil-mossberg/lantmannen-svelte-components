@@ -9,6 +9,7 @@
     import DeliveryWizard from '../lib/components/DeliveryWizard.svelte'
     import QtyIncrement from '../lib/components/QtyIncrement.svelte'
     import PssList from '../lib/components/PSSList.svelte'
+    import InfoBox from '../lib/components/InfoBox.svelte'
 
     type Props = {
         id: string
@@ -33,7 +34,6 @@
         priceBoxUnit,
         isBuyable,
     }: Props = $props()
-
 
     // Not using this also means not sending any additional form values to backend, this is why it is disabled if setting is not turn on
     const useModal = $derived(() => {
@@ -67,12 +67,20 @@
 {:then [price, stock]}
     {@const isPss =
         !!price.price_info.extension_attributes.lma_campaign_is_pre_season}
+
+    {#if isPss && pssFetch.cartInfo?.cart_has_pay_campaign}
+        <InfoBox
+            text={$t('M4DisabledCartM4', {
+                values: { name: pssFetch.cartInfo.pay_campaign_name },
+            })}
+        />
+    {/if}
+
     {#if isPss && isPdpCard}
         {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQuantity > 1 ? prefSalesQuantity : 1, isBuyable: isBuyable ? 1 : 0 } )}
             <p>PSS Spinner</p>
         {:then data}
-        <PssList campaigns={data} {priceBoxUnit} />
-            
+            <PssList campaigns={data} {priceBoxUnit} />
         {/await}
     {/if}
     <div class="tw-flex tw-gap-4">

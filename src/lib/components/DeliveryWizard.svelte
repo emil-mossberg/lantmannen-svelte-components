@@ -5,12 +5,9 @@
     import SelectWrapper from './SelectWrapper.svelte'
     import DatePicker from './DatePicker.svelte'
     import Modal from './Modal.svelte'
-    import InfoBox from './InfoBox.svelte'
     import PssList from './PSSList.svelte'
     import pssFetch from '../stores/PssFetch.svelte'
-    import svelteBridge from '../stores/MagentoSvelteBridge.svelte'
 
-    import { type Campaign, type CampaignItem } from '../../schemas/Campaign'
     import { type DeliveryMethod } from '../../schemas/DeliveryMethod'
     import { type DeliveryAddress } from '../../schemas/DeliveryAddress'
 
@@ -62,31 +59,6 @@
     let pssPage = $state(true)
 
     let campaignId: string | null = $state(null)
-
-    const getDisabledReasonMessage = (campaigns: CampaignItem[]) => {
-        if (
-            pssFetch.cartInfo?.cart_has_pay_campaign &&
-            campaigns.filter(
-                (campaign) =>
-                    campaign.campaign_type != svelteBridge.paymentCampaign
-            )
-        ) {
-            return $t('M4DisabledCartM4', {
-                values: { name: pssFetch.cartInfo.pay_campaign_name },
-            })
-        } else if (
-            !pssFetch.cartInfo?.cart_has_pay_campaign &&
-            !pssFetch.cartInfo?.cart_is_empty &&
-            campaigns.filter(
-                (campaign) =>
-                    campaign.campaign_type != svelteBridge.paymentCampaign
-            )
-        ) {
-            return $t('M4DisabledCartNoM4')
-        }
-
-        return null
-    }
 </script>
 
 {#snippet buyButton()}
@@ -152,11 +124,6 @@
         {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQuantity > 1 ? prefSalesQuantity : 1, isBuyable: isBuyable ? 1 : 0 } )}
             <p>Loading PSS Campaign...</p>
         {:then campaign}
-            {@const text = getDisabledReasonMessage(campaign.items)}
-
-            {#if text}
-                <InfoBox {text} />
-            {/if}
             <PssList
                 campaigns={campaign}
                 {priceBoxUnit}
