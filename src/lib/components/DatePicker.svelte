@@ -1,9 +1,20 @@
 <script lang="ts">
+    import { onMount } from 'svelte'
+
+    type Day = {
+        date: number
+        selected: boolean
+        enabled: boolean
+        highlight: boolean
+        value: string
+    }
+
+    // All dates are on the format string format XXXX-XX-XX
     type Props = {
-        date: string
+        date: string // TO DO rename to delivery date? since its the bindable
         hoverDistance: number
         disabledDates?: string[]
-        disabledFrom: string // TO DO : should also be numerical?
+        disabledFrom: string
     }
 
     let {
@@ -13,17 +24,25 @@
         hoverDistance = 1,
     }: Props = $props()
 
+    // Offset in date picker view in months from date
     let offset = $state(0)
     let currentHover = $state('')
 
-    const objdisabledFrom = new Date(disabledFrom)
-    const objdisabledFromEpoc = objdisabledFrom.getTime()
+    const objdisabledFromEpoc = new Date(disabledFrom).getTime()
+
+    // Set disable date to day before initial date
+    const objdisabledBeforeEpoc = (() => {
+        const d = new Date(date)
+        d.setDate(d.getDate() - 1)
+        return d.getTime()
+    })()
 
     // TO DO : localize month and weekdays
     let days = 'Mo|Tu|We|Th|Fr|Sa|Su'.split('|')
     let months = 'Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec'.split('|')
 
-    function iso(date: Date) {
+    // Converts a Date obj to XXXX-XX-XX
+    const iso = (date: Date) => {
         const pad = (n: number) => (n < 10 ? '0' + n : n)
         return (
             date.getFullYear() +
@@ -34,15 +53,16 @@
         )
     }
 
-    function selectDate(newValue: string) {
+    const selectDate = (newValue: string) => {
         date = newValue
         offset = 0
     }
 
-    function go(direction: number) {
+    const go = (direction: number) => {
         offset = offset + direction
     }
 
+    // Derived from current selected date and offset, used to generate curently displayed grid of dates
     let viewDate = $derived.by(() => {
         let viewDate = new Date(date)
 
@@ -50,16 +70,19 @@
         return viewDate
     })
 
-    type Day = {
-        date: number
-        selected: boolean
-        enabled: boolean
-        highlight: boolean
-        value: string
-    }
-
     const isDateEnabled = (value: string, time: number) => {
-        return time < objdisabledFromEpoc && !disabledDates.includes(value)
+
+        if (value === '2025-08-24') {
+            console.log(value)
+            console.log('from', objdisabledFromEpoc)
+            console.log('time', time)
+        }
+        
+        return (
+            time <= objdisabledFromEpoc &&
+            time >= objdisabledBeforeEpoc &&
+            !disabledDates.includes(value)
+        )
     }
 
     let weeksFrom = $derived.by(() => {
@@ -76,7 +99,7 @@
             startOfCalendar.getDate() +
             ((START - startOfCalendar.getDay() - 7) % 7)
 
-        // Adjust to first day of week that above day is in in
+        // Adjust to first day of week that the month is in
         startOfCalendar.setDate(dayOffset)
 
         let endOfCalendar = new Date(viewDate.getTime())
@@ -89,19 +112,20 @@
             ).getDate()
         )
 
+        // Adjust to last day of week that the month is in
         const endOffset =
             endOfCalendar.getDate() + ((START - endOfCalendar.getDay() + 6) % 7)
 
         endOfCalendar.setDate(endOffset)
 
         var d = new Date(startOfCalendar.getTime()),
+            // TO DO can I remove this
             M = viewDate.getMonth(),
             Y = viewDate.getFullYear(),
             week: Day[] = [],
             weeks = [week]
 
-        const currentHoverDate = new Date(currentHover)
-        const currentHoverIso = iso(currentHoverDate)
+        const currentHoverIso = iso(new Date(currentHover))
 
         let highlightRemaining = 0
 
@@ -144,7 +168,7 @@
         return weeks
     })
 
-    let month = $derived.by(() => {
+    let monthText = $derived.by(() => {
         return months[viewDate.getMonth()]
     })
 
@@ -187,6 +211,15 @@
     }
 </script>
 
+{#snippet arrowButton(disabled: boolean, text: string, onclick: () => void)}
+    <button
+        type="button"
+        {onclick}
+        {disabled}
+        class={`${'disabled:tw-opacity-50'}`}>{text}</button
+    >
+{/snippet}
+
 <div>
     <div class="tw-pb-3">
         <input
@@ -201,21 +234,22 @@
     >
         <thead>
             <tr>
-                <th colspan="5">{month} {year}</th>
                 <th
-                    ><button type="button" onclick={() => go(-1)}
-                        >&#9664;</button
-                    ></th
+                 class="!tw-px-0 tw-text-left"
+                    >
+                    {@render arrowButton(offset === 0, '◄', () => {
+                        go(-1)
+                    })}
+                    </th
                 >
+                <th colspan="5" class="tw-text-center">{monthText} {year}</th>
                 <th
-                    ><button
-                        type="button"
-                        onclick={() => go(+1)}
-                        disabled={!canGoForward}
-                        class={`${'disabled:tw-opacity-50'}`}
-                        >&#9654;</button
-                    ></th
-                >
+                    class="!tw-px-0 tw-text-right"
+                    >
+                    {@render arrowButton(!canGoForward, '►', () => {
+                        go(+1)
+                    })}
+                </th>
             </tr>
         </thead>
         <tbody>

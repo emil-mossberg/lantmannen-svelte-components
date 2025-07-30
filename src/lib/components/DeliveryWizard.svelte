@@ -162,10 +162,10 @@
         />
         <label for="">Leveransdatum:</label>
         <DatePicker
-            date="2025-06-12"
-            disabledFrom="2025-06-24"
+            date="2025-08-03"
+            disabledFrom="2025-08-24"
             hoverDistance={3}
-            disabledDates={['2025-06-08', '2025-06-15']}
+            disabledDates={['2025-08-08', '2025-08-15']}
         />
         {@render buyButton()}
     {/if}

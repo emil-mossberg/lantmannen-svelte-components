@@ -21,5 +21,6 @@
     "selectCampaign": "Välj kampanj",
     "selectDeliveryInfo": "Välj leveransinfo",
     "order" : "Beställ {type}",
-    "bulk" : "bulk"
+    "bulk" : "bulk",
+    "availability": "Tillgänglighet"
 }
