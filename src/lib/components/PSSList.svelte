@@ -13,19 +13,51 @@
         priceBoxUnit: string
     }
 
-    let { campaigns, campaignId = $bindable(), priceBoxUnit, enableRadio = false }: Props = $props()
+    let {
+        campaigns,
+        campaignId = $bindable(),
+        priceBoxUnit,
+        enableRadio = false,
+    }: Props = $props()
 
     const disableCampaign = (item: CampaignItem, campaign: Campaign) => {
         return (
             (campaign.cart_information.cart_has_pay_campaign &&
-                item.campaign_type !== svelteBridge.paymentCampaign) ||
+                (item.campaign_type !== svelteBridge.paymentCampaign ||
+                    campaign.cart_information.pay_campaign_id !==
+                        item.campaign_id)) ||
             (!campaign.cart_information.cart_has_pay_campaign &&
                 !campaign.cart_information.cart_is_empty &&
                 item.campaign_type === svelteBridge.paymentCampaign)
         )
     }
-</script>
 
+        const getDisabledReasonMessage = (campaigns: CampaignItem[]) => {
+        if (
+            pssFetch.cartInfo?.cart_has_pay_campaign &&
+            campaigns.filter(
+                (campaign) =>
+                    campaign.campaign_type != svelteBridge.paymentCampaign
+            )
+        ) {
+            return $t('M4DisabledCartM4', {
+                values: { name: pssFetch.cartInfo.pay_campaign_name },
+            })
+        } else if (
+            !pssFetch.cartInfo?.cart_has_pay_campaign &&
+            !pssFetch.cartInfo?.cart_is_empty &&
+            campaigns.filter(
+                (campaign) =>
+                    campaign.campaign_type != svelteBridge.paymentCampaign
+            )
+        ) {
+            return $t('M4DisabledCartNoM4')
+        }
+
+        return null
+    }
+</script>
+<div>LIST HERE</div>
 <ul class="tw-mt-4">
     {#each campaigns.items as item}
         {@const disabled = disableCampaign(item, campaigns)}

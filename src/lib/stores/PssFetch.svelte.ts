@@ -3,6 +3,8 @@ import MagentoSvelteBridge from './MagentoSvelteBridge.svelte'
 import { type CartInformation } from '../../schemas/CartInformation'
 import { type Campaign } from '../../schemas/Campaign'
 
+
+
 // TO DO move to file or come up with better solution
 type PSSRequest = {
     id: string
