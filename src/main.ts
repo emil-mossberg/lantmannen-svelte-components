@@ -3,12 +3,15 @@ import './app.css'
 
 import { setupI18n } from './lib/localization'
 
+import svelteBridge from './lib/stores/MagentoSvelteBridge.svelte'
+
 import SvelteTester from './entries/SvelteTester.svelte'
 import ProductBuyBox from './entries/ProductBuyBox.svelte'
 import ProductPriceBox from './entries/ProductPriceBox.svelte'
 import ProductStockBox from './entries/ProductStockBox.svelte'
 import CheckoutAcess from './entries/CheckoutAcess.svelte'
 import StickyMessages from './entries/StickyMessages.svelte'
+
 
 setupI18n()
 

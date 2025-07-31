@@ -5,6 +5,10 @@ import { validateWithSchema } from '../helpers'
 import { localeCodeSchema } from '../../schemas/Locale'
 import singletonFactory from './SingletonFactory'
 
+
+// Note for this class to work there must be a element in Magento with id svelte-information, 
+// that contains all the data attribute needed by the class
+
 class MagentoSvelteBridge {
     private svelteBridgeData =
         document.getElementById('svelte-information')?.dataset
@@ -54,7 +58,6 @@ class MagentoSvelteBridge {
     )
 
     constructor() {
-        console.log(this.locale)
         // TO Do use parser here for type safety?
         // cart.value = window.MagentoBridgeState.cart;
         // customer.value = window.MagentoBridgeState.customer;

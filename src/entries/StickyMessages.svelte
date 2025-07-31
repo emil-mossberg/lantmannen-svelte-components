@@ -14,3 +14,6 @@
         })}
     />
 {/if}
+<InfoBox
+        text={'test test test'}
+    />

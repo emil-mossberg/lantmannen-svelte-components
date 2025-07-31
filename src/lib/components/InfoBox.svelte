@@ -10,7 +10,7 @@
 </script>
 
 <div
-    class="tw-border-2 tw-border-cerulean tw-rounded tw-p-4 tw-shadow-lg tw-flex tw-gap-2 tw-items-center"
+    class="tw-border-2 tw-border-cerulean tw-rounded tw-p-4 tw-shadow-lm tw-flex tw-gap-2 tw-items-center"
 >
     <img src={IconInfo} alt="info icon" />
     {text}

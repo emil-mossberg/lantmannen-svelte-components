@@ -85,7 +85,7 @@
     onclick: () => void
 )}
     <button
-        class="tw-flex tw-items-center tw-justify-center tw-gap-3 tw-border-none hover:tw-bg-white hover:tw-border-none focus:tw-bg-white focus:tw-border-none"
+        class="tw-flex tw-items-center tw-justify-center tw-gap-3 tw-clear-button"
         type="button"
         {disabled}
         {onclick}
@@ -164,13 +164,13 @@
         <label for="">Leveransdatum:</label>
         <div class="tw-mb-6">
             <DatePicker
-            bind:deliveryDate={deliveryDate}
-            disabledFrom="2025-09-24"
-            hoverDistance={3}
-            disabledDates={['2025-08-08', '2025-08-15']}
-        />
+                bind:deliveryDate
+                disabledFrom="2025-09-24"
+                hoverDistance={3}
+                disabledDates={['2025-08-08', '2025-08-15']}
+            />
         </div>
-        
+
         {@render buyButton()}
     {/if}
 {/snippet}
