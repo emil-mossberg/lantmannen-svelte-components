@@ -11,6 +11,8 @@
     import PssList from '../lib/components/PSSList.svelte'
     import InfoBox from '../lib/components/InfoBox.svelte'
 
+    import { type BuyBoxProps } from '../schemas/BuyProps'
+
     type Props = {
         id: string
         sku: string
