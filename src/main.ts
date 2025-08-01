@@ -11,7 +11,7 @@ import ProductPriceBox from './entries/ProductPriceBox.svelte'
 import ProductStockBox from './entries/ProductStockBox.svelte'
 import CheckoutAcess from './entries/CheckoutAcess.svelte'
 import StickyMessages from './entries/StickyMessages.svelte'
-import { ProductStockSchema } from './schemas/ProductStock'
+import { StockPropsSchema } from './schemas/StockProps'
 
 import { extractDataAttributes } from './lib/helpers'
 
@@ -138,7 +138,7 @@ document.querySelectorAll('[id^="svelte-product-stock-box-"]').forEach((el) => {
         'packaging-type-se',
     ])
 
-    const parsed = ProductStockSchema.safeParse(rawProps)
+    const parsed = StockPropsSchema.safeParse(rawProps)
 
     if (!parsed.success) {
         console.error(

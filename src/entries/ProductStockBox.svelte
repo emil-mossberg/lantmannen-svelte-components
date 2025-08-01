@@ -6,16 +6,9 @@
 
     import IconStock from '../lib/Icons/in-stock.svg'
 
-    import { type ProductStock } from '../schemas/ProductStock';
+    import { type StockProps } from '../schemas/StockProps';
 
-    type Props = {
-        isBulk: boolean
-        isBulkFi: boolean
-        sku: string
-        prefSalesQuantity: number
-    }
-
-    const { prefSalesQuantity, sku, isBulk, isBulkFi }: ProductStock = $props()
+    const { prefSalesQuantity, sku, isBulk, isBulkFi }: StockProps = $props()
 
     let stockPromise = $state(
         isBulkFi

@@ -3,7 +3,7 @@ import { z } from 'zod'
 import magentoSvelteBridge from '../lib/stores/MagentoSvelteBridge.svelte'
 
 
-export const ProductStockSchema = z
+export const StockPropsSchema = z
     .object({
         sku: z.string().min(1),
         prefSalesQuantity: z
@@ -34,4 +34,4 @@ export const ProductStockSchema = z
         }
     })
 
-export type ProductStock = z.infer<typeof ProductStockSchema>
+export type StockProps = z.infer<typeof StockPropsSchema>
