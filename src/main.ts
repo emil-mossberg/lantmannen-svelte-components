@@ -5,13 +5,15 @@ import { setupI18n } from './lib/localization'
 
 import magentoSvelteBridge from './lib/stores/MagentoSvelteBridge.svelte'
 
-
 import SvelteTester from './entries/SvelteTester.svelte'
 import ProductBuyBox from './entries/ProductBuyBox.svelte'
 import ProductPriceBox from './entries/ProductPriceBox.svelte'
 import ProductStockBox from './entries/ProductStockBox.svelte'
 import CheckoutAcess from './entries/CheckoutAcess.svelte'
 import StickyMessages from './entries/StickyMessages.svelte'
+import { ProductStockSchema } from './schemas/ProductStock'
+
+import { extractDataAttributes } from './lib/helpers'
 
 setupI18n()
 
@@ -25,11 +27,16 @@ const bulkHelper = (el: Element) => {
 
     const packagingType = packagingTypeFi ? packagingTypeFi : packagingTypeSe
 
-    const isBulk = magentoSvelteBridge.tonnagePackageType.includes(packagingType ?? '') ?? false
+    const isBulk =
+        magentoSvelteBridge.tonnagePackageType.includes(packagingType ?? '') ??
+        false
 
-    const isBulkFi = magentoSvelteBridge.tonnagePackageType.includes(packagingTypeFi ?? '') ?? false
+    const isBulkFi =
+        magentoSvelteBridge.tonnagePackageType.includes(
+            packagingTypeFi ?? ''
+        ) ?? false
 
-    return {isBulk, isBulkFi}
+    return { isBulk, isBulkFi }
 }
 
 const checkoutAcess = mount(CheckoutAcess, {
@@ -44,7 +51,7 @@ document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
 
     const sku = el.getAttribute('data-sku') as string // TO DO is there a better solution?
 
-    const { isBulk, isBulkFi} = bulkHelper(el)
+    const { isBulk, isBulkFi } = bulkHelper(el)
 
     const prefSalesQuantityAttr = el.getAttribute('data-pref-sales-quantity')
     const prefSalesQuantity = prefSalesQuantityAttr
@@ -71,7 +78,7 @@ document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
             qtyIncrement,
             isPdpCard,
             priceBoxUnit,
-            isBuyable
+            isBuyable,
         },
     })
 })
@@ -124,25 +131,26 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
 // Logic Product Stock box component
 
 document.querySelectorAll('[id^="svelte-product-stock-box-"]').forEach((el) => {
-    const prefSalesQuantityAttr = el.getAttribute(
-        'data-product-pref-sales-quantity'
-    )
-    const prefSalesQuantity = prefSalesQuantityAttr
-        ? Number(prefSalesQuantityAttr)
-        : 1
+    const rawProps = extractDataAttributes(el, [
+        'sku',
+        'pref-sales-quantity',
+        'packaging-type',
+        'packaging-type-se',
+    ])
 
-    const { isBulk, isBulkFi} = bulkHelper(el)
+    const parsed = ProductStockSchema.safeParse(rawProps)
 
-    const sku = el.getAttribute('data-sku') as string // TO DO is there a better solution?
+    if (!parsed.success) {
+        console.error(
+            'Failed to parse props, skip mounting Stock component:',
+            parsed.error
+        )
+        return
+    }
 
     mount(ProductStockBox, {
         target: el,
-        props: {
-            prefSalesQuantity,
-            isBulk,
-            isBulkFi,
-            sku,
-        },
+        props: parsed.data,
     })
 })
 

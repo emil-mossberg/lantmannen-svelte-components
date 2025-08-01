@@ -31,3 +31,7 @@ export const toUtcMidnightTimestamp = (dateStr: string) => {
     const [yearStr, monthStr, dayStr] = dateStr.split('-')
     return Date.UTC(parseInt(yearStr), parseInt(monthStr) - 1, parseInt(dayStr))
 }
+
+
+export const extractDataAttributes = (el: Element, keys: string[]) =>
+    Object.fromEntries(keys.map(key => [key, el.getAttribute(`data-${key}`)]))
