@@ -3,9 +3,8 @@
 
     import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
     import priceFetch from '../lib/stores/PriceFetch.svelte'
-    import pssFetch from '../lib/stores/PssFetch.svelte';
+    import pssFetch from '../lib/stores/PssFetch.svelte'
     import PriceShow from '../lib/components/PriceShow.svelte'
-    
 
     import { type Price } from '../schemas/Price'
 
@@ -13,11 +12,10 @@
         id: string
         prefSalesQty: number
         newProduct: boolean
-        qtyIncrement: number
         palletDiscountInformation: string | null
         showPalletAttribute: boolean
-        priceBoxUnit: string
-        prefSalesQtyUnit: string
+        priceBoxUnit: string | null
+        prefSalesQtyUnit: string | null
         isBulkFi: boolean
     }
 
@@ -25,7 +23,6 @@
         id,
         prefSalesQty,
         newProduct = false,
-        qtyIncrement,
         palletDiscountInformation,
         showPalletAttribute,
         priceBoxUnit,

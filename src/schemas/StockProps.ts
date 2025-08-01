@@ -2,7 +2,6 @@ import { z } from 'zod'
 
 import magentoSvelteBridge from '../lib/stores/MagentoSvelteBridge.svelte'
 
-
 export const StockPropsSchema = z
     .object({
         sku: z.string().min(1),
@@ -13,8 +12,8 @@ export const StockPropsSchema = z
                 const num = Number(val)
                 return Number.isNaN(num) ? 1 : num
             }),
-        packagingType: z.string().optional(),
-        packagingTypeSe: z.string().optional(),
+        packagingType: z.string().nullable(),
+        packagingTypeSe: z.string().nullable(),
     })
     .transform((data) => {
         const effectivePackagingType =

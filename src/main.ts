@@ -12,6 +12,7 @@ import ProductStockBox from './entries/ProductStockBox.svelte'
 import CheckoutAcess from './entries/CheckoutAcess.svelte'
 import StickyMessages from './entries/StickyMessages.svelte'
 import { StockPropsSchema } from './schemas/StockProps'
+import { PricePropsSchema } from './schemas/PriceProps'
 
 import { extractDataAttributes } from './lib/helpers'
 
@@ -86,45 +87,30 @@ document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
 // Logic Product Price box component
 
 document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
-    const elementId = el.id
-    const id = elementId.replace('svelte-product-price-box-', '')
-    const prefSalesQuantityAttr = el.getAttribute(
-        'data-product-pref-sales-quantity'
-    )
-    const prefSalesQty = prefSalesQuantityAttr
-        ? Number(prefSalesQuantityAttr)
-        : 1
-    const newProduct = el.getAttribute('data-product-is-new') === '1'
+    const rawProps = extractDataAttributes(el, [
+        'id',
+        'pref-sales-qty',
+        'packaging-type',
+        'new-product',
+        'pallet-discount-information',
+        'show-pallet-attribute',
+        'price-box-unit',
+        'pref-sales-qty-unit'
+    ])
 
-    const isBulkFi =
-        magentoSvelteBridge.tonnagePackageType.includes(
-            el.getAttribute('data-product-packaging-type') ?? ''
-        ) ?? false
+    const parsed = PricePropsSchema.safeParse(rawProps)
 
-    const qtyIncrement =
-        Number(el.getAttribute('product-data-qty-increment') ?? 1) || 1
-    const palletDiscountInformation = el.getAttribute(
-        'data-product-pallet-discount-information'
-    )
-    const showPalletAttribute =
-        el.getAttribute('data-product-show-pallet-attribute') === '1'
-    const priceBoxUnit = el.getAttribute('data-config-price-box-unit') ?? ''
-    const prefSalesQtyUnit =
-        el.getAttribute('data-config-pref-sales-qty-unit') ?? ''
-
+       if (!parsed.success) {
+        console.error(
+            'Failed to parse props, skip mounting Price component:',
+            parsed.error
+        )
+        return
+    }
+    
     mount(ProductPriceBox, {
         target: el,
-        props: {
-            id,
-            prefSalesQty,
-            newProduct,
-            qtyIncrement,
-            palletDiscountInformation,
-            showPalletAttribute,
-            priceBoxUnit,
-            prefSalesQtyUnit,
-            isBulkFi,
-        },
+        props: parsed.data,
     })
 })
 

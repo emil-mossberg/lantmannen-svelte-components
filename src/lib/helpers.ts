@@ -33,5 +33,17 @@ export const toUtcMidnightTimestamp = (dateStr: string) => {
 }
 
 
+
+const kebabToCamel = (str: string) =>
+    str.replace(/-([a-z])/g, (_, char) => char.toUpperCase())
+
 export const extractDataAttributes = (el: Element, keys: string[]) =>
-    Object.fromEntries(keys.map(key => [key, el.getAttribute(`data-${key}`)]))
+  Object.fromEntries(
+    keys.map((key) => {
+      const attrValue = el.getAttribute(`data-${key}`)
+      
+      const camelKey = kebabToCamel(key)
+
+      return [camelKey, attrValue === null || attrValue === '' ? null : attrValue]
+    })
+  )
