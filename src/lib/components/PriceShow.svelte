@@ -3,7 +3,7 @@
 
     type Props = {
         price: number
-        priceBoxUnit?: string
+        priceBoxUnit?: string | null
         disabledPrice?: boolean
         isCampaignPrice?: boolean
         headerStyling?: boolean
