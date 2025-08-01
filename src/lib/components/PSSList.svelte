@@ -11,7 +11,7 @@
         campaigns: Campaign
         campaignId?: string | null
         enableRadio?: boolean
-        priceBoxUnit: string
+        priceBoxUnit: string | null
     }
 
     let {

@@ -8,12 +8,12 @@
 
     import { type StockProps } from '../schemas/StockProps';
 
-    const { prefSalesQuantity, sku, isBulk, isBulkFi }: StockProps = $props()
-
+    const { prefSalesQty, sku, isBulk, isBulkFi }: StockProps = $props()
+    
     let stockPromise = $state(
         isBulkFi
-            ? stockFetch.getPromise(sku, prefSalesQuantity, 'TO')
-            : stockFetch.getPromise(sku, prefSalesQuantity)
+            ? stockFetch.getPromise(sku, prefSalesQty, 'TO')
+            : stockFetch.getPromise(sku, prefSalesQty)
     )
 </script>
 

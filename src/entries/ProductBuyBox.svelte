@@ -13,21 +13,9 @@
 
     import { type BuyBoxProps } from '../schemas/BuyProps'
 
-    type Props = {
-        id: string
-        sku: string
-        prefSalesQuantity: number
-        isBulk: boolean
-        qtyIncrement: number
-        isBulkFi: boolean
-        isPdpCard?: boolean
-        priceBoxUnit: string
-        isBuyable: boolean
-    }
-
     const {
         id,
-        prefSalesQuantity,
+        prefSalesQty,
         sku,
         isBulk,
         qtyIncrement,
@@ -35,7 +23,7 @@
         isPdpCard = false,
         priceBoxUnit,
         isBuyable,
-    }: Props = $props()
+    }: BuyBoxProps = $props()
 
     // Not using this also means not sending any additional form values to backend, this is why it is disabled if setting is not turn on
     const useModal = $derived(() => {
@@ -53,14 +41,14 @@
 
     let stockPromise = $state(
         isBulkFi
-            ? stockFetch.getPromise(sku, prefSalesQuantity, 'TO')
-            : stockFetch.getPromise(sku, prefSalesQuantity)
+            ? stockFetch.getPromise(sku, prefSalesQty, 'TO')
+            : stockFetch.getPromise(sku, prefSalesQty)
     )
 
     let pricePromise = $state(
         isBulkFi
-            ? priceFetch.getPromise(id, prefSalesQuantity, 'TO')
-            : priceFetch.getPromise(id, prefSalesQuantity)
+            ? priceFetch.getPromise(id, prefSalesQty, 'TO')
+            : priceFetch.getPromise(id, prefSalesQty)
     )
 </script>
 
@@ -79,7 +67,7 @@
     {/if}
 
     {#if isPss && isPdpCard}
-        {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQuantity > 1 ? prefSalesQuantity : 1, isBuyable: isBuyable ? 1 : 0 } )}
+        {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQty > 1 ? prefSalesQty : 1, isBuyable: isBuyable ? 1 : 0 } )}
             <p>PSS Spinner</p>
         {:then data}
             <PssList campaigns={data} {priceBoxUnit} />
@@ -93,7 +81,7 @@
             useModal={useModal()}
             {id}
             {isBuyable}
-            {prefSalesQuantity}
+            {prefSalesQty}
             {priceBoxUnit}
         />
     </div>

@@ -5,7 +5,7 @@ import magentoSvelteBridge from '../lib/stores/MagentoSvelteBridge.svelte'
 export const StockPropsSchema = z
     .object({
         sku: z.string().min(1),
-        prefSalesQuantity: z
+        prefSalesQty: z
             .string()
             .nullable()
             .transform((val) => {
@@ -27,7 +27,7 @@ export const StockPropsSchema = z
 
         return {
             sku: data.sku,
-            prefSalesQuantity: data.prefSalesQuantity,
+            prefSalesQty: data.prefSalesQty,
             isBulk,
             isBulkFi,
         }

@@ -22,17 +22,17 @@
         isBulk: boolean
         useModal: boolean
         id: string
-        prefSalesQuantity: number
+        prefSalesQty: number
         isBuyable: boolean
         isPSS: boolean
-        priceBoxUnit: string
+        priceBoxUnit: string | null
     }
 
     const {
         isBulk,
         useModal,
         id,
-        prefSalesQuantity,
+        prefSalesQty,
         isBuyable,
         isPSS,
         priceBoxUnit,
@@ -46,7 +46,6 @@
     let showModal = $state(false)
 
     const validateAndClose = () => {
-        console.log('WIP - DO VALIDATION')
         showModal = false
     }
 
@@ -122,7 +121,7 @@
         </div>
     {/if}
     {#if isPSS && pssPage}
-        {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQuantity > 1 ? prefSalesQuantity : 1, isBuyable: isBuyable ? 1 : 0 } )}
+        {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQty > 1 ? prefSalesQty : 1, isBuyable: isBuyable ? 1 : 0 } )}
             <p>Loading PSS Campaign...</p>
         {:then campaign}
             <PssList

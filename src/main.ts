@@ -3,8 +3,6 @@ import './app.css'
 
 import { setupI18n } from './lib/localization'
 
-import magentoSvelteBridge from './lib/stores/MagentoSvelteBridge.svelte'
-
 import SvelteTester from './entries/SvelteTester.svelte'
 import ProductBuyBox from './entries/ProductBuyBox.svelte'
 import ProductPriceBox from './entries/ProductPriceBox.svelte'
@@ -13,6 +11,7 @@ import CheckoutAcess from './entries/CheckoutAcess.svelte'
 import StickyMessages from './entries/StickyMessages.svelte'
 import { StockPropsSchema } from './schemas/StockProps'
 import { PricePropsSchema } from './schemas/PriceProps'
+import { BuyBoxPropsSchema } from './schemas/BuyProps'
 
 import { extractDataAttributes } from './lib/helpers'
 
@@ -22,65 +21,39 @@ setupI18n()
 
 const checkoutAcessMountPoint = document.getElementById('svelte-checkout-acess')
 
-const bulkHelper = (el: Element) => {
-    const packagingTypeFi = el.getAttribute('data-packaging-type')
-    const packagingTypeSe = el.getAttribute('data-packaging-type-se')
-
-    const packagingType = packagingTypeFi ? packagingTypeFi : packagingTypeSe
-
-    const isBulk =
-        magentoSvelteBridge.tonnagePackageType.includes(packagingType ?? '') ??
-        false
-
-    const isBulkFi =
-        magentoSvelteBridge.tonnagePackageType.includes(
-            packagingTypeFi ?? ''
-        ) ?? false
-
-    return { isBulk, isBulkFi }
-}
-
 const checkoutAcess = mount(CheckoutAcess, {
     target: checkoutAcessMountPoint!,
 })
 
 // Logic Product Buy Box component(s)
 
+
 document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
-    const elementId = el.id
-    const id = elementId.replace('svelte-product-buy-box-', '')
+    const rawProps = extractDataAttributes(el, [
+        'id',
+        'sku',
+        'pref-sales-qty',
+        'is-pdp-card',
+        'qty-increment',
+        'packaging-type',
+        'price-box-unit',
+        'packaging-type-se',
+        'is-buyable'
+    ])
 
-    const sku = el.getAttribute('data-sku') as string // TO DO is there a better solution?
+    const parsed = BuyBoxPropsSchema.safeParse(rawProps)
 
-    const { isBulk, isBulkFi } = bulkHelper(el)
-
-    const prefSalesQuantityAttr = el.getAttribute('data-pref-sales-quantity')
-    const prefSalesQuantity = prefSalesQuantityAttr
-        ? Number(prefSalesQuantityAttr)
-        : 1
-
-    const qtyIncrement = Number(el.getAttribute('data-qty-increment') ?? 1) || 1
-
-    const isNew = el.getAttribute('data-product-is-new') === '1'
-
-    const isPdpCard = el.getAttribute('data-is-pdp-card') === '1'
-    const isBuyable = el.getAttribute('data-is-buyable') === '1'
-
-    const priceBoxUnit = el.getAttribute('data-config-price-box-unit') ?? ''
+    if (!parsed.success) {
+        console.error(
+            'Failed to parse props, skip mounting Buy component:',
+            parsed.error
+        )
+        return
+    }
 
     mount(ProductBuyBox, {
         target: el,
-        props: {
-            id,
-            prefSalesQuantity,
-            sku,
-            isBulk,
-            isBulkFi,
-            qtyIncrement,
-            isPdpCard,
-            priceBoxUnit,
-            isBuyable,
-        },
+        props: parsed.data,
     })
 })
 
@@ -119,7 +92,7 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
 document.querySelectorAll('[id^="svelte-product-stock-box-"]').forEach((el) => {
     const rawProps = extractDataAttributes(el, [
         'sku',
-        'pref-sales-quantity',
+        'pref-sales-qty',
         'packaging-type',
         'packaging-type-se',
     ])

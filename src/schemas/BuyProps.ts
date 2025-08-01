@@ -6,7 +6,7 @@ export const BuyBoxPropsSchema = z
     .object({
         id: z.string().min(1),
         sku: z.string().min(1),
-        prefSalesQuantity: z
+        prefSalesQty: z
             .string()
             .nullable()
             .transform((val) => {
@@ -45,7 +45,7 @@ export const BuyBoxPropsSchema = z
         return {
             id: data.id,
             sku: data.sku,
-            prefSalesQuantity: data.prefSalesQuantity,
+            prefSalesQty: data.prefSalesQty,
             qtyIncrement: data.qtyIncrement,
             isPdpCard: data.isPdpCard,
             isBuyable: data.isBuyable,

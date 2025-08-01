@@ -41,7 +41,6 @@ class MagentoSvelteBridge {
     })
 
     constructor() {
-        console.log(this)
         // TO Do use parser here for type safety?
         // cart.value = window.MagentoBridgeState.cart;
         // customer.value = window.MagentoBridgeState.customer;
