@@ -3,7 +3,8 @@ import './app.css'
 
 import { setupI18n } from './lib/localization'
 
-import svelteBridge from './lib/stores/MagentoSvelteBridge.svelte'
+import magentoSvelteBridge from './lib/stores/MagentoSvelteBridge.svelte'
+
 
 import SvelteTester from './entries/SvelteTester.svelte'
 import ProductBuyBox from './entries/ProductBuyBox.svelte'
@@ -12,13 +13,7 @@ import ProductStockBox from './entries/ProductStockBox.svelte'
 import CheckoutAcess from './entries/CheckoutAcess.svelte'
 import StickyMessages from './entries/StickyMessages.svelte'
 
-
 setupI18n()
-
-const packageTypeList = document
-    .getElementById('svelte-information')
-    ?.getAttribute('data-tonnage-package-type')
-    ?.split(',')
 
 // Logic Checkout acess component, includes logic for delivery planner or old flow
 
@@ -30,9 +25,9 @@ const bulkHelper = (el: Element) => {
 
     const packagingType = packagingTypeFi ? packagingTypeFi : packagingTypeSe
 
-    const isBulk = packageTypeList?.includes(packagingType ?? '') ?? false
+    const isBulk = magentoSvelteBridge.tonnagePackageType.includes(packagingType ?? '') ?? false
 
-    const isBulkFi = packageTypeList?.includes(packagingTypeFi ?? '') ?? false
+    const isBulkFi = magentoSvelteBridge.tonnagePackageType.includes(packagingTypeFi ?? '') ?? false
 
     return {isBulk, isBulkFi}
 }
@@ -95,7 +90,7 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
     const newProduct = el.getAttribute('data-product-is-new') === '1'
 
     const isBulkFi =
-        packageTypeList?.includes(
+        magentoSvelteBridge.tonnagePackageType.includes(
             el.getAttribute('data-product-packaging-type') ?? ''
         ) ?? false
 
