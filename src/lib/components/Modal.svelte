@@ -5,6 +5,7 @@
   import Button from "./Button.svelte";
   import IconCross from "../IconsDynamic/IconCross.svelte";
   import Overlay from "./Overlay.svelte";
+  import { scrollLock } from "../helpers";
 
   type Props = {
     textButton: string;
@@ -16,14 +17,7 @@
   let { textButton, header, body, showModal = $bindable(false) }: Props = $props();
 
   $effect(() => {
-    if (showModal) {
-      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.overflow = "hidden";
-      document.body.style.paddingRight = `${scrollBarWidth}px`;
-    } else {
-      document.body.style.overflow = "";
-      document.body.style.paddingRight = "";
-    }
+    scrollLock(showModal)
   });
 </script>
 

@@ -8,9 +8,10 @@ export const PricePropsSchema = z
         prefSalesQty: z
             .string()
             .nullable()
-            .transform((val) => {
+            .transform((val) => {                
                 const num = Number(val)
-                return Number.isNaN(num) ? 1 : num
+
+                return (Number.isNaN(num) || num === 0) ? 1 : num
             }),
         newProduct: z.string().transform((val) => val === '1'),
         palletDiscountInformation: z.string().nullable(),

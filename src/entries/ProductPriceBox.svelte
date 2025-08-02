@@ -30,7 +30,6 @@
         isBulkFi,
     }: Props = $props()
 
-
     let pricePromise = $state(
         isBulkFi
             ? priceFetch.getPromise(id, prefSalesQty, 'TO')

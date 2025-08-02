@@ -25,6 +25,13 @@
         isBuyable,
     }: BuyBoxProps = $props()
 
+
+    let qty = $state(qtyIncrement)
+
+    $effect(() => {
+        console.log(qtyIncrement)
+    })
+
     // Not using this also means not sending any additional form values to backend, this is why it is disabled if setting is not turn on
     const useModal = $derived(() => {
         if (!bridgeSingleton.showDeliveryPlanner) return false
@@ -74,7 +81,7 @@
         {/await}
     {/if}
     <div class="tw-flex tw-gap-4">
-        <QtyIncrement {qtyIncrement} {id} />
+        <QtyIncrement {qtyIncrement} {id} bind:qty={qty} />
         <DeliveryWizard
             {isBulk}
             isPSS={isPss}

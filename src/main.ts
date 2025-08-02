@@ -73,6 +73,7 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
 
     const parsed = PricePropsSchema.safeParse(rawProps)
 
+
        if (!parsed.success) {
         console.error(
             'Failed to parse props, skip mounting Price component:',

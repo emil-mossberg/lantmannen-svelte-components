@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from 'svelte'
+    import { onMount, onDestroy } from 'svelte'
 
     import {
         combine,
@@ -11,15 +11,13 @@
 
     import InfoIcon from '../../lib/Icons/icon-info.svg'
 
-    // TO DO Is there a better way to start this?
-    let qty = $state(1)
-
     type Props = {
         qtyIncrement?: number
+        qty: number
         id: string
     }
 
-    let { qtyIncrement = 1, id }: Props = $props()
+    let { qtyIncrement = 1, id, qty = $bindable() }: Props = $props()
 
     // TO DO can this also be in validation logic
     let error: string | null = $state('')
@@ -45,9 +43,64 @@
         qty += qtyIncrement
     }
 
-    onMount(() => {
-        qty = qtyIncrement
-    })
+    const updateValue = (e: Event) => {
+        // TO DO WIP
+    }
+
+
+
+    // TO DO remove below when fixed bug
+    let inputEl: HTMLInputElement
+
+    const original = Object.getOwnPropertyDescriptor(
+        HTMLInputElement.prototype,
+        'value'
+    )
+
+    // if (original) {
+    //     Object.defineProperty(HTMLInputElement.prototype, 'value', {
+    //         get() {
+    //             return original.get?.call(this)
+    //         },
+    //         set(val) {
+    //             console.warn('[value SET]', val)
+    //             console.trace('Set by:')
+    //             return original.set?.call(this, val)
+    //         },
+    //         configurable: true,
+    //     })
+    // }
+
+    // onMount(() => {
+    //     const observer = new MutationObserver(() => {
+    //         console.log('Mutation observed. DOM value:', inputEl.value)
+    //     })
+
+    //     observer.observe(inputEl, {
+    //         childList: false,
+    //         attributes: true,
+    //         characterData: true,
+    //         subtree: false,
+    //     })
+
+    //     const interval = setInterval(() => {
+    //         if (inputEl.value !== String(qty)) {
+    //             console.log(
+    //                 '%cExternal change detected!',
+    //                 'color: red;',
+    //                 'DOM value:',
+    //                 inputEl.value,
+    //                 'expected qty:',
+    //                 qty
+    //             )
+    //         }
+    //     }, 200)
+
+    //     return () => {
+    //         observer.disconnect()
+    //         clearInterval(interval)
+    //     }
+    // })
 </script>
 
 {#snippet qtyButton(
@@ -74,12 +127,13 @@
         )}
 
         <input
+            bind:this={inputEl}
             class="tw-h-[44px] !tw-w-[64px] tw-border tw-border-alto tw-text-center tw-text-[0.75rem] tw-focus:z-10"
             id={`qty-${id}`}
             name="qty"
             type="number"
             bind:value={qty}
-            oninput={validate}
+            oninput={updateValue}
             onblur={validate}
         />
 
@@ -88,6 +142,7 @@
             '+',
             increment
         )}
+
         {#if error}
             <div
                 class="tw-absolute tw-rounded tw-border-cerulean tw-border-2 tw-py-2 tw-px-4 tw-top-[-64px] tw-bg-white tw-flex tw-items-center tw-gap-2"
