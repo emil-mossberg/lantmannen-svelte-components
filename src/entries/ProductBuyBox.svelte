@@ -27,10 +27,10 @@
 
     let qty = $state(qtyIncrement)
 
-    // $effect(() => {
-    //     console.log(qty)
-    //     console.trace(qty)
-    // })
+    $effect(() => {
+        console.log(qty)
+        console.trace(qty)
+    })
 
     // Not using this also means not sending any additional form values to backend, this is why it is disabled if setting is not turn on
 

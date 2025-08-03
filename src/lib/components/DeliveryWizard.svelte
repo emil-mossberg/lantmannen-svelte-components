@@ -45,13 +45,6 @@
     let deliveryMethod = $state<DeliveryMethod | null>(null)
     let deliveryAddress = $state<DeliveryAddress | null>(null)
 
-    // TO DO : Add validation of select fields
-    // TO DO : Figure out how to run this and submit form at the same time
-
-    const validateAndClose = () => {
-        showModal = false
-    }
-
     const enableBuyButton = $derived(() => {
         if (!showModal) return false
 
@@ -62,31 +55,6 @@
     let deliveryDate = $state('2025-08-03')
 
     let campaignId: string | null = $state(null)
-
-    // TO DO arrow?
-    function handleClick(event: MouseEvent) {
-        showModal = false
-        console.log('handleClick and Add to Cart #2')
-
-        // Need to handle the click event programmatically since it does not work to use type="submit" and click event on same button
-        const button = event.currentTarget as HTMLElement
-
-        // TO DO make dynamic
-        const form = button.closest(
-            `form[data-product-sku="923884"]`
-        ) as HTMLFormElement | null
-
-        console.log('here!')
-        showModal = false
-
-        if (form) {
-            console.log('before Submit?')
-
-            form.submit()
-        } else {
-            console.warn('No matching form found')
-        }
-    }
 
     // Not very pretty fix for being able to close modal after buy button is pressed
     // typ="submit" and click event on same button does not work well together
