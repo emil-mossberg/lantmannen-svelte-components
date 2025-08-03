@@ -25,17 +25,22 @@
         isBuyable,
     }: BuyBoxProps = $props()
 
-
     let qty = $state(qtyIncrement)
 
-    $effect(() => {
-        console.log(qtyIncrement)
-    })
+    // $effect(() => {
+    //     console.log(qty)
+    //     console.trace(qty)
+    // })
 
     // Not using this also means not sending any additional form values to backend, this is why it is disabled if setting is not turn on
+
+    let showModal = $state(false)
+
     const useModal = $derived(() => {
         if (!bridgeSingleton.showDeliveryPlanner) return false
-        if (isBulk) return true
+
+        // Keep using modal as long as its visible (or if its bulk), check for change when closing
+        if (isBulk || showModal) return true
 
         if (bridgeSingleton.cart.value?.items) {
             return !bridgeSingleton.cart.value?.items.some(
@@ -81,7 +86,7 @@
         {/await}
     {/if}
     <div class="tw-flex tw-gap-4">
-        <QtyIncrement {qtyIncrement} {id} bind:qty={qty} />
+        <QtyIncrement {qtyIncrement} {id} bind:qty />
         <DeliveryWizard
             {isBulk}
             isPSS={isPss}
@@ -90,6 +95,7 @@
             {isBuyable}
             {prefSalesQty}
             {priceBoxUnit}
+            bind:showModal={showModal}
         />
     </div>
     {#if qtyIncrement > 1}

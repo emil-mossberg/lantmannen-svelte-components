@@ -1,6 +1,8 @@
 <script lang="ts">
     import { t } from 'svelte-i18n'
 
+    import svelteBridge from '../stores/MagentoSvelteBridge.svelte'
+
     import Button from './Button.svelte'
     import SelectWrapper from './SelectWrapper.svelte'
     import DatePicker from './DatePicker.svelte'
@@ -26,9 +28,10 @@
         isBuyable: boolean
         isPSS: boolean
         priceBoxUnit: string | null
+        showModal?: boolean
     }
 
-    const {
+    let {
         isBulk,
         useModal,
         id,
@@ -36,6 +39,7 @@
         isBuyable,
         isPSS,
         priceBoxUnit,
+        showModal = $bindable(false),
     }: Props = $props()
 
     let deliveryMethod = $state<DeliveryMethod | null>(null)
@@ -43,7 +47,6 @@
 
     // TO DO : Add validation of select fields
     // TO DO : Figure out how to run this and submit form at the same time
-    let showModal = $state(false)
 
     const validateAndClose = () => {
         showModal = false
@@ -59,6 +62,40 @@
     let deliveryDate = $state('2025-08-03')
 
     let campaignId: string | null = $state(null)
+
+    // TO DO arrow?
+    function handleClick(event: MouseEvent) {
+        showModal = false
+        console.log('handleClick and Add to Cart #2')
+
+        // Need to handle the click event programmatically since it does not work to use type="submit" and click event on same button
+        const button = event.currentTarget as HTMLElement
+
+        // TO DO make dynamic
+        const form = button.closest(
+            `form[data-product-sku="923884"]`
+        ) as HTMLFormElement | null
+
+        console.log('here!')
+        showModal = false
+
+        if (form) {
+            console.log('before Submit?')
+
+            form.submit()
+        } else {
+            console.warn('No matching form found')
+        }
+    }
+
+    // Not very pretty fix for being able to close modal after buy button is pressed
+    // typ="submit" and click event on same button does not work well together
+    $effect(() => {
+        const items = svelteBridge.cart.value?.items
+        if (items?.some((product) => product.product_id === id)) {
+            showModal = false
+        }
+    })
 </script>
 
 {#snippet buyButton()}
