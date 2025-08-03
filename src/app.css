@@ -19,15 +19,6 @@
 }
 
 
-/* TO DO use variables */
-/* .svelte-component h1 {
-  font-family: 'LantmannenSerif', serif;
-  font-weight: 700;
-  font-size: 3.125rem;
-  color: #1e6e37;
-} */
-
-
 /* RESET LIST (All classes should be named magento-svelte for easy removing one day */
 
 .svelte-component input[type="number"] {
@@ -47,10 +38,6 @@
   position: absolute;
 }
 
-button.magento-svelte-button-transparent {
-  background-color: transparent;
-  border-color: transparent;
-}
 
 button.magento-svelte-button:focus {
   background-color: #005720;

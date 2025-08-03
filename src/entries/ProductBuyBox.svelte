@@ -85,6 +85,7 @@
 
         <DeliveryWizard
             {isBulk}
+            {isPdpCard}
             isPSS={isPss}
             useModal={useModal()}
             {id}

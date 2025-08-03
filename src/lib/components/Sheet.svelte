@@ -28,7 +28,7 @@
         <div class="tw-flex tw-justify-between tw-p-6">
             <h5>{@render header?.()}</h5>
             <button
-                class="magento-svelte-button-transparent"
+                class="tw-clear-button"
                 onclick={() => (showSheet = false)}><IconCross /></button
             >
         </div>

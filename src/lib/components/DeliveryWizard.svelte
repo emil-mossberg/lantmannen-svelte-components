@@ -29,6 +29,7 @@
         isPSS: boolean
         priceBoxUnit: string | null
         showModal?: boolean
+        isPdpCard: boolean
     }
 
     let {
@@ -39,6 +40,7 @@
         isBuyable,
         isPSS,
         priceBoxUnit,
+        isPdpCard,
         showModal = $bindable(false),
     }: Props = $props()
 
@@ -75,6 +77,19 @@
         class="min-w-[260px]"
         disabled={enableBuyButton()}>{text}</Button
     >
+{/snippet}
+
+<!-- TO DO pass different butt on if not PDP card -->
+{#snippet openModalButton(label: string)}
+    {#if isPdpCard}
+        <Button
+            fullWidth={true}
+            type="button"
+            onclick={() => (showModal = true)}>{label}</Button
+        >
+    {:else}
+        PLP USAGE
+    {/if}
 {/snippet}
 
 {#snippet stepButton(
@@ -176,7 +191,13 @@
     {/if}
 {/snippet}
 {#if useModal}
-    <Modal textButton="Köp produkten" header={text} {body} bind:showModal />
+    <Modal
+        textButton={$t('buyProduct')}
+        header={text}
+        {body}
+        bind:showModal
+        openButton={openModalButton}
+    />
 {:else}
     {@render buyButton(text)}
 {/if}
