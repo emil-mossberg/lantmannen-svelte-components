@@ -64,20 +64,17 @@
             showModal = false
         }
     })
+
+    const text = $t('order', { values: { type: isBulk ? $t('bulk') : '' } })
 </script>
 
-{#snippet buyButton()}
+{#snippet buyButton(text: string)}
     <Button
         fullWidth={true}
         type="submit"
         class="min-w-[260px]"
-        disabled={enableBuyButton()}
-        >{$t('order', { values: { type: isBulk ? $t('bulk') : '' } })}</Button
+        disabled={enableBuyButton()}>{text}</Button
     >
-{/snippet}
-
-{#snippet header()}
-    {$t('order', { values: { type: isBulk ? $t('bulk') : '' } })}
 {/snippet}
 
 {#snippet stepButton(
@@ -175,11 +172,11 @@
             />
         </div>
 
-        {@render buyButton()}
+        {@render buyButton(text)}
     {/if}
 {/snippet}
 {#if useModal}
-    <Modal textButton="Köp produkten" {header} {body} bind:showModal />
+    <Modal textButton="Köp produkten" header={text} {body} bind:showModal />
 {:else}
-    {@render buyButton()}
+    {@render buyButton(text)}
 {/if}

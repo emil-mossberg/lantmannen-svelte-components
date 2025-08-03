@@ -61,8 +61,8 @@
 <div class="tw-flex tw-gap-4">
     <QtyIncrement {qtyIncrement} {id} bind:qty />
     {#await Promise.all([pricePromise, stockPromise])}
-    <!-- For disabled state -->
-        <Button disabled={true} fullWidth={true} /> 
+        <!-- For disabled state -->
+        <Button disabled={true} fullWidth={true} />
     {:then [price, stock]}
         {@const isPss =
             !!price.price_info.extension_attributes.lma_campaign_is_pre_season}
