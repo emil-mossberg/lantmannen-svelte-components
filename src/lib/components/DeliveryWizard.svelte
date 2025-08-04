@@ -3,7 +3,8 @@
   import { t } from 'svelte-i18n'
 
   import svelteBridge from '../stores/MagentoSvelteBridge.svelte'
-  import cartStateTracker from '../stores/CartStateTrackerr.svelte'
+  import cartStateTracker from '../stores/CartStateTracker.svelte'
+  import pssFetch from '../stores/PssFetch.svelte'
 
   import Button from './Button.svelte'
   import ButtonBuyCircle from './ButtonBuyCircle.svelte'
@@ -11,8 +12,6 @@
   import DatePicker from './DatePicker.svelte'
   import Modal from './Modal.svelte'
   import PssList from './PSSList.svelte'
-
-  import pssFetch from '../stores/PssFetch.svelte'
 
   import { type DeliveryMethod } from '../../schemas/DeliveryMethod'
   import { type DeliveryAddress } from '../../schemas/DeliveryAddress'
@@ -53,7 +52,7 @@
 
   const enableBuyButton = $derived.by(() => {
     console.log('InProgress:', cartStateTracker.inProgress.value)
-    if(cartStateTracker.inProgress) return false
+    if (cartStateTracker.inProgress) return false
 
     if (!showModal) return false
 
@@ -79,7 +78,6 @@
   const setBuyInProgress = () => {
     console.log('setBuyInProgress')
   }
-
 </script>
 
 {#snippet buyButton(text: string)}
@@ -93,11 +91,18 @@
 
 {#snippet openModalButton(label: string)}
   {#if isPdpCard}
-    <Button fullWidth={true} type="button" onclick={() => (showModal = true)}
+    <Button
+      fullWidth={true}
+      type="button"
+      onclick={() => (showModal = true)}
+      disabled={!isPSS && pssFetch.cartInfo?.cart_has_pay_campaign}
       >{label}</Button
     >
   {:else}
-    <ButtonBuyCircle onclick={() => (showModal = true)} />
+    <ButtonBuyCircle
+      onclick={() => (showModal = true)}
+      disabled={!isPSS && pssFetch.cartInfo?.cart_has_pay_campaign}
+    />
   {/if}
 {/snippet}
 
