@@ -4,9 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-
 @layer utilities {
   /* Used to clear styling on button that has inner visual elements */
   .tw-clear-button {
@@ -27,25 +24,8 @@
   width: auto;
 }
 
-.svelte-component button {
-  pointer-events: unset;
-  opacity: unset;
-  min-width: unset;
-}
-
 .magento-svelte-select input[type="text"] {
   height: auto;
   border: unset;
   position: absolute;
-}
-
-
-button.magento-svelte-button:focus {
-  background-color: #005720;
-  border-color: #005720;
-  color: white;
-}
-
-svg.magento-svelte-svg {
-  background-color: white;
 }

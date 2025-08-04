@@ -2,7 +2,7 @@
 	class=" tw-bg-white tw-group tw-grid tw-h-[44px] tw-w-[44px] tw-place-items-center tw-rounded-full tw-border tw-border-charcoal tw-text-charcoal  hover:tw-text-white hover:tw-bg-tannenbaum hover:tw-border-tannenbaum"
 >
 	<svg
-		class="magento-svelte-svg tw-h-[24px] tw-w-[24px] group-hover:tw-bg-tannenbaum"
+		class="tw-h-[24px] tw-w-[24px] group-hover:tw-bg-tannenbaum"
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 24 24"
 	>

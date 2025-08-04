@@ -47,60 +47,6 @@
         // TO DO WIP
     }
 
-
-
-    // TO DO remove below when fixed bug
-    let inputEl: HTMLInputElement
-
-    const original = Object.getOwnPropertyDescriptor(
-        HTMLInputElement.prototype,
-        'value'
-    )
-
-    // if (original) {
-    //     Object.defineProperty(HTMLInputElement.prototype, 'value', {
-    //         get() {
-    //             return original.get?.call(this)
-    //         },
-    //         set(val) {
-    //             console.warn('[value SET]', val)
-    //             console.trace('Set by:')
-    //             return original.set?.call(this, val)
-    //         },
-    //         configurable: true,
-    //     })
-    // }
-
-    // onMount(() => {
-    //     const observer = new MutationObserver(() => {
-    //         console.log('Mutation observed. DOM value:', inputEl.value)
-    //     })
-
-    //     observer.observe(inputEl, {
-    //         childList: false,
-    //         attributes: true,
-    //         characterData: true,
-    //         subtree: false,
-    //     })
-
-    //     const interval = setInterval(() => {
-    //         if (inputEl.value !== String(qty)) {
-    //             console.log(
-    //                 '%cExternal change detected!',
-    //                 'color: red;',
-    //                 'DOM value:',
-    //                 inputEl.value,
-    //                 'expected qty:',
-    //                 qty
-    //             )
-    //         }
-    //     }, 200)
-
-    //     return () => {
-    //         observer.disconnect()
-    //         clearInterval(interval)
-    //     }
-    // })
 </script>
 
 {#snippet qtyButton(
@@ -127,7 +73,6 @@
         )}
 
         <input
-            bind:this={inputEl}
             class="tw-h-[44px] !tw-w-[64px] tw-border tw-border-alto tw-text-center tw-text-[0.75rem] tw-focus:z-10"
             id={`qty-${id}`}
             name="qty"

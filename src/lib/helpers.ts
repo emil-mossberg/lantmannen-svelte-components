@@ -75,8 +75,7 @@ export const scrollLock = (locked: boolean) => {
   }
 }
 
-
-// TO DO complete this and use it, change type on body
+// TO DO Fix typing body?
 
 export const fetchPOST = (url: string, body: string) => {
   return fetch(url, {
