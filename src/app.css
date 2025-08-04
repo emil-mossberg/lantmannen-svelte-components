@@ -30,6 +30,7 @@
 .svelte-component button {
   pointer-events: unset;
   opacity: unset;
+  min-width: unset;
 }
 
 .magento-svelte-select input[type="text"] {
@@ -48,10 +49,3 @@ button.magento-svelte-button:focus {
 svg.magento-svelte-svg {
   background-color: white;
 }
-
-.svelte-component button {
-  min-width: unset;
-}
-
-
-

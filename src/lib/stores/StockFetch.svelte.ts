@@ -7,6 +7,7 @@ import singletonFactory from './SingletonFactory'
 class StockFetch extends BaseFetch<Stock> {
 
     protected getUrl(): string {
+        console.log('geturl!')
         return `${window.BASE_URL}${REST_STOCK_GUEST}`
     }
 
