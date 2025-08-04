@@ -4,19 +4,17 @@ import { type Price } from '../../schemas/Price'
 import singletonFactory from './SingletonFactory'
 
 class PriceFetch extends BaseFetch<Price> {
-    protected getUrl(): string {
-        return `${window.BASE_URL}${
-            this.bridge.isLoggedIn ? REST_PRICE : REST_PRICE_GUEST
-        }`
-    }
+  protected getPath(): string {
+    return this.bridge.isLoggedIn ? REST_PRICE : REST_PRICE_GUEST
+  }
 
-    protected getFetchKey(): string {
-        return 'priceFinderData'
-    }
+  protected getFetchKey(): string {
+    return 'priceFinderData'
+  }
 
-    protected getItemKey(): string {
-        return 'product_id'
-    }
+  protected getItemKey(): string {
+    return 'product_id'
+  }
 }
 
 export default singletonFactory(() => new PriceFetch())()

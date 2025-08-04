@@ -78,8 +78,8 @@ export const scrollLock = (locked: boolean) => {
 
 // TO DO complete this and use it, change type on body
 
-export const buildFetchPOSTPromise = (url: string, body: string) => {
-  return fetch(window.BASE_URL + url, {
+export const fetchPOST = (url: string, body: string) => {
+  return fetch(url, {
     method: 'POST',
     body: body,
     credentials: 'same-origin',
