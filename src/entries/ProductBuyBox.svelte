@@ -5,13 +5,13 @@
     import priceFetch from '../lib/stores/PriceFetch.svelte'
     import pssFetch from '../lib/stores/PssFetch.svelte'
     import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
-
+    
     import DeliveryWizard from '../lib/components/DeliveryWizard.svelte'
     import QtyIncrement from '../lib/components/QtyIncrement.svelte'
     import PssList from '../lib/components/PSSList.svelte'
     import InfoBox from '../lib/components/InfoBox.svelte'
     import Button from '../lib/components/Button.svelte'
-
+    import ButtonBuyCircle from '../lib/components/ButtonBuyCircle.svelte'
     import { type BuyBoxProps } from '../schemas/BuyProps'
 
     const {
@@ -62,7 +62,12 @@
     <QtyIncrement {qtyIncrement} {id} bind:qty />
     {#await Promise.all([pricePromise, stockPromise])}
         <!-- For disabled state -->
-        <Button disabled={true} fullWidth={true} />
+         {#if isPdpCard}
+            <Button disabled={true} fullWidth={true} />
+            {:else}
+            <ButtonBuyCircle disabled={true} /> 
+         {/if}
+        
     {:then [price, stock]}
         {@const isPss =
             !!price.price_info.extension_attributes.lma_campaign_is_pre_season}

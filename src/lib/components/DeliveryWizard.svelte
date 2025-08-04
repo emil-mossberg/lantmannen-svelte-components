@@ -1,13 +1,17 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
   import { t } from 'svelte-i18n'
 
   import svelteBridge from '../stores/MagentoSvelteBridge.svelte'
+  import cartStateTracker from '../stores/CartStateTrackerr.svelte'
 
   import Button from './Button.svelte'
+  import ButtonBuyCircle from './ButtonBuyCircle.svelte'
   import SelectWrapper from './SelectWrapper.svelte'
   import DatePicker from './DatePicker.svelte'
   import Modal from './Modal.svelte'
   import PssList from './PSSList.svelte'
+
   import pssFetch from '../stores/PssFetch.svelte'
 
   import { type DeliveryMethod } from '../../schemas/DeliveryMethod'
@@ -47,7 +51,10 @@
   let deliveryMethod = $state<DeliveryMethod | null>(null)
   let deliveryAddress = $state<DeliveryAddress | null>(null)
 
-  const enableBuyButton = $derived(() => {
+  const enableBuyButton = $derived.by(() => {
+    console.log('InProgress:', cartStateTracker.inProgress.value)
+    if(cartStateTracker.inProgress) return false
+
     if (!showModal) return false
 
     return !deliveryMethod || !deliveryAddress
@@ -68,6 +75,11 @@
   })
 
   const text = $t('order', { values: { type: isBulk ? $t('bulk') : '' } })
+
+  const setBuyInProgress = () => {
+    console.log('setBuyInProgress')
+  }
+
 </script>
 
 {#snippet buyButton(text: string)}
@@ -75,18 +87,17 @@
     fullWidth={true}
     type="submit"
     class="min-w-[260px]"
-    disabled={enableBuyButton()}>{text}</Button
+    disabled={enableBuyButton}>{text}</Button
   >
 {/snippet}
 
-<!-- TO DO pass different butt on if not PDP card -->
 {#snippet openModalButton(label: string)}
   {#if isPdpCard}
     <Button fullWidth={true} type="button" onclick={() => (showModal = true)}
       >{label}</Button
     >
   {:else}
-    PLP USAGE
+    <ButtonBuyCircle onclick={() => (showModal = true)} />
   {/if}
 {/snippet}
 
@@ -195,6 +206,12 @@
     bind:showModal
     openButton={openModalButton}
   />
-{:else}
+{:else if isPdpCard}
   {@render buyButton(text)}
+{:else}
+  <ButtonBuyCircle
+    disabled={enableBuyButton}
+    type="submit"
+    onclick={setBuyInProgress}
+  />
 {/if}

@@ -1,7 +1,6 @@
 <script lang="ts">
     import type { Snippet } from 'svelte'
 
-    import Button from './Button.svelte'
     import IconCross from '../IconsDynamic/IconCross.svelte'
     import Overlay from './Overlay.svelte'
     import { scrollLock } from '../helpers'
@@ -45,7 +44,4 @@
 {/if}
 {@render openButton?.(textButton)}
 
-<Button onclick={() => (showModal = true)} type="button" fullWidth={true}
-    >{textButton}</Button
->
                         

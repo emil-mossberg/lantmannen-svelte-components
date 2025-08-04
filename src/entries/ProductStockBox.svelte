@@ -4,7 +4,7 @@
     import stockFetch from '../lib/stores/StockFetch.svelte'
     import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
 
-    import IconStock from '../lib/Icons/in-stock.svg'
+    import IconStock from '../lib/Icons/icon-in-stock.svg'
 
     import { type StockProps } from '../schemas/StockProps';
 
