@@ -105,26 +105,12 @@
     return true
   })
 
-  // TO DO rename
-  const text = $t('order', { values: { type: isBulk ? $t('bulk') : '' } })
+  const buyButtonLabel = $t('order', {
+    values: { type: isBulk ? $t('bulk') : '' },
+  })
 
   const setBuyInProgress = () => {
     console.log('setBuyInProgress')
-  }
-
-   function test(node: HTMLElement) {
-    const handler = () => {
-      console.log('Buy triggered (via action)')
-      // Do something like setBuyInProgress()
-    }
-
-    node.addEventListener('mousedown', handler)
-
-    return {
-      destroy() {
-        node.removeEventListener('mousedown', handler)
-      }
-    }
   }
 </script>
 
@@ -137,7 +123,6 @@
   >
 {/snippet}
 
-<!-- TO DO move to component -->
 {#snippet stepButton(
   count: number,
   text: string,
@@ -161,45 +146,29 @@
   </button>
 {/snippet}
 
-{#snippet body()}
-  <!-- {#if isPSS}
-    <div class="tw-flex tw-gap-4 tw-justify-center tw-items-center tw-mb-6">
-      {@render stepButton(
-        1,
-        $t('selectCampaign'),
-        !!campaignId,
-        pssPage,
-        false,
-        () => (pssPage = true),
-      )}
-      <div class="tw-w-[40px] tw-h-px tw-bg-alto"></div>
-      {@render stepButton(
-        2,
-        $t('selectDeliveryInfo'),
-        false,
-        !pssPage,
-        !campaignId,
-        () => (pssPage = false),
-      )}
-    </div>
-  {/if}
-  {#if isPSS && pssPage}
-    {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQty > 1 ? prefSalesQty : 1, isBuyable: isBuyable ? 1 : 0 }, )}
-      <p>Loading PSS Campaign...</p>
-    {:then campaign}
-      <PssList
-        campaigns={campaign}
-        {priceBoxUnit}
-        bind:campaignId
-        enableRadio={true}
-      />
-      <Button
-        fullWidth={true}
-        disabled={!campaignId}
-        onclick={() => (pssPage = false)}>{$t('selectDeliveryInfo')}</Button
-      >
-    {/await}
-  {:else} -->
+{#snippet stepControl()}
+  <div class="tw-flex tw-gap-4 tw-justify-center tw-items-center tw-mb-6">
+    {@render stepButton(
+      1,
+      $t('selectCampaign'),
+      !!delivery.campaignId,
+      pssPage,
+      false,
+      () => (pssPage = true),
+    )}
+    <div class="tw-w-[40px] tw-h-px tw-bg-alto"></div>
+    {@render stepButton(
+      2,
+      $t('selectDeliveryInfo'),
+      false,
+      !pssPage,
+      !delivery.campaignId,
+      () => (pssPage = false),
+    )}
+  </div>
+{/snippet}
+
+{#snippet deliveryData()}
   <SelectWrapper
     text="Leveransmethod:"
     bind:value={delivery.method}
@@ -232,9 +201,34 @@
     />
   </div>
 
-  {@render buyButton(text)}
-  <!-- {/if} -->
+  {@render buyButton(buyButtonLabel)}
 {/snippet}
+
+{#snippet pssBody()}
+  {@render stepControl()}
+  {#if pssPage}
+    {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQty > 1 ? prefSalesQty : 1, isBuyable: isBuyable ? 1 : 0 }, )}
+      <p>Loading PSS Campaign...</p>
+    {:then campaign}
+      <PssList
+        campaigns={campaign}
+        {priceBoxUnit}
+        bind:campaignId={delivery.campaignId}
+        enableRadio={true}
+      />
+      <Button
+        fullWidth={true}
+        disabled={!delivery.campaignId}
+        onclick={() => (pssPage = false)}>{$t('selectDeliveryInfo')}</Button
+      >
+    {/await}
+  {:else}
+    {@render deliveryData()}
+  {/if}
+{/snippet}
+
+
+
 {#await Promise.all([pricePromise, stockPromise])}
   <!-- For disabled state -->
   <div class="tw-flex tw-gap-4">
@@ -258,7 +252,7 @@
       />
     {/if}
   </div>
-
+  <!-- Load PSS info on pageload on PDP -->
   {#if isPss && isPdpCard}
     {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQty > 1 ? prefSalesQty : 1, isBuyable: isBuyable ? 1 : 0 }, )}
       <p>PSS Spinner</p>
@@ -269,12 +263,22 @@
   <div class="tw-flex tw-gap-4">
     <QtyIncrement {qtyIncrement} {id} bind:qty={delivery.qty} />
     {#if useModal}
-      <Modal
-        textButton={$t('buyProduct')}
-        header={text}
-        {body}
-        bind:showModal
-      />
+      {#if isPss}
+        <Modal
+          textButton={$t('buyProduct')}
+          header={buyButtonLabel}
+          body={pssBody}
+          bind:showModal
+        />
+      {:else}
+        <Modal
+          textButton={$t('buyProduct')}
+          header={buyButtonLabel}
+          body={deliveryData}
+          bind:showModal
+        />
+      {/if}
+
       {#if isPdpCard}
         <Button
           fullWidth={true}
@@ -285,7 +289,7 @@
         <ButtonBuyCircle onclick={() => (showModal = true)} />
       {/if}
     {:else if isPdpCard}
-      {@render buyButton(text)}
+      {@render buyButton(buyButtonLabel)}
     {:else}
       <ButtonBuyCircle
         disabled={disableBuyButton}
@@ -295,8 +299,3 @@
     {/if}
   </div>
 {/await}
-{#if qtyIncrement > 1}
-  <div class="tw-text-sm">
-    {$t('qtyIncInfo', { values: { qty: qtyIncrement } })}
-  </div>
-{/if}
