@@ -3,7 +3,6 @@ import './app.css'
 
 import { setupI18n } from './lib/localization'
 
-import SvelteTester from './entries/SvelteTester.svelte'
 import ProductBuyBox from './entries/ProductBuyBox.svelte'
 import ProductPriceBox from './entries/ProductPriceBox.svelte'
 import ProductStockBox from './entries/ProductStockBox.svelte'
@@ -118,10 +117,4 @@ document.querySelectorAll('[id^="svelte-product-stock-box-"]').forEach((el) => {
 
 const stickyMessages = mount(StickyMessages, {
     target: document.getElementById('svelte-sticky-messages')!,
-})
-
-// Logic Svelte Tester component
-
-const svelteTester = mount(SvelteTester, {
-    target: document.getElementById('svelte-tester')!,
 })

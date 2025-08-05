@@ -232,7 +232,6 @@
   {/if}
 {/snippet}
 
-{hasPaymentCampaign}
 {#await Promise.all([pricePromise, stockPromise])}
   <!-- For disabled state -->
   <div class="tw-flex tw-gap-4">

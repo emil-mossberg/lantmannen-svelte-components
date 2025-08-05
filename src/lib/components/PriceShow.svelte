@@ -38,7 +38,7 @@
 </script>
 
 <div
-    class={`tw-flex tw-items-center ${disabledPrice ? 'tw-line-through' : ''}`}
+    class={`tw-flex tw-gap-[3px] tw-items-center ${disabledPrice ? 'tw-line-through' : ''}`}
 >
     <span
         class={`${ headerStyling ? 'tw-font-lantmannenSerif tw-font-bold tw-text-[1.125rem] tw-leading-[1.2]' : 'tw-text-xs tw-leading-6'} ${disabledPrice && 'tw-text-xs tw-leading-6 tw-font-normal'} ${isCampaignPrice && 'tw-text-desert'}`}
@@ -46,7 +46,7 @@
         {formattedPrice}
     </span>
 
-    <span class="tw-text-xs tw-leading-6">
-        {priceBoxUnit ? `/${priceBoxUnit}` : ''}
+    <span class={`tw-text-xs tw-leading-6 ${isCampaignPrice && 'tw-text-desert'}`}>
+        {priceBoxUnit ? ` / ${priceBoxUnit}` : ''}
     </span>
 </div>
