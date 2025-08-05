@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
   import { t } from 'svelte-i18n'
 
   import svelteBridge from '../stores/MagentoSvelteBridge.svelte'
@@ -51,7 +50,6 @@
   let deliveryAddress = $state<DeliveryAddress | null>(null)
 
   const enableBuyButton = $derived.by(() => {
-    console.log('InProgress:', cartStateTracker.inProgress.value)
     if (cartStateTracker.inProgress) return false
 
     if (!showModal) return false
@@ -88,6 +86,7 @@
     disabled={enableBuyButton}>{text}</Button
   >
 {/snippet}
+
 
 {#snippet openModalButton(label: string)}
   {#if isPdpCard}
@@ -203,6 +202,8 @@
     {@render buyButton(text)}
   {/if}
 {/snippet}
+
+
 {#if useModal}
   <Modal
     textButton={$t('buyProduct')}
