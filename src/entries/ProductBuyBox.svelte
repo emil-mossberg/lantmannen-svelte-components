@@ -112,6 +112,11 @@
   const setBuyInProgress = () => {
     console.log('setBuyInProgress')
   }
+
+  // / TO DO add setting here for not using this or whever
+  const hasPaymentCampaign = $derived.by(
+    () => pssFetch.cartInfo?.cart_has_pay_campaign,
+  )
 </script>
 
 {#snippet buyButton(text: string)}
@@ -227,8 +232,7 @@
   {/if}
 {/snippet}
 
-
-
+{hasPaymentCampaign}
 {#await Promise.all([pricePromise, stockPromise])}
   <!-- For disabled state -->
   <div class="tw-flex tw-gap-4">
@@ -282,11 +286,15 @@
       {#if isPdpCard}
         <Button
           fullWidth={true}
+          disabled={!isPss && hasPaymentCampaign}
           type="button"
           onclick={() => (showModal = true)}>{$t('buyProduct')}</Button
         >
       {:else}
-        <ButtonBuyCircle onclick={() => (showModal = true)} />
+        <ButtonBuyCircle
+          onclick={() => (showModal = true)}
+          disabled={!isPss && hasPaymentCampaign}
+        />
       {/if}
     {:else if isPdpCard}
       {@render buyButton(buyButtonLabel)}
