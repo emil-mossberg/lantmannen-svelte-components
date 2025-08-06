@@ -184,7 +184,7 @@
     {#if price.price_info.extension_attributes?.lma_campaign_payment_terms}
       {@render DiscountBox($t('paymentTerms'))}
     {/if}
-    {#if prefSalesQty}
+    {#if prefSalesQty > 1}
       {@const prefAndUnit = `${prefSalesQty} ${prefSalesQtyUnit}`}
       <span class="tw-text-xs tw-leading-6">
         {#if price.price_info.extension_attributes?.lma_is_pallet_discount}
