@@ -12,11 +12,7 @@
     showModal?: boolean
   }
 
-  let {
-    header,
-    body,
-    showModal = $bindable(false),
-  }: Props = $props()
+  let { header, body, showModal = $bindable(false) }: Props = $props()
 
   $effect(() => {
     scrollLock(showModal)

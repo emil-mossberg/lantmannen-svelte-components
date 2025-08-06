@@ -84,7 +84,37 @@
   const goToCart = () => {
     window.location.href = window.BASE_URL + 'checkout/cart/'
   }
+
+  // TO DO update to correct for logged in
+  const goToCheckout = () => {
+    window.location.href = window.BASE_URL + 'checkout/#shipping'
+  }
 </script>
+
+{#snippet cartButtonContent(deliveryPlanner: boolean = true)}
+  <div class="tw-relative">
+    <IconCart />
+    {#if bridgeSingleton.cart.value}
+      <span
+        class="tw-absolute tw-top-[-6px] tw-right-[-4px] tw-bg-green-pea tw-text-white tw-px-[6px] tw-py-[4px] tw-leading-none tw-rounded-md tw-text-xs tw-font-bold"
+        >{bridgeSingleton.cart.value.items.length}</span
+      >
+    {/if}
+  </div>
+  <div class="tw-flex tw-flex-col tw-items-start">
+    {#if deliveryPlanner}
+      <div>
+        {$t('deliveryPlanner')}
+      </div>
+    {/if}
+    {#if bridgeSingleton.cart.value}
+      <div class="tw-flex">
+        <PriceShow price={bridgeSingleton.cart.value.subtotalAmount} />
+        <span class="tw-text-xs tw-leading-6">{$t('exVAT')}</span>
+      </div>
+    {/if}
+  </div>
+{/snippet}
 
 {#snippet header()}
   {$t('deliveryPlanner')}
@@ -172,31 +202,29 @@
       </li>
     {/each}
   </ul>
-  <div class="tw-flex tw-justify-center tw-items-center tw-py-3 tw-border-t">
+  <div
+    class="tw-flex tw-justify-center tw-gap-4 tw-items-center tw-p-3 tw-border-t tw-flex-wrap"
+  >
     <Button onclick={goToCart}>{$t('goToCart')}</Button>
+    <Button onclick={goToCheckout}>{$t('goToCheckout')}</Button>
   </div>
 {/snippet}
 
-{#if bridgeSingleton.cart.value?.items && bridgeSingleton.cart.value?.items.length}
-  <button
-    onclick={() => (showSheet = true)}
-    class="tw-clear-button tw-fixed tw-right-0 tw-top-0 tw-z-[110] tw-flex tw-gap-4 tw-px-3 tw-py-2 tw-items-center tw-bg-white hover:tw-bg-white"
-  >
-    <div class="tw-relative">
-      <IconCart />
-      {#if bridgeSingleton.cart.value}
-        <span
-          class="tw-absolute tw-top-[-6px] tw-right-[-4px] tw-bg-green-pea tw-text-white tw-px-[6px] tw-py-[4px] tw-leading-none tw-rounded-md tw-text-xs tw-font-bold"
-          >{bridgeSingleton.cart.value.items.length}</span
-        >
-      {/if}
-    </div>
-    <div class="tw-flex tw-flex-col tw-items-start">
-      <PriceShow price={bridgeSingleton.cart.value.subtotalAmount} />
-      <span class="tw-text-xs tw-leading-6">{$t('exVAT')}</span>
-    </div>
-  </button>
-  <Sheet {header} {body} bind:showSheet />
-{:else}
-  <button class="tw-clear-button" onclick={goToCart}><IconCart /></button>
-{/if}
+<div
+  class="tw-fixed tw-right-3 tw-top-3 tw-z-[110] tw-border tw-border-charcoal tw-rounded-md tw-bg-white tw-min-w-[260px] tw-overflow-hidden"
+>
+  {#if bridgeSingleton.showDeliveryPlanner && bridgeSingleton.cart.value?.items && bridgeSingleton.cart.value?.items.length}
+    <button
+      onclick={() => (showSheet = true)}
+      class="tw-clear-button tw-flex tw-gap-4 tw-px-3 tw-py-2 tw-items-center tw-bg-white hover:tw-bg-white"
+    >
+      {@render cartButtonContent()}
+    </button>
+    <Sheet {header} {body} bind:showSheet />
+  {:else}
+    <button class="tw-clear-button tw-flex tw-gap-4 tw-p-3 tw-items-center" onclick={goToCart}
+      >{@render cartButtonContent(false)}
+      
+    </button>
+  {/if}
+</div>

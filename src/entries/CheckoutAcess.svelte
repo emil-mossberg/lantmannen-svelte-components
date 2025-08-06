@@ -3,8 +3,5 @@
     import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
 </script>
 
-{#if bridgeSingleton.showDeliveryPlanner}
-    <DeliveryPlanner />
-{:else}
-    <div>Old cart flow, implement</div>
-{/if}
+<DeliveryPlanner />
+
