@@ -26,7 +26,7 @@
     transition:slide={{ axis: 'x', duration: 400, easing: cubicIn }}
   >
     <div class="tw-flex tw-justify-between tw-p-6">
-      <h5>{@render header?.()}</h5>
+      <h3>{@render header?.()}</h3>
       <button class="tw-clear-button" onclick={() => (showSheet = false)}><IconCross /></button>
     </div>
     {@render body?.()}

@@ -17,7 +17,6 @@
   import ButtonBuyCircle from '../lib/components/ButtonBuyCircle.svelte'
   import Spinner from '../lib/components/Spinner.svelte'
   import { type BuyBoxProps } from '../schemas/BuyProps'
-  
 
   // TO DO remove TEMP dummy data
   import {
@@ -70,9 +69,6 @@
   // Component UI controll functionality
 
   const disableBuyButton = $derived.by(() => {
-    // TO DO use this also
-
-    // if (cartStateTracker.inProgress) return false
 
     // If we dont use modal we dont care about setting delivery information, its known
     if (!showModal) return false
@@ -103,19 +99,24 @@
     values: { type: isBulk ? $t('bulk') : '' },
   })
 
-  
   // / TO DO add setting here for not using this or whever
   const hasPaymentCampaign = $derived.by(
     () => pssFetch.cartInfo?.cart_has_pay_campaign,
   )
 
-  const clickBuyButton = () => {
-    // TO DO remove when done
-    // console.log(document.getElementById(`${buttonId}-${sku}`))
-    document.getElementById(`${buttonId}-${sku}`)?.click()
+  let showCartSpinner = $state(false)
 
+  const clickBuyButton = () => {
+    document.getElementById(`${buttonId}-${sku}`)?.click()
+    cartStateTracker.inProgress.value = true
+    showCartSpinner = true
     showModal = false
   }
+
+  // TO DO does this have to be in onMount and cleaned up?
+  window.addEventListener('magento:cartUpdated', function () {
+    showCartSpinner = false
+  })
 </script>
 
 {#snippet buyButton(text: string)}
@@ -123,8 +124,14 @@
     onclick={clickBuyButton}
     fullWidth={true}
     class="min-w-[260px]"
-    disabled={disableBuyButton}>{text}</Button
+    disabled={disableBuyButton || cartStateTracker.inProgress.value}
   >
+    {#if showCartSpinner}
+      CART SPINNER
+    {:else}
+      {text}
+    {/if}
+  </Button>
 {/snippet}
 
 {#snippet stepButton(
@@ -204,7 +211,7 @@
       disabledDates={['2025-08-08', '2025-08-15']}
     />
   </div>
-  
+
   {@render buyButton(buyButtonLabel)}
 {/snippet}
 
@@ -290,17 +297,15 @@
       {:else}
         <ButtonBuyCircle
           onclick={() => (showModal = true)}
-          disabled={!isPss && hasPaymentCampaign}
+          disabled={(!isPss && hasPaymentCampaign) || cartStateTracker.inProgress.value}
         />
       {/if}
     {:else if isPdpCard}
       {@render buyButton(buyButtonLabel)}
     {:else}
-      <ButtonBuyCircle
-        disabled={disableBuyButton}
-        onclick={clickBuyButton}
-      />
+      <ButtonBuyCircle disabled={disableBuyButton || cartStateTracker.inProgress.value} onclick={clickBuyButton} />
     {/if}
   </div>
 {/await}
-<Button id={`${buttonId}-${sku}`} type="submit">For testing</Button>
+<!-- Work around to be able to use onclick handler and add product to cart at the same time -->
+<Button class="tw-hidden" id={`${buttonId}-${sku}`} type="submit"></Button>

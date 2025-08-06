@@ -3,7 +3,6 @@ import singletonFactory from './SingletonFactory'
 class CartStateTracker {
   public inProgress = $state<{value: boolean}>({value: false})
 
-  // TO DO not working as should
   constructor() {
     window.addEventListener('magento:cartUpdated', () => {
       this.stopCartInProgress()

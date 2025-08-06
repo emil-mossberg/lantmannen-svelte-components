@@ -15,7 +15,7 @@
 <button
     type="button"
     {...rest}
-    class={`tw-px-4 tw-py-2 tw-border tw-border-green-pea tw-bg-green-pea p-2 tw-text-white focus:tw-text-white focus:!tw-bg-tannenbaum focus:!tw-border-tannenbaum active:tw-bg-tannenbaum active:tw-border-tannenbaum active:tw-text-white hover:tw-bg-tannenbaum hover:tw-border-tannenbaum hover:tw-text-white disabled:tw-cursor-not-allowed disabled:tw-border-charcoal disabled:tw-bg-charcoal disabled:tw-opacity-30 ${className} ${fullWidth && 'tw-w-full'}`}
+    class={`tw-px-4 tw-py-2 tw-border tw-border-green-pea tw-bg-green-pea p-2 tw-text-white focus:tw-text-white focus:!tw-bg-tannenbaum focus:!tw-border-tannenbaum active:tw-bg-tannenbaum active:tw-border-tannenbaum active:tw-text-white hover:tw-bg-tannenbaum hover:tw-border-tannenbaum hover:tw-text-white disabled:tw-pointer-events-none disabled:tw-border-charcoal disabled:tw-bg-charcoal disabled:tw-opacity-30 ${className} ${fullWidth && 'tw-w-full'}`}
 >
     {@render children?.()}
 </button>

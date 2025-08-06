@@ -107,7 +107,7 @@
   <ul class="tw-h-full tw-overflow-auto">
     {#each deliveries as delivery, index}
       <li class="tw-py-3 tw-px-6 tw-mb-2 [&:not(:last-child)]:tw-border-b">
-        <h5>
+        <h5 class="tw-mb-3">
           {`${$t('deliveryCount', { values: { count: index + 1, note: delivery.type === 'bulk' ? $t('bulkSilo') : '' } })}`}
         </h5>
         <SelectWrapper

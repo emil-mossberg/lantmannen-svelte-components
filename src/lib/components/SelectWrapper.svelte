@@ -29,8 +29,8 @@
     const resolvedItemId = itemId ?? (isStringArray ? undefined : 'id')
 </script>
 
-<div class="tw-mb-3 magento-svelte-select">
-    <label class="tw-block" for={id}>{text}</label>
+<div class="tw-mb-3 magento-svelte-select leading-none">
+    <label class="tw-block tw-font-bold tw-mb-1" for={id}>{text}</label>
     <Select
         {id}
         bind:value
@@ -46,7 +46,7 @@
         --item-hover-bg="#F4EEE6"
         --item-hover-color="#201E1A"
         --border-focused="2px solid #0192D0"
-        --selected-item-padding="0px 16px"
+        --selected-item-padding="8px 12px"
         --padding="0px"
         clearable={false}
     />
