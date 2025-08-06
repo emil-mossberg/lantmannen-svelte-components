@@ -7,6 +7,7 @@
   import SelectWrapper from '../lib/components/SelectWrapper.svelte'
   import IconCart from '../lib/IconsDynamic/IconCart.svelte'
   import PriceShow from '../lib/components/PriceShow.svelte'
+  import DatePicker from '../lib/components/DatePicker.svelte'
 
   import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
 
@@ -20,7 +21,7 @@
   const deliveries = $state([
     {
       type: 'bulk',
-      adress: '101',
+      adress: '101-1',
       deliveryDateFrom: '2025-06-12',
       deliveryDateTo: '2025-06-20',
       deliveryMethod: '023',
@@ -35,7 +36,7 @@
     },
     {
       type: 'bulk',
-      adress: '101',
+      adress: '101-2',
       deliveryDateFrom: '2025-06-12',
       deliveryDateTo: '2025-06-20',
       deliveryMethod: '023',
@@ -122,7 +123,7 @@
 
 {#snippet body()}
   <div
-    class="tw-flex tw-justify-between tw-align-middle tw-px-6 tw-py-4 tw-border-b"
+    class="tw-flex tw-justify-between tw-align-middle tw-px-6 tw-pb-4 tw-border-b"
   >
     {#if bridgeSingleton.cart.value?.items}
       <span>
@@ -162,10 +163,17 @@
           label="address"
           itemId="addressId"
         />
-        <SelectDate
-          bind:deliveryFrom={delivery.deliveryDateFrom}
-          deliveryTo={delivery.deliveryDateTo}
-        />
+
+        {#if delivery.type === 'bulk'}
+          <DatePicker
+            label={$t('deliveryDate:')}
+            bind:deliveryDate={delivery.deliveryDateFrom}
+            disabledFrom="2025-09-24"
+            hoverDistance={3}
+            disabledDates={['2025-08-08', '2025-08-15']}
+          />
+        {/if}
+        
         <ul>
           {#each delivery.items as item}
             <li class="tw-flex">

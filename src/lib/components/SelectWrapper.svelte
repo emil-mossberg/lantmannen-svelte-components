@@ -45,9 +45,7 @@
         --item-is-active-color="#201E1A"
         --item-hover-bg="#F4EEE6"
         --item-hover-color="#201E1A"
-        --border-focused="2px solid #0192D0"
-        --selected-item-padding="8px 12px"
-        --padding="0px"
+        --border-focused="2px solid #0192D0"        
         clearable={false}
     />
 </div>

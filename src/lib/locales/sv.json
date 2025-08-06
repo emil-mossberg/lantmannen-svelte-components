@@ -49,5 +49,6 @@
     "deliveryMethod:": "Leveransmethod:",
     "deliveryAddress:": "Leveransadress:",
     "bulkSilo" : "(Bulkleverans - silo krävs)",
-    "deliveryCount": "Leverans {count} {note}"
+    "deliveryCount": "Leverans {count} {note}",
+    "deliveryDate:": "Leveransdatum:"
 }
