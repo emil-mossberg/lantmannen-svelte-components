@@ -114,6 +114,7 @@
 
   // TO DO does this have to be in onMount and cleaned up?
   window.addEventListener('magento:cartUpdated', function () {
+    
     showCartSpinner = false
     showModal = false
   })
@@ -252,15 +253,17 @@
   {@const isPss =
     !!price.price_info.extension_attributes.lma_campaign_is_pre_season}
 
-  <div class="tw-mb-4">
+  
     {#if !isPss && pssFetch.cartInfo?.cart_has_pay_campaign}
+    <div class="tw-mb-4">
       <InfoBox
         text={$t('M4DisabledCartM4', {
           values: { name: pssFetch.cartInfo.pay_campaign_name },
         })}
       />
+      </div>
     {/if}
-  </div>
+  
   <!-- Load PSS info on pageload on PDP -->
   {#if isPss && isPdpCard}
     {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQty > 1 ? prefSalesQty : 1, isBuyable: isBuyable ? 1 : 0 }, )}

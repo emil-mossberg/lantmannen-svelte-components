@@ -3,7 +3,6 @@
 
   import Sheet from '../lib/components/Sheet.svelte'
   import Button from '../lib/components/Button.svelte'
-  import SelectDate from '../lib/components/SelectDate.svelte'
   import SelectWrapper from '../lib/components/SelectWrapper.svelte'
   import IconCart from '../lib/IconsDynamic/IconCart.svelte'
   import PriceShow from '../lib/components/PriceShow.svelte'
@@ -131,7 +130,7 @@
       </span>
       <div class="tw-flex tw-gap-1">
         <span>{$t('total:')}</span>
-        <PriceShow price={bridgeSingleton.cart.value.subtotalAmount} />
+        <span class="tw-price-wrapper">{@html bridgeSingleton.cart.value.subtotal_excl_tax}</span>
       </div>
     {/if}
   </div>

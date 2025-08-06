@@ -66,6 +66,7 @@ class MagentoSvelteBridge {
 
     private onCartUpdated(e: Event) {
         const customEvent = e as CustomEvent
+        console.log(customEvent.detail.cart)
         this.cart.value = customEvent.detail.cart
     }
 
