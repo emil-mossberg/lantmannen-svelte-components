@@ -1,8 +1,8 @@
-<div class="tw-text-center tw-my-2">
+<div class="tw-text-center">
   <div role="status">
     <svg
       aria-hidden="true"
-      class="tw-inline tw-w-8 tw-h-8 tw-text-gray-200 tw-animate-spin dark:tw-text-gray-600 tw-fill-blue-600"
+      class="tw-inline tw-w-[24px] tw-h-[24px] tw-text-gray-200 tw-animate-spin dark:tw-text-gray-600 tw-fill-blue-600"
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

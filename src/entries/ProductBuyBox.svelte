@@ -110,12 +110,12 @@
     document.getElementById(`${buttonId}-${sku}`)?.click()
     cartStateTracker.inProgress.value = true
     showCartSpinner = true
-    showModal = false
   }
 
   // TO DO does this have to be in onMount and cleaned up?
   window.addEventListener('magento:cartUpdated', function () {
     showCartSpinner = false
+    showModal = false
   })
 </script>
 
@@ -127,7 +127,7 @@
     disabled={disableBuyButton || cartStateTracker.inProgress.value}
   >
     {#if showCartSpinner}
-      CART SPINNER
+      <Spinner />
     {:else}
       {text}
     {/if}
