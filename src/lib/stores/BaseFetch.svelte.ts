@@ -112,7 +112,7 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
       })
 
       if (!this.timer) {
-        this.timer = setTimeout(() => this.flushQueue(), 10)
+        this.timer = setTimeout(() => this.flushQueue(), 0) // Used to batch Promise (micro tasks) to run before we call batched fetch (macro task)
       }
     })
   }
