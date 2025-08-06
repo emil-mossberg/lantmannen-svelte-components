@@ -42,5 +42,11 @@
     "Oct": "oktober",
     "Nov": "november",
     "Dec": "december",
-    "buyProduct": "Köp produkten"
+    "buyProduct": "Köp produkten",
+    "goToCart": "Gå till varukorgen",
+    "deliveryPlanner": "Leveransplaneraren",
+    "deliveryMethod:": "Leveransmethod:",
+    "deliveryAddress:": "Leveransadress:",
+    "bulkSilo" : "(Bulkleverans - silo krävs)",
+    "deliveryCount": "Leverans {count} {note}"
 }

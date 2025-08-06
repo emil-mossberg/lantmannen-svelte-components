@@ -3,8 +3,8 @@
 
   import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
   import priceFetch from '../lib/stores/PriceFetch.svelte'
-  import pssFetch from '../lib/stores/PssFetch.svelte'
   import PriceShow from '../lib/components/PriceShow.svelte'
+  import Spinner from '../lib/components/Spinner.svelte'
 
   import { type Price } from '../schemas/Price'
 
@@ -83,7 +83,11 @@
           isCampaignPrice={true}
         />
       {/if}
-      <PriceShow price={customerPrice} disabledPrice={discountPrice} {priceBoxUnit} />
+      <PriceShow
+        price={customerPrice}
+        disabledPrice={discountPrice}
+        {priceBoxUnit}
+      />
     </div>
     {#if bridgeSingleton.showListPrice && listPrice}
       <!-- LIST PRICE COLUMN -->
@@ -114,8 +118,9 @@
   </div>
 {/snippet}
 
+
 {#await pricePromise}
-  Price spinner
+  <Spinner />
 {:then price}
   {@const isPss =
     !!price.price_info.extension_attributes?.lma_campaign_is_pre_season}

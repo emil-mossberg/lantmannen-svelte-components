@@ -4,9 +4,7 @@
   import IconCart from '../../lib/IconsDynamic/IconCart.svelte'
   import IconPlus from '../Icons/icon-plus.svg'
 
-
   let { disabled, ...rest }: HTMLButtonAttributes = $props()
-
 </script>
 
 <button

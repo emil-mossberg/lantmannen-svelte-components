@@ -7,8 +7,9 @@
     import IconStock from '../lib/Icons/icon-in-stock.svg'
 
     import { type StockProps } from '../schemas/StockProps';
+    import Spinner from '../lib/components/Spinner.svelte'
 
-    const { prefSalesQty, sku, isBulk, isBulkFi }: StockProps = $props()
+    const { prefSalesQty, sku, isBulk, isBulkFi, isPdpCard }: StockProps = $props()
     
     let stockPromise = $state(
         isBulkFi
@@ -18,12 +19,15 @@
 </script>
 
 {#await stockPromise}
-    Loading Stock Spinner
+    <Spinner />
 {:then stock}
     <div>
-        <span class="tw-font-bold">{$t('availability')}</span>
+        {#if isPdpCard}
+            <span class="tw-font-bold">{$t('availability')}</span>
+        {/if}
+        
         <div
-            class="tw-p-4 tw-mt-3 tw-rounded tw-border tw-border-alto tw-flex tw-items-center tw-gap-3"
+            class={`tw-flex tw-items-center tw-gap-3 ${isPdpCard ? 'tw-rounded tw-border tw-border-alto tw-mt-3 tw-p-4' : 'tw-min-h-[34px]'}`}
         >
             <img src={IconStock} alt="stock icon" />
             {#if !stock.in_stock && !stock.allow_backorder}

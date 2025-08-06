@@ -95,6 +95,7 @@ document.querySelectorAll('[id^="svelte-product-stock-box-"]').forEach((el) => {
         'pref-sales-qty',
         'packaging-type',
         'packaging-type-se',
+        'is-pdp-card'
     ])
 
     const parsed = StockPropsSchema.safeParse(rawProps)

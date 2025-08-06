@@ -46,6 +46,7 @@
         --item-hover-bg="#F4EEE6"
         --item-hover-color="#201E1A"
         --border-focused="2px solid #0192D0"
+        --selected-item-padding="0px 16px"
         --padding="0px"
         clearable={false}
     />

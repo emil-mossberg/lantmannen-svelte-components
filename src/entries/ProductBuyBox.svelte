@@ -15,7 +15,9 @@
   import DatePicker from '../lib/components/DatePicker.svelte'
   import Modal from '../lib/components/Modal.svelte'
   import ButtonBuyCircle from '../lib/components/ButtonBuyCircle.svelte'
+  import Spinner from '../lib/components/Spinner.svelte'
   import { type BuyBoxProps } from '../schemas/BuyProps'
+  
 
   // TO DO remove TEMP dummy data
   import {
@@ -38,6 +40,8 @@
     priceBoxUnit,
     isBuyable,
   }: BuyBoxProps = $props()
+
+  const buttonId = $props.id()
 
   // Fetch data
 
@@ -76,16 +80,6 @@
     return !delivery.method || !delivery.address
   })
 
-  // Not very pretty fix for being able to close modal after buy button is pressed
-  // typ="submit" and click event on same button does not work well together
-
-  $effect(() => {
-    const items = bridgeSingleton.cart.value?.items
-    if (items?.some((product) => product.product_id === id)) {
-      showModal = false
-    }
-  })
-
   let pssPage = $state(true)
 
   let showModal = $state(false)
@@ -109,20 +103,25 @@
     values: { type: isBulk ? $t('bulk') : '' },
   })
 
-  const setBuyInProgress = () => {
-    console.log('setBuyInProgress')
-  }
-
+  
   // / TO DO add setting here for not using this or whever
   const hasPaymentCampaign = $derived.by(
     () => pssFetch.cartInfo?.cart_has_pay_campaign,
   )
+
+  const clickBuyButton = () => {
+    // TO DO remove when done
+    // console.log(document.getElementById(`${buttonId}-${sku}`))
+    document.getElementById(`${buttonId}-${sku}`)?.click()
+
+    showModal = false
+  }
 </script>
 
 {#snippet buyButton(text: string)}
   <Button
+    onclick={clickBuyButton}
     fullWidth={true}
-    type="submit"
     class="min-w-[260px]"
     disabled={disableBuyButton}>{text}</Button
   >
@@ -205,7 +204,7 @@
       disabledDates={['2025-08-08', '2025-08-15']}
     />
   </div>
-
+  
   {@render buyButton(buyButtonLabel)}
 {/snippet}
 
@@ -231,7 +230,6 @@
     {@render deliveryData()}
   {/if}
 {/snippet}
-
 {#await Promise.all([pricePromise, stockPromise])}
   <!-- For disabled state -->
   <div class="tw-flex tw-gap-4">
@@ -258,7 +256,7 @@
   <!-- Load PSS info on pageload on PDP -->
   {#if isPss && isPdpCard}
     {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQty > 1 ? prefSalesQty : 1, isBuyable: isBuyable ? 1 : 0 }, )}
-      <p>PSS Spinner</p>
+      <Spinner />
     {:then data}
       <PssList campaigns={data} {priceBoxUnit} />
     {/await}
@@ -300,9 +298,9 @@
     {:else}
       <ButtonBuyCircle
         disabled={disableBuyButton}
-        type="submit"
-        onclick={setBuyInProgress}
+        onclick={clickBuyButton}
       />
     {/if}
   </div>
 {/await}
+<Button id={`${buttonId}-${sku}`} type="submit">For testing</Button>
