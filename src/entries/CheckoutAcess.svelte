@@ -94,7 +94,7 @@
 {#snippet cartButtonContent(deliveryPlanner: boolean = true)}
   <div class="tw-relative">
     <IconCart />
-    {#if bridgeSingleton.cart.value && bridgeSingleton.cart.value.items.length}
+    {#if bridgeSingleton.cart.value && bridgeSingleton.cart.value.items && bridgeSingleton.cart.value.items.length}
       <span
         class="tw-absolute tw-top-[-6px] tw-right-[-4px] tw-bg-green-pea tw-text-white tw-px-[6px] tw-py-[4px] tw-leading-none tw-rounded-md tw-text-xs tw-font-bold"
         >{bridgeSingleton.cart.value.items.length}</span

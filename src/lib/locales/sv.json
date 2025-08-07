@@ -53,5 +53,7 @@
     "deliveryDate:": "Leveransdatum:",
     "multipleOf": "Köp i antal om {count}",
     "notAllowed": "Ej giltigt värde",
-    "atleast1": "Köp minst ett"
+    "atleast1": "Köp minst ett",
+    "errorStock": "Gick ej att ladda saldo",
+    "errorPrice": "Gick ej att ladda pris"
 }

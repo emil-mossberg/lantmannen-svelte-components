@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  
+
   import { t } from 'svelte-i18n'
 
   import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
@@ -9,7 +9,6 @@
   import Spinner from '../lib/components/Spinner.svelte'
 
   import { type Price } from '../schemas/Price'
-  
 
   type Props = {
     id: string
@@ -50,10 +49,9 @@
     return !!price.price_info.extension_attributes.lma_profix_price
   }
 
-  
   // A very un-pretty way of establishing that we are in a PDP Card, since component is loaded from same template in Magento
   // Improve when possible
-  
+
   let element: HTMLElement | undefined
   let isPDPCard = $state(false)
 
@@ -134,10 +132,9 @@
 
 <div bind:this={element}>
   {#await pricePromise}
-  <div class="tw-min-h-[107px]">
-    <Spinner />
-  </div>
-    
+    <div class="tw-min-h-[107px]">
+      <Spinner />
+    </div>
   {:then price}
     {@const isPss =
       !!price.price_info.extension_attributes?.lma_campaign_is_pre_season}
@@ -214,6 +211,6 @@
       {/if}
     </div>
   {:catch error}
-    Error loading price: {error.message}
+    {$t('errorPrice')}
   {/await}
 </div>

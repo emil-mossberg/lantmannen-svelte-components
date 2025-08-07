@@ -14,52 +14,54 @@ import { BuyBoxPropsSchema } from './schemas/BuyProps'
 
 import { extractDataAttributes } from './lib/helpers'
 
-setupI18n()
+setupI18n('fi_FI').then(() => {
+  // Logic Checkout acess component, includes logic for delivery planner or old flow
 
-// Logic Checkout acess component, includes logic for delivery planner or old flow
+  const checkoutAcessMountPoint = document.getElementById(
+    'svelte-checkout-acess',
+  )
 
-const checkoutAcessMountPoint = document.getElementById('svelte-checkout-acess')
-
-const checkoutAcess = mount(CheckoutAcess, {
+  const checkoutAcess = mount(CheckoutAcess, {
     target: checkoutAcessMountPoint!,
-})
+  })
 
-// Logic Product Buy Box component(s)
+  // Logic Product Buy Box component(s)
 
-
-document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
+  document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
     const rawProps = extractDataAttributes(el, [
-        'id',
-        'sku',
-        'pref-sales-qty',
-        'is-pdp-card',
-        'qty-increment',
-        'packaging-type',
-        'price-box-unit',
-        'packaging-type-se',
-        'is-buyable'
+      'id',
+      'sku',
+      'pref-sales-qty',
+      'is-pdp-card',
+      'qty-increment',
+      'packaging-type',
+      'price-box-unit',
+      'packaging-type-se',
+      'is-buyable',
     ])
 
     const parsed = BuyBoxPropsSchema.safeParse(rawProps)
 
     if (!parsed.success) {
-        console.error(
-            'Failed to parse props, skip mounting Buy component:',
-            parsed.error
-        )
-        return
+      console.error(
+        'Failed to parse props, skip mounting Buy component:',
+        parsed.error,
+      )
+      return
     }
 
     mount(ProductBuyBox, {
-        target: el,
-        props: parsed.data,
+      target: el,
+      props: parsed.data,
     })
-})
+  })
 
-// Logic Product Price box component
+  // Logic Product Price box component
 
-document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
-    const rawProps = extractDataAttributes(el, [
+  document
+    .querySelectorAll('[id^="svelte-product-price-box-"]')
+    .forEach((el) => {
+      const rawProps = extractDataAttributes(el, [
         'id',
         'pref-sales-qty',
         'packaging-type',
@@ -67,55 +69,57 @@ document.querySelectorAll('[id^="svelte-product-price-box-"]').forEach((el) => {
         'pallet-discount-information',
         'show-pallet-attribute',
         'price-box-unit',
-        'pref-sales-qty-unit'
-    ])
+        'pref-sales-qty-unit',
+      ])
 
-    const parsed = PricePropsSchema.safeParse(rawProps)
+      const parsed = PricePropsSchema.safeParse(rawProps)
 
-
-       if (!parsed.success) {
+      if (!parsed.success) {
         console.error(
-            'Failed to parse props, skip mounting Price component:',
-            parsed.error
+          'Failed to parse props, skip mounting Price component:',
+          parsed.error,
         )
         return
-    }
-    
-    mount(ProductPriceBox, {
+      }
+
+      mount(ProductPriceBox, {
         target: el,
         props: parsed.data,
+      })
     })
-})
 
-// Logic Product Stock box component
+  // Logic Product Stock box component
 
-document.querySelectorAll('[id^="svelte-product-stock-box-"]').forEach((el) => {
-    const rawProps = extractDataAttributes(el, [
+  document
+    .querySelectorAll('[id^="svelte-product-stock-box-"]')
+    .forEach((el) => {
+      const rawProps = extractDataAttributes(el, [
         'sku',
         'pref-sales-qty',
         'packaging-type',
         'packaging-type-se',
-        'is-pdp-card'
-    ])
+        'is-pdp-card',
+      ])
 
-    const parsed = StockPropsSchema.safeParse(rawProps)
+      const parsed = StockPropsSchema.safeParse(rawProps)
 
-    if (!parsed.success) {
+      if (!parsed.success) {
         console.error(
-            'Failed to parse props, skip mounting Stock component:',
-            parsed.error
+          'Failed to parse props, skip mounting Stock component:',
+          parsed.error,
         )
         return
-    }
+      }
 
-    mount(ProductStockBox, {
+      mount(ProductStockBox, {
         target: el,
         props: parsed.data,
+      })
     })
-})
 
-// Logic Svelte Sticky message component
+  // Logic Svelte Sticky message component
 
-const stickyMessages = mount(StickyMessages, {
+  const stickyMessages = mount(StickyMessages, {
     target: document.getElementById('svelte-sticky-messages')!,
+  })
 })

@@ -45,4 +45,6 @@
       {/if}
     </div>
   </div>
+  {:catch error}
+    {$t('errorStock')}
 {/await}
