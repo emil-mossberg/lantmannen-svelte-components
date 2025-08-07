@@ -108,10 +108,11 @@
       </div>
     {/if}
     {#if bridgeSingleton.cart.value && bridgeSingleton.cart.value.subtotalAmount > 0}
-      <div class="tw-flex">
-        <PriceShow price={bridgeSingleton.cart.value.subtotalAmount} />
-        <span class="tw-text-xs tw-leading-6">{$t('exVAT')}</span>
-      </div>
+              <span class="tw-price-wrapper"
+          >{@html bridgeSingleton.vatEnabled
+            ? bridgeSingleton.cart.value.subtotal_incl_tax
+            : bridgeSingleton.cart.value.subtotal_excl_tax}</span
+        >
     {/if}
   </div>
 {/snippet}
@@ -130,7 +131,11 @@
       </span>
       <div class="tw-flex tw-gap-1">
         <span>{$t('total:')}</span>
-        <span class="tw-price-wrapper">{@html bridgeSingleton.cart.value.subtotal_excl_tax}</span>
+        <span class="tw-price-wrapper"
+          >{@html bridgeSingleton.vatEnabled
+            ? bridgeSingleton.cart.value.subtotal_incl_tax
+            : bridgeSingleton.cart.value.subtotal_excl_tax}</span
+        >
       </div>
     {/if}
   </div>
@@ -172,7 +177,7 @@
             disabledDates={['2025-08-08', '2025-08-15']}
           />
         {/if}
-        
+
         <ul>
           {#each delivery.items as item}
             <li class="tw-flex">

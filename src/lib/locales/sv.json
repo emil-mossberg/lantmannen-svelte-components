@@ -50,5 +50,8 @@
     "deliveryAddress:": "Leveransadress:",
     "bulkSilo" : "(Bulkleverans - silo krävs)",
     "deliveryCount": "Leverans {count} {note}",
-    "deliveryDate:": "Leveransdatum:"
+    "deliveryDate:": "Leveransdatum:",
+    "multipleOf": "Köp i antal om {count}",
+    "notAllowed": "Ej giltigt värde",
+    "atleast1": "Köp minst ett"
 }

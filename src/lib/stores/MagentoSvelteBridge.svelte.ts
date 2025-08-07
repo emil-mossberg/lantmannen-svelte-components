@@ -18,6 +18,7 @@ class MagentoSvelteBridge {
     public readonly tonnagePackageType = this.parsedData.tonnagePackageType
     public readonly isLoggedIn = this.parsedData.loggedIn ?? false
     public readonly showListPrice = this.parsedData.configShowListPrice ?? false
+    public readonly vatEnabled = this.parsedData.vatEnabled ?? false
     public readonly showVatPercentage =
         this.parsedData.configShowVatPercentage ?? false
     public readonly showInclVatPdp =

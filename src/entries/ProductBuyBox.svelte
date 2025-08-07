@@ -111,6 +111,8 @@
     showCartSpinner = true
   }
 
+  let validationError : string | null = $state(null)
+
   // TO DO does this have to be in onMount and cleaned up?
   window.addEventListener('magento:cartUpdated', function () {
     showCartSpinner = false
@@ -123,7 +125,7 @@
     onclick={clickBuyButton}
     fullWidth={true}
     class="min-w-[260px]"
-    disabled={disableBuyButton || cartStateTracker.inProgress.value}
+    disabled={disableBuyButton || cartStateTracker.inProgress.value || !!validationError}
   >
     {#if showCartSpinner}
       <Spinner />
@@ -180,7 +182,7 @@
 
 {#snippet deliveryData()}
   <SelectWrapper
-    text="Leveransmethod:"
+    text={$t('deliveryMethod')}
     bind:value={delivery.method}
     items={isBulk ? bulkDeliveryMethods : packageDeliveryMethods}
     label="delivery_method_name"
@@ -188,7 +190,7 @@
     placeholder="Välj leveransmetod"
   />
   <SelectWrapper
-    text="Leveransadress:"
+    text={$t('deliveryAddress')}
     bind:value={delivery.address}
     items={isBulk
       ? bulkAddress.map((item) => ({
@@ -219,7 +221,7 @@
   {@render stepControl()}
   {#if pssPage}
     {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQty > 1 ? prefSalesQty : 1, isBuyable: isBuyable ? 1 : 0 }, )}
-      <p>Loading PSS Campaign...</p>
+      <Spinner />
     {:then campaign}
       <PssList
         campaigns={campaign}
@@ -270,7 +272,7 @@
     {/await}
   {/if}
   <div class="tw-flex tw-gap-4">
-    <QtyIncrement {qtyIncrement} {id} bind:qty={delivery.qty} />
+    <QtyIncrement {qtyIncrement} {id} bind:qty={delivery.qty} bind:error={validationError} />
     {#if useModal}
       {#if isPss}
         <Modal
@@ -291,7 +293,7 @@
       {#if isPdpCard}
         <Button
           fullWidth={true}
-          disabled={!isPss && hasPaymentCampaign}
+          disabled={!isPss && hasPaymentCampaign || !!validationError}
           type="button"
           onclick={() => (showModal = true)}>{$t('buyProduct')}</Button
         >
@@ -299,14 +301,15 @@
         <ButtonBuyCircle
           onclick={() => (showModal = true)}
           disabled={(!isPss && hasPaymentCampaign) ||
-            cartStateTracker.inProgress.value}
+            cartStateTracker.inProgress.value  || !!validationError}
         />
       {/if}
     {:else if isPdpCard}
       {@render buyButton(buyButtonLabel)}
     {:else}
       <ButtonBuyCircle
-        disabled={disableBuyButton || cartStateTracker.inProgress.value}
+        showSpinner={showCartSpinner}
+        disabled={disableBuyButton || cartStateTracker.inProgress.value || !!validationError}
         onclick={clickBuyButton}
       />
     {/if}

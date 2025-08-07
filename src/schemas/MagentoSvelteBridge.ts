@@ -11,6 +11,7 @@ export const MagentoSvelteBridgeSchema = z.object({
     configShowExclVatPdp: z.string().optional().transform(val => val === '1'),
     configShowInclVatPlp: z.string().optional().transform(val => val === '1'),
     configShowExclVatPlp: z.string().optional().transform(val => val === '1'),
+    vatEnabled: z.string().optional().transform(val => val === '1'),
     configPaymentCampaignEnabled: z.string().optional().transform(val => val === '1'),
     configPaymentCampaign: z.string().optional().default(''),
     showDeliveryPlanner: z.string().optional().transform(val => val === '1'),
