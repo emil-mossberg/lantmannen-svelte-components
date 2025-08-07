@@ -9,6 +9,7 @@
   import Spinner from '../lib/components/Spinner.svelte'
 
   import { type Price } from '../schemas/Price'
+  
 
   type Props = {
     id: string
@@ -133,7 +134,10 @@
 
 <div bind:this={element}>
   {#await pricePromise}
+  <div class="tw-min-h-[107px]">
     <Spinner />
+  </div>
+    
   {:then price}
     {@const isPss =
       !!price.price_info.extension_attributes?.lma_campaign_is_pre_season}

@@ -94,7 +94,7 @@
 {#snippet cartButtonContent(deliveryPlanner: boolean = true)}
   <div class="tw-relative">
     <IconCart />
-    {#if bridgeSingleton.cart.value}
+    {#if bridgeSingleton.cart.value && bridgeSingleton.cart.value.items.length}
       <span
         class="tw-absolute tw-top-[-6px] tw-right-[-4px] tw-bg-green-pea tw-text-white tw-px-[6px] tw-py-[4px] tw-leading-none tw-rounded-md tw-text-xs tw-font-bold"
         >{bridgeSingleton.cart.value.items.length}</span
@@ -107,7 +107,7 @@
         {$t('deliveryPlanner')}
       </div>
     {/if}
-    {#if bridgeSingleton.cart.value}
+    {#if bridgeSingleton.cart.value && bridgeSingleton.cart.value.subtotalAmount > 0}
       <div class="tw-flex">
         <PriceShow price={bridgeSingleton.cart.value.subtotalAmount} />
         <span class="tw-text-xs tw-leading-6">{$t('exVAT')}</span>
@@ -218,7 +218,7 @@
 {/snippet}
 
 <div
-  class="tw-fixed tw-right-3 tw-top-3 tw-z-[110] tw-border tw-border-charcoal tw-rounded-md tw-bg-white tw-min-w-[260px] tw-overflow-hidden"
+  class="tw-fixed tw-right-3 tw-top-3 tw-z-[110] tw-border tw-border-charcoal tw-rounded-md tw-bg-white tw-overflow-hidden"
 >
   {#if bridgeSingleton.showDeliveryPlanner && bridgeSingleton.cart.value?.items && bridgeSingleton.cart.value?.items.length}
     <button
@@ -230,7 +230,7 @@
     <Sheet {header} {body} bind:showSheet />
   {:else}
     <button
-      class="tw-clear-button tw-flex tw-gap-4 tw-p-3 tw-items-center"
+      class="tw-clear-button tw-flex tw-p-3 tw-items-center"
       onclick={goToCart}
       >{@render cartButtonContent(false)}
     </button>

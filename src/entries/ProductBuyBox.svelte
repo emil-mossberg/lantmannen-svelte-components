@@ -15,7 +15,7 @@
   import DatePicker from '../lib/components/DatePicker.svelte'
   import Modal from '../lib/components/Modal.svelte'
   import ButtonBuyCircle from '../lib/components/ButtonBuyCircle.svelte'
-  import Spinner from '../lib/components/Spinner.svelte'
+  import Spinner from '@lib/components/Spinner.svelte'
   import { type BuyBoxProps } from '../schemas/BuyProps'
 
   // TO DO remove TEMP dummy data
@@ -69,7 +69,6 @@
   // Component UI controll functionality
 
   const disableBuyButton = $derived.by(() => {
-
     // If we dont use modal we dont care about setting delivery information, its known
     if (!showModal) return false
 
@@ -114,7 +113,6 @@
 
   // TO DO does this have to be in onMount and cleaned up?
   window.addEventListener('magento:cartUpdated', function () {
-    
     showCartSpinner = false
     showModal = false
   })
@@ -253,17 +251,16 @@
   {@const isPss =
     !!price.price_info.extension_attributes.lma_campaign_is_pre_season}
 
-  
-    {#if !isPss && pssFetch.cartInfo?.cart_has_pay_campaign}
+  {#if !isPss && pssFetch.cartInfo?.cart_has_pay_campaign}
     <div class="tw-mb-4">
       <InfoBox
         text={$t('M4DisabledCartM4', {
           values: { name: pssFetch.cartInfo.pay_campaign_name },
         })}
       />
-      </div>
-    {/if}
-  
+    </div>
+  {/if}
+
   <!-- Load PSS info on pageload on PDP -->
   {#if isPss && isPdpCard}
     {#await pssFetch.fetchPSSCampaigns( { id, quantity: prefSalesQty > 1 ? prefSalesQty : 1, isBuyable: isBuyable ? 1 : 0 }, )}
@@ -301,13 +298,17 @@
       {:else}
         <ButtonBuyCircle
           onclick={() => (showModal = true)}
-          disabled={(!isPss && hasPaymentCampaign) || cartStateTracker.inProgress.value}
+          disabled={(!isPss && hasPaymentCampaign) ||
+            cartStateTracker.inProgress.value}
         />
       {/if}
     {:else if isPdpCard}
       {@render buyButton(buyButtonLabel)}
     {:else}
-      <ButtonBuyCircle disabled={disableBuyButton || cartStateTracker.inProgress.value} onclick={clickBuyButton} />
+      <ButtonBuyCircle
+        disabled={disableBuyButton || cartStateTracker.inProgress.value}
+        onclick={clickBuyButton}
+      />
     {/if}
   </div>
 {/await}

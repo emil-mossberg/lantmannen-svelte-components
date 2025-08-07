@@ -15,10 +15,10 @@
     "checkJs": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    // "baseUrl": ".",
-    // "paths": {
-    //   "@lib/*": ["src/lib/*"],
-    // }
+    "baseUrl": ".",
+    "paths": {
+      "@lib/*": ["src/lib/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"]
 }
