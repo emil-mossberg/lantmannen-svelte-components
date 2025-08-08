@@ -60,5 +60,7 @@
     "expressDelivery": "Express Flak",
     "packageDelivery": "Paket",
     "pickupDelivery": "Egen transport",
-    "availableMethodInCheckout": "Tillgängliga leveransmetoder visas i kassan"
+    "availableMethodInCheckout": "Tillgängliga leveransmetoder visas i kassan",
+    "campaign": "Kampanj!",
+    "new": "nyhet"
 }

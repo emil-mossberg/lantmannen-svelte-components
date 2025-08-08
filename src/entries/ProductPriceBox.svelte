@@ -84,7 +84,7 @@
   // onMount(() => {
   //   window.addEventListener('fotorama:load', function () {
 
-  //     // TO DO work on 
+  //     // TO DO work on
   //     console.log(document.getElementsByClassName('fotorama__stage'))
   //     console.log('loaded2')
   //   })
@@ -162,6 +162,14 @@
         </span>
       </div>
     {/if}
+  </div>
+{/snippet}
+
+{#snippet badge(bgColor: string, text: string)}
+  <div
+    class={`tw-text-white tw-text-xs tw-mb-2 tw-p-1 ${bgColor}`}
+  >
+    {$t(text)}
   </div>
 {/snippet}
 
@@ -245,10 +253,18 @@
       </span>
     {/if}
 
-    <div class="tw-absolute tw-left-[20px] tw-top-0 tw-z-[1]">
-      <!-- TO DO : Talk to sofia about this and continue -->
+    <div
+      class={`tw-absolute  tw-top-0 tw-z-[1] ${isPDPCard ? 'tw-left-[20px]' : 'tw-left-0'}`}
+    >
       {#if isPss || price.price_info.extension_attributes?.lma_customer_price_is_campaign}
-        IS PSS, need badge
+       {@render badge('tw-bg-desert', 'campaign')}
+      {/if}
+      {#if newProduct}
+        <div
+          class="tw-bg-steel-blue tw-text-white tw-text-xs tw-mb-2 tw-p-1 tw-inline-block"
+        >
+          {$t('new')}
+        </div>
       {/if}
     </div>
   {:catch error}
