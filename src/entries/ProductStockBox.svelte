@@ -62,7 +62,18 @@
       },
     ]
 
-    return deliveryInfo.filter((item) => item.show)
+    const filteredDeliveryInfo = deliveryInfo.filter((item) => item.show)
+
+    // Not a pretty solution, should not have side effects in functions
+    if (filteredDeliveryInfo.length && isPDPCard) {
+      const el = document.getElementById('lm-sheet-delivery.methods')
+
+      if (el) {
+        el.style.display = 'block'
+      }
+    }
+
+    return filteredDeliveryInfo
   }
 </script>
 
