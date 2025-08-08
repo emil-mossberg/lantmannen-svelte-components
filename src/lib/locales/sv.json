@@ -20,7 +20,8 @@
     "listPrice": "Rek. utpris",
     "selectCampaign": "Välj kampanj",
     "selectDeliveryInfo": "Välj leveransinfo",
-    "order": "Beställ {type}",
+    "orderType": "Beställ {type}",
+    "order": "Beställ",
     "bulk": "bulk",
     "availability": "Tillgänglighet",
     "Su": "sön",
@@ -62,5 +63,7 @@
     "pickupDelivery": "Egen transport",
     "availableMethodInCheckout": "Tillgängliga leveransmetoder visas i kassan",
     "campaign": "Kampanj!",
-    "new": "nyhet"
+    "new": "nyhet",
+    "buyInQty": "Köp i antal om:",
+    "minQty": "Minsta beställning:"
 }

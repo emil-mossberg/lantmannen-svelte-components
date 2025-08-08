@@ -76,19 +76,49 @@
   // console.log(document.getElementsByClassName('fotorama__stage')[0])
 
   // TO DO which one to use?
-  window.addEventListener('fotorama:load', function () {
-    console.log(document.getElementsByClassName('fotorama__stage')[0])
-    console.log('loaded')
-  })
+  // window.addEventListener('fotorama:load', function () {
+  //   function cloneBadgeList() {
+  //     console.log('running MutationObserver')
+  //   }
+
+  //   const observer = new MutationObserver(cloneBadgeList)
+
+  //   const priceBox = document.getElementsByClassName('price-box')[0]
+  //   console.log(priceBox)
+
+  //   observer.observe(priceBox)
+
+  //   console.log(document.getElementsByClassName('fotorama__stage')[0])
+
+  //   console.log('loaded')
+  // })
 
   // onMount(() => {
   //   window.addEventListener('fotorama:load', function () {
 
-  //     // TO DO work on
-  //     console.log(document.getElementsByClassName('fotorama__stage'))
-  //     console.log('loaded2')
+  //     const pdpPriceBox = document.getElementsByClassName('product-info-price')[0]
+
+  //     console.log(pdpPriceBox)
+
+  //     function cloneBadgeList() {
+  //       console.log('running MutationObserver')
+  //       console.log(pdpPriceBox.querySelector(`#badge-${id}`))
+  //     }
+
+  //     const observer = new MutationObserver(cloneBadgeList)
+
+      
+
+  //     observer.observe(pdpPriceBox, {childList: true})
+
+  //     cloneBadgeList()
+
+  //     console.log(document.getElementsByClassName('fotorama__stage')[0])
+
   //   })
   // })
+  
+
 </script>
 
 {#snippet DiscountBox(text: string)}
@@ -252,7 +282,7 @@
     {/if}
 
     <div
-      class={`tw-absolute  tw-top-0 tw-z-[1] ${isPDPCard ? 'tw-left-[20px]' : 'tw-left-0'}`}
+      class={`badges-list tw-absolute tw-top-0 tw-z-[1] ${isPDPCard ? 'tw-left-[20px]' : 'tw-left-0'}`}
     >
       {#if isPss || price.price_info.extension_attributes?.lma_customer_price_is_campaign}
         {@render badge('tw-bg-desert', 'campaign')}

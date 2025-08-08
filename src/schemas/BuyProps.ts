@@ -26,6 +26,13 @@ export const BuyBoxPropsSchema = z
         const num = Number(val)
         return Number.isNaN(num) || num <= 0 ? 1 : num
       }),
+    qtyMin: z
+      .string()
+      .nullable()
+      .transform((val) => {
+        const num = Number(val)
+        return Number.isNaN(num) || num <= 0 ? 1 : num
+      }),
     isPdpCard: z
       .string()
       .nullable()
@@ -57,6 +64,7 @@ export const BuyBoxPropsSchema = z
       isBulk,
       isBulkFi,
       isVirtualProduct: data.isVirtualProduct,
+      qtyMin: data.qtyMin
     }
   })
 

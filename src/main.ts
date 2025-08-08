@@ -8,6 +8,7 @@ import ProductPriceBox from './entries/ProductPriceBox.svelte'
 import ProductStockBox from './entries/ProductStockBox.svelte'
 import CheckoutAcess from './entries/CheckoutAcess.svelte'
 import StickyMessages from './entries/StickyMessages.svelte'
+import PdpBadges from './entries/PDPBadges.svelte'
 import { StockPropsSchema } from './schemas/StockProps'
 import { PricePropsSchema } from './schemas/PriceProps'
 import { BuyBoxPropsSchema } from './schemas/BuyProps'
@@ -38,7 +39,8 @@ setupI18n('fi_FI').then(() => {
       'price-box-unit',
       'packaging-type-se',
       'is-buyable',
-      'is-virtual-product'
+      'is-virtual-product',
+      'qty-min'
     ])
 
     const parsed = BuyBoxPropsSchema.safeParse(rawProps)
@@ -88,6 +90,12 @@ setupI18n('fi_FI').then(() => {
         props: parsed.data,
       })
     })
+
+    // Logic Product Badge component
+
+    // TO DO add if for PDP
+
+    document.querySelectorAll('[id^="svelte-pdp-badges-"]')
 
   // Logic Product Stock box component
 

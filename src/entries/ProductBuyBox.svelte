@@ -39,6 +39,7 @@
     priceBoxUnit,
     isBuyable,
     isVirtualProduct,
+    qtyMin,
   }: BuyBoxProps = $props()
 
   const buttonId = $props.id()
@@ -95,9 +96,11 @@
     return true
   })
 
-  const buyButtonLabel = $t('order', {
-    values: { type: isBulk ? $t('bulk') : '' },
-  })
+  const buyButtonLabel = isBulk
+    ? $t('orderType', {
+        values: { type: isBulk ? $t('bulk') : '' },
+      })
+    : $t('order')
 
   // / TO DO add setting here for not using this or whever
   const hasPaymentCampaign = $derived.by(
@@ -326,5 +329,15 @@
     {/if}
   </div>
 {/await}
+{#if qtyIncrement > 1 && isPdpCard}
+  <span class="tw-text-xs tw-inline-block tw-mt-2">
+    { `${$t('buyInQty')} ${qtyIncrement}` }
+  </span>
+{/if}
+{#if qtyMin > 1 && !isVirtualProduct && isPdpCard}
+  <span class="tw-text-xs tw-inline-block tw-mt-2">
+    {`${$t('minQty')} ${qtyMin}`}
+  </span>
+{/if}
 <!-- Work around to be able to use onclick handler and add product to cart at the same time -->
 <Button class="tw-hidden" id={`${buttonId}-${sku}`} type="submit"></Button>
