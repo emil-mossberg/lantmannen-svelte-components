@@ -16,15 +16,21 @@
   import iconDeliveryPickup from '@lib/Icons/icon-delivery-pickup.svg'
 
   let element: HTMLElement | undefined
+
   let isPDPCard = $state(false)
 
   onMount(() => {
     isPDPCard = !!element?.closest('.product-info-main')
-    console.log(isPDPCard)
   })
 
-  const { prefSalesQty, sku, isBulk, isBulkFi, isPdpCard }: StockProps =
-    $props()
+  const {
+    prefSalesQty,
+    sku,
+    isBulk,
+    isBulkFi,
+    isPdpCard,
+    isVirtualProduct,
+  }: StockProps = $props()
 
   let stockPromise = $state(
     isBulkFi
@@ -52,7 +58,7 @@
       {
         label: `${$t('expressDelivery')}: ${data.current_available_stock}`,
         icon: iconDeliveryExpress,
-        show: !!data.current_available_stock,
+        show: !!+data.current_available_stock,
       },
     ]
 
@@ -61,64 +67,82 @@
 </script>
 
 <div bind:this={element}>
-  {#await stockPromise}
-    <div class="tw-min-h-[58px]">
-      <Spinner />
-    </div>
-  {:then stock}
-    <div>
-      {#if isPdpCard}
-        <span class="tw-font-bold">{$t('availability')}</span>
-      {/if}
-
-      <div
-        class={`tw-flex tw-items-center tw-gap-3 ${isPdpCard ? 'tw-rounded tw-border tw-border-alto tw-mt-3 tw-p-4' : 'tw-min-h-[34px]'}`}
+  {#if isVirtualProduct}
+    <div
+      class={`tw-flex tw-gap-3 ${isPdpCard ? 'tw-rounded tw-border tw-border-alto tw-mt-3 tw-p-4' : 'tw-min-h-[34px]'}`}
+    >
+      <img src={IconStock} alt="stock icon" /><span
+        class="tw-text-xs tw-leading-6">{$t('inStock')}</span
       >
-        <img src={IconStock} alt="stock icon" />
-        {#if !stock.in_stock && !stock.allow_backorder}
-          <!-- TO DO add logic for isLocalWarehouse -->
-          <span class="tw-text-xs tw-leading-6">{$t('outOfStock')}</span>
-        {:else if (isBulk && (stock.in_stock || stock.allow_backorder)) || (!isBulk && stock.in_stock)}
-          <span class="tw-text-xs tw-leading-6">{$t('inStock')}</span>
-        {:else if !isBulk && !stock.in_stock && stock.allow_backorder}
-          <span class="tw-text-xs tw-leading-6"
-            >{bridgeSingleton.formatDate(stock.in_stock_date)}</span
-          >
-        {/if}
-      </div>
     </div>
-
-    {#if bridgeSingleton.showDeliveryBox}
-      {@const deliverMethods = getDeliveryMethods(stock)}
-      <div class={`${isPDPCard ? 'tw-mt-4' : 'tw-mt-3'}`}>
+  {:else}
+    {#await stockPromise}
+      <div class="tw-min-h-[58px]">
+        <Spinner />
+      </div>
+    {:then stock}
+      <div>
         {#if isPdpCard}
-          <span class="tw-font-bold">{$t('deliveryOptions')}</span>
+          <span class="tw-font-bold">{$t('availability')}</span>
         {/if}
+
         <div
-          class={`tw-mt-3 ${isPDPCard ? 'tw-p-4 tw-rounded tw-border tw-border-alto' : ''}`}
+          class={`tw-flex tw-gap-3 ${isPdpCard ? 'tw-rounded tw-border tw-border-alto tw-mt-3 tw-p-4' : 'tw-min-h-[34px]'}`}
         >
-          {#if deliverMethods.length}
-            <ul class={`${!isPDPCard && 'tw-flex'}`}>
-              {#each deliverMethods as method}
-                <li class="tw-flex tw-gap-3">
-                  <img
-                    src={method.icon}
-                    alt="delivery method"
-                    class="tw-h-[20px] tw-w-[20px]"
-                  />
-                  {#if isPDPCard}
-                    <span class="tw-text-xs">{method.label}</span>
-                  {/if}
-                </li>
-              {/each}
-            </ul>
-          {:else}
-            <span>{$t('availableMethodInCheckout')}</span>
+          <img src={IconStock} alt="stock icon" />
+          {#if !stock.in_stock && !stock.allow_backorder}
+            <!-- TO DO add logic for isLocalWarehouse -->
+            <span class="tw-text-xs tw-leading-6">{$t('outOfStock')}</span>
+          {:else if (isBulk && (stock.in_stock || stock.allow_backorder)) || (!isBulk && stock.in_stock)}
+            <span class="tw-text-xs tw-leading-6">{$t('inStock')}</span>
+          {:else if !isBulk && !stock.in_stock && stock.allow_backorder}
+            <span class="tw-text-xs tw-leading-6"
+              >{bridgeSingleton.formatDate(stock.in_stock_date)}</span
+            >
           {/if}
         </div>
       </div>
-    {/if}
-  {:catch error}
-    {$t('errorStock')}
-  {/await}
+
+      {#if bridgeSingleton.showDeliveryBox}
+        {@const deliverMethods = getDeliveryMethods(stock)}
+        <div class={`${isPDPCard ? 'tw-mt-4' : 'tw-mt-3'}`}>
+          {#if isPdpCard}
+            <span class="tw-font-bold">{$t('deliveryOptions')}</span>
+          {/if}
+          <div
+            class={`tw-mt-3 ${isPDPCard ? 'tw-p-4 tw-rounded tw-border tw-border-alto' : ''}`}
+          >
+            {#if deliverMethods.length}
+              <ul class={`${!isPDPCard && 'tw-flex'}`}>
+                {#each deliverMethods as method}
+                  <li class="tw-flex tw-gap-3">
+                    <img
+                      src={method.icon}
+                      alt="delivery method"
+                      class="tw-h-[20px] tw-w-[20px]"
+                    />
+                    {#if isPDPCard}
+                      <span class="tw-text-xs">{method.label}</span>
+                    {/if}
+                  </li>
+                {/each}
+              </ul>
+            {:else}
+              <div class="tw-flex tw-gap-3">
+                <img
+                  src={iconDeliveryExpress}
+                  alt="delivery method"
+                  class="tw-h-[20px] tw-w-[20px]"
+                />
+                <span class="tw-text-xs">{$t('availableMethodInCheckout')}</span
+                >
+              </div>
+            {/if}
+          </div>
+        </div>
+      {/if}
+    {:catch error}
+      {$t('errorStock')}
+    {/await}
+  {/if}
 </div>

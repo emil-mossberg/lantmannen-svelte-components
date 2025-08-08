@@ -38,6 +38,7 @@
     isPdpCard = false,
     priceBoxUnit,
     isBuyable,
+    isVirtualProduct,
   }: BuyBoxProps = $props()
 
   const buttonId = $props.id()
@@ -111,7 +112,7 @@
     showCartSpinner = true
   }
 
-  let validationError : string | null = $state(null)
+  let validationError: string | null = $state(null)
 
   // TO DO does this have to be in onMount and cleaned up?
   window.addEventListener('magento:cartUpdated', function () {
@@ -125,7 +126,9 @@
     onclick={clickBuyButton}
     fullWidth={true}
     class="min-w-[260px]"
-    disabled={disableBuyButton || cartStateTracker.inProgress.value || !!validationError}
+    disabled={disableBuyButton ||
+      cartStateTracker.inProgress.value ||
+      !!validationError}
   >
     {#if showCartSpinner}
       <Spinner />
@@ -239,7 +242,7 @@
     {@render deliveryData()}
   {/if}
 {/snippet}
-{#await Promise.all([pricePromise, stockPromise])}
+{#await isVirtualProduct ? Promise.all( [pricePromise], ) : Promise.all( [pricePromise, stockPromise], )}
   <!-- For disabled state -->
   <div class="tw-flex tw-gap-4">
     <QtyIncrement {qtyIncrement} {id} bind:qty={delivery.qty} />
@@ -272,7 +275,12 @@
     {/await}
   {/if}
   <div class="tw-flex tw-gap-4">
-    <QtyIncrement {qtyIncrement} {id} bind:qty={delivery.qty} bind:error={validationError} />
+    <QtyIncrement
+      {qtyIncrement}
+      {id}
+      bind:qty={delivery.qty}
+      bind:error={validationError}
+    />
     {#if useModal}
       {#if isPss}
         <Modal
@@ -293,7 +301,7 @@
       {#if isPdpCard}
         <Button
           fullWidth={true}
-          disabled={!isPss && hasPaymentCampaign || !!validationError}
+          disabled={(!isPss && hasPaymentCampaign) || !!validationError}
           type="button"
           onclick={() => (showModal = true)}>{$t('buyProduct')}</Button
         >
@@ -301,7 +309,8 @@
         <ButtonBuyCircle
           onclick={() => (showModal = true)}
           disabled={(!isPss && hasPaymentCampaign) ||
-            cartStateTracker.inProgress.value  || !!validationError}
+            cartStateTracker.inProgress.value ||
+            !!validationError}
         />
       {/if}
     {:else if isPdpCard}
@@ -309,7 +318,9 @@
     {:else}
       <ButtonBuyCircle
         showSpinner={showCartSpinner}
-        disabled={disableBuyButton || cartStateTracker.inProgress.value || !!validationError}
+        disabled={disableBuyButton ||
+          cartStateTracker.inProgress.value ||
+          !!validationError}
         onclick={clickBuyButton}
       />
     {/if}

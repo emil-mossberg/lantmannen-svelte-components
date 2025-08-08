@@ -6,6 +6,7 @@ export const BuyBoxPropsSchema = z
     .object({
         id: z.string().min(1),
         sku: z.string().min(1),
+        isVirtualProduct: z.string().nullable().transform(val => val === '1'),
         prefSalesQty: z
             .string()
             .nullable()
@@ -52,6 +53,7 @@ export const BuyBoxPropsSchema = z
             priceBoxUnit: data.priceBoxUnit,
             isBulk,
             isBulkFi,
+            isVirtualProduct: data.isVirtualProduct
         }
     })
 

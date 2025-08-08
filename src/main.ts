@@ -38,6 +38,7 @@ setupI18n('fi_FI').then(() => {
       'price-box-unit',
       'packaging-type-se',
       'is-buyable',
+      'is-virtual-product'
     ])
 
     const parsed = BuyBoxPropsSchema.safeParse(rawProps)
@@ -99,6 +100,7 @@ setupI18n('fi_FI').then(() => {
         'packaging-type',
         'packaging-type-se',
         'is-pdp-card',
+        'is-virtual-product'
       ])
 
       const parsed = StockPropsSchema.safeParse(rawProps)

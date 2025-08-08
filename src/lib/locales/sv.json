@@ -59,5 +59,6 @@
     "deliveryOptions": "Leveransalternativ",
     "expressDelivery": "Express Flak",
     "packageDelivery": "Paket",
-    "pickupDelivery": "Egen transport"
+    "pickupDelivery": "Egen transport",
+    "availableMethodInCheckout": "Tillgängliga leveransmetoder visas i kassan"
 }
