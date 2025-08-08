@@ -235,13 +235,17 @@
         bind:campaignId={delivery.campaignId}
         enableRadio={true}
       />
-      <Button
-        fullWidth={true}
-        disabled={!delivery.campaignId}
-        onclick={() => (pssPage = false)}>{$t('selectDeliveryInfo')}</Button
-      >
+      {#if bridgeSingleton.showDeliveryPlanner}
+        <Button
+          fullWidth={true}
+          disabled={!delivery.campaignId}
+          onclick={() => (pssPage = false)}>{$t('selectDeliveryInfo')}</Button
+        >
+      {:else}
+        {@render buyButton(buyButtonLabel)}
+      {/if}
     {/await}
-  {:else}
+  {:else if bridgeSingleton.showDeliveryPlanner}
     {@render deliveryData()}
   {/if}
 {/snippet}
@@ -284,7 +288,7 @@
       bind:qty={delivery.qty}
       bind:error={validationError}
     />
-    {#if useModal}
+    {#if useModal || isPss}
       {#if isPss}
         <Modal
           textButton={$t('buyProduct')}
@@ -331,7 +335,7 @@
 {/await}
 {#if qtyIncrement > 1 && isPdpCard}
   <span class="tw-text-xs tw-inline-block tw-mt-2">
-    { `${$t('buyInQty')} ${qtyIncrement}` }
+    {`${$t('buyInQty')} ${qtyIncrement}`}
   </span>
 {/if}
 {#if qtyMin > 1 && !isVirtualProduct && isPdpCard}
