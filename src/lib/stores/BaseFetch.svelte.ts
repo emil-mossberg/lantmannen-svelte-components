@@ -61,7 +61,7 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
       const response = await fetchPOST(this.getUrl(), body)
 
       const result: FetchResponse<T> = await response.json()
-
+      
       window.dispatchEvent(new CustomEvent(`${this.getFetchKey()}-fetched`))
 
       const itemsMap = new Map(
@@ -102,6 +102,7 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
       }
 
       const entry = this.queue.get(productId)!
+
       entry.resolvers.push({
         resolve: (data) => {
           resolve(data)

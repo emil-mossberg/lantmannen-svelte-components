@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onMount, onDestroy } from 'svelte'
 
   import { t } from 'svelte-i18n'
 
@@ -58,6 +58,37 @@
   onMount(() => {
     isPDPCard = !!element?.closest('.product-info-main')
   })
+
+  const showPriceIncVAT = $derived.by(
+    () =>
+      (bridgeSingleton.showInclVatPdp && isPDPCard) ||
+      bridgeSingleton.showInclVatPlp,
+  )
+
+  const showPriceExclVAT = $derived.by(
+    () =>
+      (bridgeSingleton.showExclVatPdp && isPDPCard) ||
+      bridgeSingleton.showExclVatPlp,
+  )
+
+  const headerSize = $derived.by(() => (isPDPCard ? 'lg' : 'sm'))
+
+  // console.log(document.getElementsByClassName('fotorama__stage')[0])
+
+  // TO DO which one to use?
+  window.addEventListener('fotorama:load', function () {
+    console.log(document.getElementsByClassName('fotorama__stage')[0])
+    console.log('loaded')
+  })
+
+  // onMount(() => {
+  //   window.addEventListener('fotorama:load', function () {
+
+  //     // TO DO work on 
+  //     console.log(document.getElementsByClassName('fotorama__stage'))
+  //     console.log('loaded2')
+  //   })
+  // })
 </script>
 
 {#snippet DiscountBox(text: string)}
@@ -93,12 +124,14 @@
           price={campaignPrice}
           {priceBoxUnit}
           isCampaignPrice={true}
+          {headerSize}
         />
       {/if}
       <PriceShow
         price={customerPrice}
         disabledPrice={discountPrice}
         {priceBoxUnit}
+        {headerSize}
       />
     </div>
     {#if bridgeSingleton.showListPrice && listPrice}
@@ -109,6 +142,7 @@
             price={profixPrice}
             {priceBoxUnit}
             isCampaignPrice={true}
+            {headerSize}
           />
         {/if}
         <PriceShow
@@ -116,6 +150,7 @@
           headerStyling={false}
           {priceBoxUnit}
           disabledPrice={hasProfixPrice(price)}
+          {headerSize}
         />
       </div>
     {/if}
@@ -140,7 +175,9 @@
       !!price.price_info.extension_attributes?.lma_campaign_is_pre_season}
     <div class="tw-min-h-[40px] tw-relative">
       {#if bridgeSingleton.showListPrice && price.price_info.extension_attributes?.lma_list_price}
-        <div class="tw-flex">
+        <div
+          class={`tw-flex  ${isPDPCard ? 'tw-pb-2 tw-border-b tw-border-alto' : ''}`}
+        >
           <div class="tw-flex-1 tw-mr-4 tw-text-xs tw-leading-6 tw-font-bold">
             {hasDiscountPrice(price) ? $t('discountPrice') : $t('normalPrice')}
           </div>
@@ -153,20 +190,24 @@
         </div>
       {/if}
 
-      <div class="tw-border-b tw-border-alto">
+      {#if showPriceExclVAT}
         {@render PriceRow(price, isPss, false, $t('exclVAT'))}
-      </div>
-
-      {@render PriceRow(
-        price,
-        isPss,
-        true,
-        bridgeSingleton.showVatPercentage
-          ? `${$t('inclVAT')} (${[
-              price.price_info.extension_attributes.lma_vat_percentage,
-            ]} %)`
-          : $t('inclVAT'),
-      )}
+      {/if}
+      {#if showPriceExclVAT && showPriceIncVAT && isPDPCard}
+        <div class="tw-border-b tw-border-alto"></div>
+      {/if}
+      {#if showPriceIncVAT}
+        {@render PriceRow(
+          price,
+          isPss,
+          true,
+          bridgeSingleton.showVatPercentage
+            ? `${$t('inclVAT')} (${[
+                price.price_info.extension_attributes.lma_vat_percentage,
+              ]} %)`
+            : $t('inclVAT'),
+        )}
+      {/if}
     </div>
     {#if showPalletAttribute}
       <div>{palletDiscountInformation}</div>

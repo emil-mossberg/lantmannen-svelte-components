@@ -55,5 +55,9 @@
     "notAllowed": "Ej giltigt värde",
     "atleast1": "Köp minst ett",
     "errorStock": "Gick ej att ladda saldo",
-    "errorPrice": "Gick ej att ladda pris"
+    "errorPrice": "Gick ej att ladda pris",
+    "deliveryOptions": "Leveransalternativ",
+    "expressDelivery": "Express Flak",
+    "packageDelivery": "Paket",
+    "pickupDelivery": "Egen transport"
 }
