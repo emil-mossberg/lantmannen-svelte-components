@@ -3,10 +3,10 @@
 
   import { t } from 'svelte-i18n'
 
-  import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
-  import priceFetch from '../lib/stores/PriceFetch.svelte'
-  import PriceShow from '../lib/components/PriceShow.svelte'
-  import Spinner from '../lib/components/Spinner.svelte'
+  import bridgeSingleton from '@lib/stores/MagentoSvelteBridge.svelte'
+  import priceFetch from '@lib/stores/PriceFetch.svelte'
+  import PriceShow from '@lib/components/PriceShow.svelte'
+  import Spinner from '@lib/components/Spinner.svelte'
 
   import { type Price } from '../schemas/Price'
 
@@ -166,9 +166,7 @@
 {/snippet}
 
 {#snippet badge(bgColor: string, text: string)}
-  <div
-    class={`tw-text-white tw-text-xs tw-mb-2 tw-p-1 ${bgColor}`}
-  >
+  <div class={`tw-text-white tw-text-xs tw-mb-2 tw-p-1 ${bgColor}`}>
     {$t(text)}
   </div>
 {/snippet}
@@ -257,7 +255,7 @@
       class={`tw-absolute  tw-top-0 tw-z-[1] ${isPDPCard ? 'tw-left-[20px]' : 'tw-left-0'}`}
     >
       {#if isPss || price.price_info.extension_attributes?.lma_customer_price_is_campaign}
-       {@render badge('tw-bg-desert', 'campaign')}
+        {@render badge('tw-bg-desert', 'campaign')}
       {/if}
       {#if newProduct}
         <div

@@ -1,17 +1,17 @@
 <script lang="ts">
-    import IconInfo from '../../lib/Icons/icon-info.svg'
+  import IconInfo from '@lib/Icons/icon-info.svg'
 
-    type Props = {
-        text: string
-        fullWidth?: boolean
-    }
+  type Props = {
+    text: string
+    fullWidth?: boolean
+  }
 
-    const { text }: Props = $props()
+  const { text }: Props = $props()
 </script>
 
 <div
-    class="tw-border-2 tw-border-cerulean tw-rounded tw-p-4 tw-shadow-lm tw-flex tw-gap-4 tw-items-center"
+  class="tw-border-2 tw-border-cerulean tw-rounded tw-p-4 tw-shadow-lm tw-flex tw-gap-4 tw-items-center"
 >
-    <img src={IconInfo} alt="info icon" />
-    {text}
+  <img src={IconInfo} alt="info icon" />
+  {text}
 </div>

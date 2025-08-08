@@ -2,14 +2,14 @@
   import { t } from 'svelte-i18n'
   import { onMount } from 'svelte'
 
-  import stockFetch from '../lib/stores/StockFetch.svelte'
-  import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
+  import stockFetch from '@lib/stores/StockFetch.svelte'
+  import bridgeSingleton from '@lib/stores/MagentoSvelteBridge.svelte'
 
-  import IconStock from '../lib/Icons/icon-in-stock.svg'
+  import IconStock from '@lib/Icons/icon-in-stock.svg'
 
   import { type StockProps } from '../schemas/StockProps'
   import { type Stock } from 'src/schemas/Stock'
-  import Spinner from '../lib/components/Spinner.svelte'
+  import Spinner from '@lib/components/Spinner.svelte'
 
   import iconDeliveryExpress from '@lib/Icons/icon-delivery-express.svg'
   import iconDeliveryPackage from '@lib/Icons/icon-delivery-package.svg'

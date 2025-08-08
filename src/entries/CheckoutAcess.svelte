@@ -1,14 +1,13 @@
 <script lang="ts">
   import { t } from 'svelte-i18n'
 
-  import Sheet from '../lib/components/Sheet.svelte'
-  import Button from '../lib/components/Button.svelte'
-  import SelectWrapper from '../lib/components/SelectWrapper.svelte'
-  import IconCart from '../lib/IconsDynamic/IconCart.svelte'
-  import PriceShow from '../lib/components/PriceShow.svelte'
-  import DatePicker from '../lib/components/DatePicker.svelte'
+  import Sheet from '@lib/components/Sheet.svelte'
+  import Button from '@lib/components/Button.svelte'
+  import SelectWrapper from '@lib/components/SelectWrapper.svelte'
+  import IconCart from '@lib/IconsDynamic/IconCart.svelte'
+  import DatePicker from '@lib/components/DatePicker.svelte'
 
-  import bridgeSingleton from '../lib/stores/MagentoSvelteBridge.svelte'
+  import bridgeSingleton from '@lib/stores/MagentoSvelteBridge.svelte'
 
   import {
     bulkDeliveryMethods,
@@ -108,11 +107,11 @@
       </div>
     {/if}
     {#if bridgeSingleton.cart.value && bridgeSingleton.cart.value.subtotalAmount > 0}
-              <span class="tw-price-wrapper"
-          >{@html bridgeSingleton.vatEnabled
-            ? bridgeSingleton.cart.value.subtotal_incl_tax
-            : bridgeSingleton.cart.value.subtotal_excl_tax}</span
-        >
+      <span class="tw-price-wrapper"
+        >{@html bridgeSingleton.vatEnabled
+          ? bridgeSingleton.cart.value.subtotal_incl_tax
+          : bridgeSingleton.cart.value.subtotal_excl_tax}</span
+      >
     {/if}
   </div>
 {/snippet}

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { HTMLButtonAttributes } from 'svelte/elements'
 
-  import IconCart from '../../lib/IconsDynamic/IconCart.svelte'
+  import IconCart from '@lib/IconsDynamic/IconCart.svelte'
   import IconPlus from '../Icons/icon-plus.svg'
   import Spinner from './Spinner.svelte'
 

@@ -9,7 +9,7 @@
     qtyIncrements,
   } from '../validators/validators'
 
-  import InfoIcon from '../../lib/Icons/icon-info.svg'
+  import InfoIcon from '@lib/Icons/icon-info.svg'
 
   type Props = {
     qtyIncrement?: number
