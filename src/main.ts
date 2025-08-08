@@ -13,7 +13,8 @@ import { StockPropsSchema } from './schemas/StockProps'
 import { PricePropsSchema } from './schemas/PriceProps'
 import { BuyBoxPropsSchema } from './schemas/BuyProps'
 
-import { extractDataAttributes } from './lib/helpers'
+import { extractDataAttributes, safeParseWithLogging } from './lib/helpers'
+
 
 setupI18n('fi_FI').then(() => {
   // Logic Checkout acess component, includes logic for delivery planner or old flow
@@ -40,7 +41,7 @@ setupI18n('fi_FI').then(() => {
       'packaging-type-se',
       'is-buyable',
       'is-virtual-product',
-      'qty-min'
+      'qty-min',
     ])
 
     const parsed = BuyBoxPropsSchema.safeParse(rawProps)
@@ -64,18 +65,8 @@ setupI18n('fi_FI').then(() => {
   document
     .querySelectorAll('[id^="svelte-product-price-box-"]')
     .forEach((el) => {
-      const rawProps = extractDataAttributes(el, [
-        'id',
-        'pref-sales-qty',
-        'packaging-type',
-        'new-product',
-        'pallet-discount-information',
-        'show-pallet-attribute',
-        'price-box-unit',
-        'pref-sales-qty-unit',
-      ])
+      const parsed = PricePropsSchema.safeParse(el)
 
-      const parsed = PricePropsSchema.safeParse(rawProps)
 
       if (!parsed.success) {
         console.error(
@@ -91,27 +82,18 @@ setupI18n('fi_FI').then(() => {
       })
     })
 
-    // Logic Product Badge component
+  // Logic Product Badge component
 
-    // TO DO add if for PDP
+  // TO DO add if for PDP
 
-    document.querySelectorAll('[id^="svelte-pdp-badges-"]')
+  document.querySelectorAll('[id^="svelte-pdp-badges-"]')
 
   // Logic Product Stock box component
 
   document
     .querySelectorAll('[id^="svelte-product-stock-box-"]')
     .forEach((el) => {
-      const rawProps = extractDataAttributes(el, [
-        'sku',
-        'pref-sales-qty',
-        'packaging-type',
-        'packaging-type-se',
-        'is-pdp-card',
-        'is-virtual-product'
-      ])
-
-      const parsed = StockPropsSchema.safeParse(rawProps)
+      const parsed = StockPropsSchema.safeParse(el)
 
       if (!parsed.success) {
         console.error(

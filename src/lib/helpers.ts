@@ -1,4 +1,4 @@
-import { ZodType, type ZodTypeDef } from 'zod'
+import { ZodType, type ZodTypeDef, z } from 'zod'
 
 export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
@@ -89,3 +89,17 @@ export const fetchPOST = (url: string, body: string) => {
     },
   })
 }
+
+export const safeParseWithLogging = <T>(schema: z.ZodType<T>, input: unknown) => {
+  const result = schema.safeParse(input)
+  if (!result.success) {
+    console.error(`Failed to parse with schema:`, result.error)
+  }
+  return result
+}
+
+
+  export const get = (attr: string) => {
+      const val = el.getAttribute(`data-${attr}`)
+      return val === null ? null : val
+    }
