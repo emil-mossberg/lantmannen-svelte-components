@@ -8,7 +8,7 @@ export const DeliveryInfoSchema = z.object({
   method: DeliveryMethodSchema.nullable(),
   date: z.string(),
   campaignId: z.string().nullable(),
-  qty: z.number()
+  qty: z.number(),
 })
 
 export type DeliveryInfo = z.infer<typeof DeliveryInfoSchema>
