@@ -14,23 +14,19 @@ class MagentoSvelteBridge {
   public readonly storeId: number = this.parsedData.storeId
   public readonly locale: string = this.parsedData.locale
   public readonly loggedIn: boolean = this.parsedData.loggedIn
-  public readonly configShowListPrice: boolean =
+  public readonly showListPrice: boolean =
     this.parsedData.configShowVatPercentage
-  public readonly configShowVatPercentage: boolean =
+  public readonly showVatPercentage: boolean =
     this.parsedData.configShowVatPercentage
-  public readonly configShowInclVatPdp: boolean =
-    this.parsedData.configShowInclVatPdp
-  public readonly configShowExclVatPdp: boolean =
-    this.parsedData.configShowExclVatPdp
-  public readonly configShowInclVatPlp: boolean =
-    this.parsedData.configShowInclVatPlp
-  public readonly configShowExclVatPlp: boolean =
-    this.parsedData.configShowExclVatPlp
+  public readonly showInclVatPdp: boolean = this.parsedData.configShowInclVatPdp
+  public readonly showExclVatPdp: boolean = this.parsedData.configShowExclVatPdp
+  public readonly showInclVatPlp: boolean = this.parsedData.configShowInclVatPlp
+  public readonly showExclVatPlp: boolean = this.parsedData.configShowExclVatPlp
   public readonly vatEnabled: boolean = this.parsedData.vatEnabled
   public readonly showDeliveryBox: boolean = this.parsedData.showDeliveryBox
-  public readonly configPaymentCampaignEnabled: boolean =
+  public readonly paymentCampaignEnabled: boolean =
     this.parsedData.configPaymentCampaignEnabled
-  public readonly configPaymentCampaign: string =
+  public readonly paymentCampaign: string =
     this.parsedData.configPaymentCampaign
   public readonly showDeliveryPlanner: boolean =
     this.parsedData.showDeliveryPlanner
@@ -44,7 +40,6 @@ class MagentoSvelteBridge {
   })
 
   constructor() {
-
     // TO Do use parser here for type safety?
     // cart.value = window.MagentoBridgeState.cart;
     // customer.value = window.MagentoBridgeState.customer;
