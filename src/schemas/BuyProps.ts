@@ -2,27 +2,8 @@ import { z } from 'zod'
 import magentoSvelteBridge from '@lib/stores/MagentoSvelteBridge.svelte'
 
 export const BuyBoxPropsSchema = z
-  .instanceof(Element)
-  .transform((el) => {
-    const get = (attr: string) => {
-      const val = el.getAttribute(`data-${attr}`)
-      return val === null ? null : val
-    }
-
-    return {
-      id: get('id'),
-      sku: get('sku'),
-      isVirtualProduct: get('is-virtual-product'),
-      prefSalesQty: get('pref-sales-qty'),
-      packagingType: get('packaging-type'),
-      packagingTypeSe: get('packaging-type-se'),
-      qtyIncrement: get('qty-increment'),
-      qtyMin: get('qty-min'),
-      isPdpCard: get('is-pdp-card'),
-      // isBuyable: get('is-buyable'),
-      priceBoxUnit: get('price-box-unit'),
-    }
-  })
+  .instanceof(HTMLElement)
+  .transform((el) => el.dataset)
   .pipe(
     z
       .object({
@@ -44,7 +25,6 @@ export const BuyBoxPropsSchema = z
           return Number.isNaN(num) || num <= 0 ? 1 : num
         }),
         isPdpCard: z.string().transform((val) => val === '1'),
-        // isBuyable: z.string().transform((val) => val === '1'),
         priceBoxUnit: z.string().nullable().default(''),
       })
       .transform((data) => {
@@ -64,7 +44,6 @@ export const BuyBoxPropsSchema = z
           qtyIncrement: data.qtyIncrement,
           qtyMin: data.qtyMin,
           isPdpCard: data.isPdpCard,
-          // isBuyable: data.isBuyable,
           priceBoxUnit: data.priceBoxUnit,
           isBulk,
           isBulkFi,
