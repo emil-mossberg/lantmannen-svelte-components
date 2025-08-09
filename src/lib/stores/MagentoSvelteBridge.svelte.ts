@@ -7,30 +7,35 @@ import { MagentoSvelteBridgeSchema } from '../../schemas/MagentoSvelteBridge'
 // that contains all the data attribute needed by the class
 
 class MagentoSvelteBridge {
-  private svelteBridgeData =
-    document.getElementById('svelte-information')?.dataset ?? {}
-
   private readonly parsedData = MagentoSvelteBridgeSchema.parse(
-    this.svelteBridgeData,
+    document.getElementById('svelte-information'),
   )
-  public readonly storeId = this.parsedData.storeId
-  public readonly locale = this.parsedData.locale
-  public readonly tonnagePackageType = this.parsedData.tonnagePackageType
-  public readonly isLoggedIn = this.parsedData.loggedIn ?? false
-  public readonly showListPrice = this.parsedData.configShowListPrice ?? false
-  public readonly vatEnabled = this.parsedData.vatEnabled ?? false
-  public readonly showDeliveryBox = this.parsedData.showDeliveryBox ?? false
-  public readonly showVatPercentage =
-    this.parsedData.configShowVatPercentage ?? false
-  public readonly showInclVatPdp = this.parsedData.configShowInclVatPdp ?? false
-  public readonly showExclVatPdp = this.parsedData.configShowExclVatPdp ?? false
-  public readonly showInclVatPlp = this.parsedData.configShowInclVatPlp ?? false
-  public readonly showExclVatPlp = this.parsedData.configShowExclVatPlp ?? false
-  public readonly paymentCampaignEnabled =
-    this.parsedData.configPaymentCampaignEnabled ?? false
-  public readonly paymentCampaign = this.parsedData.configPaymentCampaign
-  public readonly showDeliveryPlanner =
-    this.parsedData.showDeliveryPlanner ?? false
+
+  public readonly storeId: number = this.parsedData.storeId
+  public readonly locale: string = this.parsedData.locale
+  public readonly loggedIn: boolean = this.parsedData.loggedIn
+  public readonly configShowListPrice: boolean =
+    this.parsedData.configShowVatPercentage
+  public readonly configShowVatPercentage: boolean =
+    this.parsedData.configShowVatPercentage
+  public readonly configShowInclVatPdp: boolean =
+    this.parsedData.configShowInclVatPdp
+  public readonly configShowExclVatPdp: boolean =
+    this.parsedData.configShowExclVatPdp
+  public readonly configShowInclVatPlp: boolean =
+    this.parsedData.configShowInclVatPlp
+  public readonly configShowExclVatPlp: boolean =
+    this.parsedData.configShowExclVatPlp
+  public readonly vatEnabled: boolean = this.parsedData.vatEnabled
+  public readonly showDeliveryBox: boolean = this.parsedData.showDeliveryBox
+  public readonly configPaymentCampaignEnabled: boolean =
+    this.parsedData.configPaymentCampaignEnabled
+  public readonly configPaymentCampaign: string =
+    this.parsedData.configPaymentCampaign
+  public readonly showDeliveryPlanner: boolean =
+    this.parsedData.showDeliveryPlanner
+  public readonly tonnagePackageType: string[] =
+    this.parsedData.tonnagePackageType
 
   public cart = $state<{ value: Cart | null }>({ value: null })
 
@@ -39,6 +44,7 @@ class MagentoSvelteBridge {
   })
 
   constructor() {
+
     // TO Do use parser here for type safety?
     // cart.value = window.MagentoBridgeState.cart;
     // customer.value = window.MagentoBridgeState.customer;
@@ -61,7 +67,6 @@ class MagentoSvelteBridge {
       this.handleIntialState.bind(this),
     )
   }
-
 
   private onCartUpdated(e: Event) {
     const customEvent = e as CustomEvent
