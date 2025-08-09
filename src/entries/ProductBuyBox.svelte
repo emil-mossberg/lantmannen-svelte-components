@@ -37,7 +37,6 @@
     isBulkFi,
     isPdpCard = false,
     priceBoxUnit,
-    isBuyable,
     isVirtualProduct,
     qtyMin,
   }: BuyBoxProps = $props()
