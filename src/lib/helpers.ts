@@ -32,23 +32,6 @@ export const toUtcMidnightTimestamp = (dateStr: string) => {
   return Date.UTC(parseInt(yearStr), parseInt(monthStr) - 1, parseInt(dayStr))
 }
 
-const kebabToCamel = (str: string) =>
-  str.replace(/-([a-z])/g, (_, char) => char.toUpperCase())
-
-export const extractDataAttributes = (el: Element, keys: string[]) =>
-  Object.fromEntries(
-    keys.map((key) => {
-      const attrValue = el.getAttribute(`data-${key}`)
-
-      const camelKey = kebabToCamel(key)
-
-      return [
-        camelKey,
-        attrValue === null || attrValue === '' ? null : attrValue,
-      ]
-    }),
-  )
-
 export const scrollLock = (locked: boolean) => {
   if (locked) {
     const scrollBarWidth =
@@ -97,9 +80,3 @@ export const safeParseWithLogging = <T>(schema: z.ZodType<T>, input: unknown) =>
   }
   return result
 }
-
-
-  export const get = (attr: string) => {
-      const val = el.getAttribute(`data-${attr}`)
-      return val === null ? null : val
-    }

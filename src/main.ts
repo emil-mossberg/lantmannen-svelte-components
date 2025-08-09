@@ -13,7 +13,7 @@ import { StockPropsSchema } from './schemas/StockProps'
 import { PricePropsSchema } from './schemas/PriceProps'
 import { BuyBoxPropsSchema } from './schemas/BuyProps'
 
-import { extractDataAttributes, safeParseWithLogging } from './lib/helpers'
+import { safeParseWithLogging } from './lib/helpers'
 
 
 setupI18n('fi_FI').then(() => {
@@ -30,21 +30,8 @@ setupI18n('fi_FI').then(() => {
   // Logic Product Buy Box component(s)
 
   document.querySelectorAll('[id^="svelte-product-buy-box-"]').forEach((el) => {
-    const rawProps = extractDataAttributes(el, [
-      'id',
-      'sku',
-      'pref-sales-qty',
-      'is-pdp-card',
-      'qty-increment',
-      'packaging-type',
-      'price-box-unit',
-      'packaging-type-se',
-      'is-buyable',
-      'is-virtual-product',
-      'qty-min',
-    ])
-
-    const parsed = BuyBoxPropsSchema.safeParse(rawProps)
+    
+    const parsed = BuyBoxPropsSchema.safeParse(el)
 
     if (!parsed.success) {
       console.error(
