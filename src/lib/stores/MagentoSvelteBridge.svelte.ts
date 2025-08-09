@@ -13,7 +13,7 @@ class MagentoSvelteBridge {
 
   public readonly storeId: number = this.parsedData.storeId
   public readonly locale: string = this.parsedData.locale
-  public readonly loggedIn: boolean = this.parsedData.loggedIn
+  public readonly isLoggedIn: boolean = this.parsedData.loggedIn
   public readonly showListPrice: boolean =
     this.parsedData.configShowVatPercentage
   public readonly showVatPercentage: boolean =

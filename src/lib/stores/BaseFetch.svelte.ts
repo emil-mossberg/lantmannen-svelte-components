@@ -1,6 +1,8 @@
 import MagentoSvelteBridge from './MagentoSvelteBridge.svelte'
 import { fetchPOST } from '../helpers'
 
+// import { ZodType, z } from 'zod'
+
 type Resolver<T> = {
   resolve: (price: T) => void
   reject: (err: Error) => void
@@ -35,6 +37,7 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
     const customerNumber = this.bridge.customerNumber()
 
     if (this.bridge.isLoggedIn && !customerNumber) {
+
       setTimeout(() => this.flushQueue(), 10)
       return
     }
