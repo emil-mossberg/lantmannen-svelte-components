@@ -328,15 +328,21 @@
               onmouseenter={() => (currentHover = day.value)}
               onmouseleave={() => (currentHover = '')}
               ><div
-                class={`= tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
-    ${!day.highlight && day.inSelectRange && 'tw-bg-green-pea tw-text-white'}
-    ${((day.selectedStart && !day.highlightEnd) || day.highlightStart) && 'tw-rounded-l-full'}
-    ${((day.selectedEnd && !day.highlightStart) || day.highlightEnd) && 'tw-rounded-r-full'}
-    ${day.highlight && 'tw-bg-sand'}
+                class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
+    ${day.inSelectRange && 'tw-bg-green-pea tw-text-white'}
+    ${day.selectedStart && 'tw-rounded-l-full'}
+    ${day.selectedEnd && 'tw-rounded-r-full'}
   `}
               >
-                {day.date}
+              <div class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
+    ${day.highlight && 'tw-bg-sand tw-text-charcoal'}
+    ${day.highlightStart && 'tw-rounded-l-full'}
+    ${day.highlightEnd && 'tw-rounded-r-full'}
+  `}>{day.date}
+
               </div>
+              </div>
+              
             </td>
           {/each}
         </tr>
