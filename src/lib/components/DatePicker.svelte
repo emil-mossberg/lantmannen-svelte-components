@@ -24,6 +24,7 @@
   type Day = {
     date: number
     selected: boolean
+    selectedLast: boolean
     enabled: boolean
     highlight: boolean
     inSelectRange: boolean
@@ -157,6 +158,12 @@
 
       const inSelectRange = selectedRemaining > 0 && enabled
 
+      let selectedLast = false
+
+      if (inSelectRange && selectedRemaining === 1) {
+        selectedLast = true
+      }
+
       if (inSelectRange) {
         selectedRemaining--
       }
@@ -168,6 +175,7 @@
         enabled,
         highlight,
         value,
+        selectedLast,
       }
 
       // TO DO DRY
@@ -329,20 +337,26 @@
               onmouseleave={() => (currentHover = '')}
               ><div
                 class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
-    ${day.inSelectRange && 'tw-bg-green-pea tw-text-white'}
+    ${day.inSelectRange && 'tw-bg-[#00572099] tw-text-white'}
     ${day.selectedStart && 'tw-rounded-l-full'}
     ${day.selectedEnd && 'tw-rounded-r-full'}
   `}
               >
-              <div class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
+                <div
+                  class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
     ${day.highlight && 'tw-bg-sand tw-text-charcoal'}
     ${day.highlightStart && 'tw-rounded-l-full'}
     ${day.highlightEnd && 'tw-rounded-r-full'}
-  `}>{day.date}
-
+  `}
+                >
+                  <div
+                    class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
+  ${(day.selected || day.selectedLast) && 'tw-rounded-full tw-bg-tannenbaum'}`}
+                  >
+                    {day.date}
+                  </div>
+                </div>
               </div>
-              </div>
-              
             </td>
           {/each}
         </tr>
