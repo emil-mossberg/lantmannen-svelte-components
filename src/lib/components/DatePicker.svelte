@@ -217,11 +217,16 @@
   onclick: () => void,
   leftArrow: boolean = false,
 )}
-  <button type="button" {onclick} {disabled} class="tw-clear-button">
+  <button
+    type="button"
+    {onclick}
+    {disabled}
+    class="tw-w-[42px] tw-h-[42px] tw-rounded-full tw-flex tw-items-center tw-justify-center !tw-border tw-border-alto hover:tw-bg-white"
+  >
     <img
       src={IconArrow}
       alt="arrow icon"
-      class={`tw-h-[20px] ${leftArrow && 'tw--rotate-180'}`}
+      class={`tw-h-[16px] ${leftArrow && 'tw--rotate-180'}`}
     /></button
   >
 {/snippet}
@@ -242,7 +247,7 @@
   </div>
 
   <table
-    class="tw-table-fixed tw-border-separate tw-border tw-border-gray-300 tw-text-center tw-p-4"
+    class="tw-table-fixed tw-border-separate tw-text-center tw-min-h-[400px]"
   >
     <thead>
       <tr>
@@ -266,18 +271,20 @@
     <tbody>
       <tr class="!tw-bg-white">
         {#each DAYS as day}
-          <th>{$t(day)}</th>
+          <th class="tw-text-green-pea">{$t(day)}</th>
         {/each}
       </tr>
       {#each weeksFrom as week}
         <tr class="!tw-bg-white">
           {#each week as day}
             <td
-              class={`!tw-align-middle ${day.selected && 'tw-text-green-pea tw-border tw-border-green-pea tw-font-bold'} ${!day.enabled && 'tw-opacity-20'} ${day.highlight && 'tw-bg-green-pea tw-text-white tw-font-bold'}`}
+              class={`!tw-align-middle tw-h-[60px] !tw-px-0 !tw-py-2 ${day.selected && 'tw-border tw-border-green-pea'} ${!day.enabled && 'tw-opacity-20 tw-pointer-events-none'}`}
               onclick={() => selectDate(day.value)}
               onmouseenter={() => (currentHover = day.value)}
               onmouseleave={() => (currentHover = '')}
-              >{day.date}
+              ><div class={`tw-h-full tw-flex tw-items-center tw-justify-center ${day.highlight && 'tw-bg-green-pea tw-text-white'}`}>
+                {day.date}
+              </div>
             </td>
           {/each}
         </tr>
