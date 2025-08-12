@@ -26,6 +26,8 @@
     selected: boolean
     enabled: boolean
     highlight: boolean
+    selectedStart?: boolean,
+    selectedEnd?: boolean,
     highlightStart?: boolean
     highlightEnd?: boolean
     value: string
