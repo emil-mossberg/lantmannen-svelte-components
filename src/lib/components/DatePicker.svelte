@@ -26,6 +26,8 @@
     selected: boolean
     enabled: boolean
     highlight: boolean
+    highlightStart?: boolean
+    highlightEnd?: boolean
     value: string
   }
 
@@ -103,42 +105,34 @@
     const START = 1 // Start week on monday
 
     const startOfCalendar = new Date(viewDate.getTime())
-
-    // Set to first day of month
     startOfCalendar.setDate(1)
 
     const dayOffset =
       startOfCalendar.getDate() + ((START - startOfCalendar.getDay() - 7) % 7)
 
-    // Adjust to first day of week that the month is in
     startOfCalendar.setDate(dayOffset)
 
     let endOfCalendar = new Date(viewDate.getTime())
-
     endOfCalendar.setDate(
       new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0).getDate(),
     )
 
-    // Adjust to last day of week that the month is in
     const endOffset =
       endOfCalendar.getDate() + ((START - endOfCalendar.getDay() + 6) % 7)
 
     endOfCalendar.setDate(endOffset)
 
-    var d = new Date(startOfCalendar.getTime()),
+    let d = new Date(startOfCalendar.getTime()),
       week: Day[] = [],
-      weeks = [week]
+      weeks: Day[][] = [week]
 
     const currentHoverIso = iso(new Date(currentHover))
-
     let highlightRemaining = 0
+    let prevDay: Day | null = null
 
     while (d.getTime() <= endOfCalendar.getTime()) {
-      var dd = d.getDate(),
-        value = iso(d)
-
+      const value = iso(d)
       const enabled = isDateEnabled(toUtcMidnightTimestamp(value))
-
       const isHovered = value === currentHoverIso && enabled
 
       if (isHovered) {
@@ -146,20 +140,34 @@
       }
 
       const highlight = highlightRemaining > 0 && enabled
-
       if (highlight) {
         highlightRemaining--
       }
 
-      const day = {
-        date: dd,
+      const day: Day = {
+        date: d.getDate(),
         selected: deliveryDate === value,
         enabled,
         highlight,
         value,
       }
 
+      // START detection
+      day.highlightStart =
+        day.highlight &&
+        (!prevDay ||
+          !prevDay.highlight ||
+          !prevDay.enabled ||
+          d.getDay() === START)
+
+      // END detection for previous day now that we know the current day
+      if (prevDay && prevDay.highlight) {
+        prevDay.highlightEnd =
+          !day.highlight || !day.enabled || d.getDay() === START
+      }
+
       week.push(day)
+      prevDay = day
 
       d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1)
 
@@ -167,6 +175,11 @@
         week = []
         weeks.push(week)
       }
+    }
+
+    // Handle the very last day in the calendar
+    if (prevDay && prevDay.highlight) {
+      prevDay.highlightEnd = true
     }
 
     return weeks
@@ -278,11 +291,17 @@
         <tr class="!tw-bg-white">
           {#each week as day}
             <td
-              class={`!tw-align-middle tw-h-[60px] !tw-px-0 !tw-py-2 ${day.selected && 'tw-border tw-border-green-pea'} ${!day.enabled && 'tw-opacity-20 tw-pointer-events-none'}`}
+              class={`!tw-align-middle tw-h-[60px] !tw-px-0 !tw-py-1 ${!day.enabled && 'tw-opacity-20 tw-pointer-events-none'}`}
               onclick={() => selectDate(day.value)}
               onmouseenter={() => (currentHover = day.value)}
               onmouseleave={() => (currentHover = '')}
-              ><div class={`tw-h-full tw-flex tw-items-center tw-justify-center ${day.highlight && 'tw-bg-green-pea tw-text-white'}`}>
+              ><div
+                class={`= tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
+    ${day.highlight && 'tw-bg-green-pea tw-text-white'}
+    ${day.highlightStart && 'tw-rounded-l-full'}
+    ${day.highlightEnd && 'tw-rounded-r-full'}
+  `}
+              >
                 {day.date}
               </div>
             </td>
