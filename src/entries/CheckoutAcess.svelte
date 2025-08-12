@@ -219,8 +219,9 @@
                 <div class="tw-flex tw-gap-1">
                   <span class="tw-text-right">{`${$t('price')}:`} </span>
                   <PriceShow
-                    price={findProductInCart(item.sku)?.product_price_value
-                      .incl_tax}
+                    price={Number(
+                      findProductInCart(item.sku)?.product_price_value.incl_tax,
+                    )}
                   />
                 </div>
               </div>
