@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { slide, fly } from 'svelte/transition'
-  import { cubicIn, cubicOut } from 'svelte/easing'
+  import { fly } from 'svelte/transition'
+  import { cubicOut } from 'svelte/easing'
   import type { Snippet } from 'svelte'
   import Overlay from './Overlay.svelte'
   import IconCross from '../IconsDynamic/IconCross.svelte'

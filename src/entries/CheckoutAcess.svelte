@@ -142,7 +142,7 @@
     {/if}
   </div>
   <div
-    class="tw-flex tw-justify-center tw-gap-4 tw-items-center tw-p-3 tw-border-t tw-border-b tw-flex-wrap"
+    class="tw-flex tw-justify-center tw-gap-4 tw-items-center tw-p-3 tw-border-b tw-flex-wrap"
   >
     <Button onclick={goToCart}>{$t('goToCart')}</Button>
     <Button onclick={goToCheckout}>{$t('goToCheckout')}</Button>
