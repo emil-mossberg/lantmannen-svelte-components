@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { fly } from 'svelte/transition'
+  import { cubicOut } from 'svelte/easing'
   import { t } from 'svelte-i18n'
 
   import Sheet from '@lib/components/Sheet.svelte'
@@ -236,6 +238,11 @@
   {#if bridgeSingleton.showDeliveryPlanner && bridgeSingleton.cart.value?.items && bridgeSingleton.cart.value?.items.length}
     <button
       onclick={() => (showSheet = true)}
+      out:fly={{
+        x: -40,
+        duration: 500,
+        easing: cubicOut,
+      }}
       class="tw-clear-button tw-flex tw-gap-4 tw-px-3 tw-py-2 tw-items-center tw-bg-white hover:tw-bg-white"
     >
       {@render cartButtonContent()}
