@@ -2,7 +2,7 @@ import { type Cart } from '../../schemas/Cart'
 import { type CustomerInfo } from '../../schemas/Customer'
 import singletonFactory from './SingletonFactory'
 import { MagentoSvelteBridgeSchema } from '../../schemas/MagentoSvelteBridge'
-import { type LocaleCode } from 'src/schemas/Locale'
+import { type LocaleCode } from '../../schemas/Locale'
 
 // Note for this class to work there must be a element in Magento with id svelte-information,
 // that contains all the data attribute needed by the class

@@ -39,6 +39,7 @@
     priceBoxUnit,
     isVirtualProduct,
     qtyMin,
+    isBuyable,
   }: BuyBoxProps = $props()
 
   const buttonId = $props.id()

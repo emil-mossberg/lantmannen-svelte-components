@@ -9,6 +9,7 @@ export const BuyBoxPropsSchema = z
       .object({
         id: z.string().min(1),
         sku: z.string().min(1),
+        isBuyable: z.string().transform((val) => val === '1'),
         isVirtualProduct: z.string().transform((val) => val === '1'),
         prefSalesQty: z.string().transform((val) => {
           const num = Number(val)
@@ -48,6 +49,7 @@ export const BuyBoxPropsSchema = z
           isBulk,
           isBulkFi,
           isVirtualProduct: data.isVirtualProduct,
+          isBuyable: data.isBuyable
         }
       }),
   )
