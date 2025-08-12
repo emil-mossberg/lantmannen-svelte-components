@@ -3,6 +3,7 @@
   import { t } from 'svelte-i18n'
 
   import IconArrow from '../Icons/icon-arrow.svg'
+  import { tweened } from 'svelte/motion'
 
   const DAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'] as const
 
@@ -21,6 +22,8 @@
     'Dec',
   ] as const
 
+  // TO DO rename to improve readibilty
+
   type Day = {
     date: number
     selected: boolean
@@ -32,6 +35,8 @@
     selectedEnd?: boolean
     highlightStart?: boolean
     highlightEnd?: boolean
+    hoveredStart?: boolean
+    hoveredEnd?: boolean
     value: string
   }
 
@@ -146,6 +151,11 @@
 
       const highlight = highlightRemaining > 0 && enabled
 
+      let hoveredEnd = false
+      if (highlight && highlightRemaining === 1) {
+        hoveredEnd = true
+      }
+
       if (highlight) {
         highlightRemaining--
       }
@@ -176,6 +186,8 @@
         highlight,
         value,
         selectedLast,
+        hoveredStart: isHovered,
+        hoveredEnd,
       }
 
       // TO DO DRY
@@ -351,7 +363,7 @@
                 >
                   <div
                     class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
-  ${(day.selected || day.selectedLast) && 'tw-rounded-full tw-bg-tannenbaum'}`}
+  ${((day.selected || day.selectedLast) && !day.hoveredStart && !day.hoveredEnd && !day.highlight) && 'tw-rounded-full tw-bg-tannenbaum'} ${(day.hoveredStart || day.hoveredEnd) && 'tw-rounded-full tw-bg-sand-dark'}`}
                   >
                     {day.date}
                   </div>
