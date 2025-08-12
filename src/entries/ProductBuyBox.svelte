@@ -215,7 +215,7 @@
       label={$t('deliveryDate:')}
       disabledFrom="2025-09-24"
       hoverDistance={3}
-      disabledDates={['2025-08-08', '2025-08-15']}
+      disabledDates={['2025-08-08', '2025-08-15', '2025-08-25']}
     />
   </div>
 
