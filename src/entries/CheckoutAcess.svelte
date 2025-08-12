@@ -15,6 +15,7 @@
     bulkAddress,
     packageAddresses,
   } from '../dummyData'
+  import PriceShow from '@lib/components/PriceShow.svelte'
 
   const deliveries = $state([
     {
@@ -126,7 +127,7 @@
   >
     {#if bridgeSingleton.cart.value?.items}
       <span>
-        {`${bridgeSingleton.cart.value.items.length} Varor`}
+        {`${bridgeSingleton.cart.value.items.length} ${$t('products')}`}
       </span>
       <div class="tw-flex tw-gap-1">
         <span>{$t('total:')}</span>
@@ -138,14 +139,23 @@
       </div>
     {/if}
   </div>
+  <div
+    class="tw-flex tw-justify-center tw-gap-4 tw-items-center tw-p-3 tw-border-t tw-border-b tw-flex-wrap"
+  >
+    <Button onclick={goToCart}>{$t('goToCart')}</Button>
+    <Button onclick={goToCheckout}>{$t('goToCheckout')}</Button>
+  </div>
   <ul class="tw-h-full tw-overflow-auto">
     {#each deliveries as delivery, index}
       <li class="tw-py-3 tw-px-6 tw-mb-2 [&:not(:last-child)]:tw-border-b">
         <h5 class="tw-mb-3">
-          {`${$t('deliveryCount', { values: { count: index + 1, note: delivery.type === 'bulk' ? $t('bulkSilo') : '' } })}`}
+          {`${$t('deliveryCount')} ${index + 1}`}
+          {#if delivery.type == 'bulk'}
+            {`${$t('bulkSilo')}`}
+          {/if}
         </h5>
         <SelectWrapper
-          text={$t('deliveryMethod:')}
+          text={$t('deliveryMethod')}
           bind:value={delivery.deliveryMethod}
           items={delivery.type === 'bulk'
             ? bulkDeliveryMethods
@@ -154,7 +164,7 @@
           itemId="delivery_method"
         />
         <SelectWrapper
-          text={$t('deliveryAddress:')}
+          text={$t('deliveryAddress')}
           bind:value={delivery.adress}
           items={delivery.type === 'bulk'
             ? bulkAddress.map((item) => ({
@@ -168,13 +178,15 @@
         />
 
         {#if delivery.type === 'bulk'}
-          <DatePicker
-            label={$t('deliveryDate:')}
-            bind:deliveryDate={delivery.deliveryDateFrom}
-            disabledFrom="2025-09-24"
-            hoverDistance={3}
-            disabledDates={['2025-08-08', '2025-08-15']}
-          />
+          <div class="tw-mb-4">
+            <DatePicker
+              label={$t('deliveryDate:')}
+              bind:deliveryDate={delivery.deliveryDateFrom}
+              disabledFrom="2025-09-24"
+              hoverDistance={3}
+              disabledDates={['2025-08-08', '2025-08-15']}
+            />
+          </div>
         {/if}
 
         <ul>
@@ -187,24 +199,27 @@
               />
               <div>
                 <div>
-                  <span class="tw-font-bold tw-text-sm"
+                  <span class="tw-font-bold"
                     >{findProductInCart(item.sku)?.product_name}</span
                   >
                 </div>
                 <div>
-                  <span class="tw-text-sm tw-text-right"
-                    >{`Antal: ${findProductInCart(item.sku)?.qty}`}</span
+                  <span
+                    >{`${$t('count')}`}: {findProductInCart(item.sku)
+                      ?.qty}</span
                   >
                 </div>
                 <div>
-                  <span class="tw-text-sm tw-text-right"
-                    >{`Pris: ${findProductInCart(item.sku)?.product_price_value.incl_tax}`}</span
-                  >
-                </div>
-                <div>
-                  <span class="tw-text-sm"
+                  <span
                     >{`${$t('sku')}: ${findProductInCart(item.sku)?.product_sku}`}</span
                   >
+                </div>
+                <div class="tw-flex tw-gap-1">
+                  <span class="tw-text-right">{`${$t('price')}:`} </span>
+                  <PriceShow
+                    price={findProductInCart(item.sku)?.product_price_value
+                      .incl_tax}
+                  />
                 </div>
               </div>
             </li>
@@ -213,12 +228,6 @@
       </li>
     {/each}
   </ul>
-  <div
-    class="tw-flex tw-justify-center tw-gap-4 tw-items-center tw-p-3 tw-border-t tw-flex-wrap"
-  >
-    <Button onclick={goToCart}>{$t('goToCart')}</Button>
-    <Button onclick={goToCheckout}>{$t('goToCheckout')}</Button>
-  </div>
 {/snippet}
 
 <div

@@ -20,7 +20,7 @@
     "listPrice": "Rek. utpris",
     "selectCampaign": "Välj kampanj",
     "selectDeliveryInfo": "Välj leveransinfo",
-    "orderType": "Beställ {type}",
+    "orderBulk": "Beställ bulk",
     "order": "Beställ",
     "bulk": "bulk",
     "availability": "Tillgänglighet",
@@ -50,7 +50,7 @@
     "deliveryMethod:": "Leveransmethod:",
     "deliveryAddress:": "Leveransadress:",
     "bulkSilo" : "(Bulkleverans - silo krävs)",
-    "deliveryCount": "Leverans {count} {note}",
+    "deliveryCount": "Leverans:",
     "deliveryDate:": "Leveransdatum:",
     "multipleOf": "Köp i antal om {count}",
     "notAllowed": "Ej giltigt värde",
@@ -65,5 +65,6 @@
     "campaign": "Kampanj!",
     "new": "nyhet",
     "buyInQty": "Köp i antal om:",
-    "minQty": "Minsta beställning:"
+    "minQty": "Minsta beställning:",
+    "products": "tuotteet"
 }

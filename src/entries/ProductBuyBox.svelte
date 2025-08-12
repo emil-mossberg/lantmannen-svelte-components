@@ -95,11 +95,7 @@
     return true
   })
 
-  const buyButtonLabel = isBulk
-    ? $t('orderType', {
-        values: { type: isBulk ? $t('bulk') : '' },
-      })
-    : $t('order')
+  const buyButtonLabel = isBulk ? $t('orderBulk') : $t('order')
 
   // / TO DO add setting here for not using this or whever
   const hasPaymentCampaign = $derived.by(

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { toUtcDateString, toUtcMidnightTimestamp } from '../helpers'
-  import { t } from 'svelte-i18n'
+  import { format, t } from 'svelte-i18n'
 
   import IconArrow from '../Icons/icon-arrow.svg'
 
@@ -191,20 +191,16 @@
 
       // TO DO DRY
 
+      const firstDay = d.getDay() === START
+
       // START detection
       day.highlightStart =
         day.highlight &&
-        (!prevDay ||
-          !prevDay.highlight ||
-          !prevDay.enabled ||
-          d.getDay() === START)
+        (firstDay || !prevDay || !prevDay.highlight || !prevDay.enabled)
 
       day.selectedStart =
         day.inSelectRange &&
-        (!prevDay ||
-          !prevDay.inSelectRange ||
-          !prevDay.enabled ||
-          d.getDay() === START)
+        (firstDay || !prevDay || !prevDay.inSelectRange || !prevDay.enabled)
 
       // END detection for previous day now that we know the current day
       if (prevDay && prevDay.highlight) {
@@ -250,6 +246,24 @@
     )
     return nextMonthStart.getTime() < objdisabledFromEpoc
   })
+
+  const formatPretty = (date: Date) => {
+    const dayAbbr = DAYS[date.getUTCDay() === 0 ? 6 : date.getUTCDay() - 1] // adjust because your DAYS starts on Monday
+    const dayNum = String(date.getUTCDate()).padStart(2, '0')
+    const monthAbbr = $t(MONTHS[date.getUTCMonth()])
+    return `${dayAbbr} ${dayNum} ${monthAbbr}`
+  }
+
+  const deliveryDateRange = $derived.by(() => {
+    const startDate = new Date(toUtcMidnightTimestamp(deliveryDate))
+    const endDate = new Date(startDate)
+    endDate.setUTCDate(endDate.getUTCDate() + hoverDistance)
+
+    return [
+      [$t('to'), formatPretty(startDate)],
+      [$t('from'), formatPretty(endDate)],
+    ]
+  })
 </script>
 
 {#snippet arrowButton(
@@ -273,68 +287,85 @@
 
 <div class="tw-font-bold tw-mb-1">{label}</div>
 <div>
-  <table
-    class="tw-table-fixed tw-border-separate tw-text-center tw-min-h-[400px]"
-  >
-    <thead>
-      <tr>
-        <th class="!tw-px-0 tw-text-left">
-          {@render arrowButton(
-            offset === 0,
-            () => {
-              go(-1)
-            },
-            true,
-          )}
-        </th>
-        <th colspan="5" class="tw-text-center">{monthText} {year}</th>
-        <th class="!tw-px-0 tw-text-right">
-          {@render arrowButton(!canGoForward, () => {
-            go(+1)
-          })}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="!tw-bg-white">
-        {#each DAYS as day}
-          <th class="tw-text-green-pea">{$t(day)}</th>
-        {/each}
-      </tr>
-      {#each weeksFrom as week}
+  <div class="tw-flex tw-justify-around  tw-border-r tw-border-l tw-border-t tw-border-b tw-border-alto">
+    {#each deliveryDateRange as date, index}
+      <div
+        class={`tw-flex tw-justify-center tw-items-center tw-p-5 tw-grow tw-border-alto ${index === 1 && 'tw-border-l'}`}
+      >
+        <div class="tw-flex tw-flex-col tw-items-center">
+          <div>{date[0]}</div>
+          <div class="tw-font-bold">{date[1]}</div>
+        </div>
+      </div>
+    {/each}
+  </div>
+
+  <div class="tw-border-r tw-border-l tw-border-b tw-border-alto">
+    <table
+      class="tw-table-fixed tw-border-separate tw-text-center tw-min-h-[400px] tw-p-1" 
+    >
+      <thead>
+        <tr>
+          <th class="!tw-px-0 tw-flex tw-justify-center">
+            {@render arrowButton(
+              offset === 0,
+              () => {
+                go(-1)
+              },
+              true,
+            )}
+          </th>
+          <th colspan="5" class="tw-text-center tw-align-middle"
+            >{monthText} {year}</th
+          >
+          <th class="!tw-px-0 tw-flex tw-justify-center">
+            {@render arrowButton(!canGoForward, () => {
+              go(+1)
+            })}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
         <tr class="!tw-bg-white">
-          {#each week as day}
-            <td
-              class={`!tw-align-middle tw-h-[60px] !tw-px-0 !tw-py-1 ${!day.enabled && 'tw-opacity-20 tw-pointer-events-none'}`}
-              onclick={() => selectDate(day.value)}
-              onmouseenter={() => (currentHover = day.value)}
-              onmouseleave={() => (currentHover = '')}
-              ><div
-                class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
+          {#each DAYS as day}
+            <th class="tw-text-green-pea">{$t(day)}</th>
+          {/each}
+        </tr>
+        {#each weeksFrom as week}
+          <tr class="!tw-bg-white">
+            {#each week as day}
+              <td
+                class={`!tw-align-middle tw-h-[60px] !tw-px-0 !tw-py-1 ${!day.enabled && 'tw-opacity-20 tw-pointer-events-none'}`}
+                onclick={() => selectDate(day.value)}
+                onmouseenter={() => (currentHover = day.value)}
+                onmouseleave={() => (currentHover = '')}
+                ><div
+                  class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
     ${day.inSelectRange && 'tw-bg-[#00572099] tw-text-white'}
     ${day.selectedStart && 'tw-rounded-l-full'}
     ${day.selectedEnd && 'tw-rounded-r-full'}
   `}
-              >
-                <div
-                  class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
+                >
+                  <div
+                    class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
     ${day.highlight && 'tw-bg-sand tw-text-charcoal'}
     ${day.highlightStart && 'tw-rounded-l-full'}
     ${day.highlightEnd && 'tw-rounded-r-full'}
   `}
-                >
-                  <div
-                    class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
-  ${((day.selected || day.selectedLast) && !day.hoveredStart && !day.hoveredEnd && !day.highlight) && 'tw-rounded-full tw-bg-tannenbaum'} ${(day.hoveredStart || day.hoveredEnd) && 'tw-rounded-full tw-bg-sand-dark'}`}
                   >
-                    {day.date}
+                    <div
+                      class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
+  ${(day.selected || day.selectedLast) && !day.hoveredStart && !day.hoveredEnd && !day.highlight && 'tw-rounded-full tw-bg-tannenbaum'} ${(day.hoveredStart || day.hoveredEnd) && 'tw-rounded-full tw-bg-sand-dark'}`}
+                    >
+                      {day.date}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </td>
-          {/each}
-        </tr>
-      {/each}
-    </tbody>
-  </table>
+              </td>
+            {/each}
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </div>
 </div>

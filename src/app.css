@@ -37,3 +37,7 @@
   border: unset;
   position: absolute;
 }
+
+/* .svelte-select {
+  padding-left: 0 !important;
+} */

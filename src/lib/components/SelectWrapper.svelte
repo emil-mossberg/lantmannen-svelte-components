@@ -29,7 +29,7 @@
     const resolvedItemId = itemId ?? (isStringArray ? undefined : 'id')
 </script>
 
-<div class="tw-mb-3 magento-svelte-select leading-none">
+<div class="tw-mb-6 magento-svelte-select leading-none">
     <label class="tw-block tw-font-bold tw-mb-1" for={id}>{text}</label>
     <Select
         {id}
