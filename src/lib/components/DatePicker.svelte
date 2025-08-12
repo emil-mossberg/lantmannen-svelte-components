@@ -3,7 +3,6 @@
   import { t } from 'svelte-i18n'
 
   import IconArrow from '../Icons/icon-arrow.svg'
-  import { tweened } from 'svelte/motion'
 
   const DAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'] as const
 
@@ -251,30 +250,6 @@
     )
     return nextMonthStart.getTime() < objdisabledFromEpoc
   })
-
-  let inputDate = $state(deliveryDate)
-
-  function parseValidateAndFormatDate() {
-    const inutDateObj = new Date(inputDate)
-
-    if (isNaN(inutDateObj.getTime())) {
-      inputDate = deliveryDate
-      return
-    }
-
-    const formattedDate = inutDateObj.toISOString().slice(0, 10) // Give date format 'YYYY-MM-DD'
-
-    // const formattedDate = inutDateObj.toLocaleString().slice(0, 10) // 'YYYY-MM-DD'
-
-    const timestamp = inutDateObj.getTime()
-
-    if (!isDateEnabled(timestamp)) {
-      inputDate = deliveryDate
-    } else {
-      deliveryDate = formattedDate
-      inputDate = formattedDate
-    }
-  }
 </script>
 
 {#snippet arrowButton(
@@ -298,19 +273,6 @@
 
 <div class="tw-font-bold tw-mb-1">{label}</div>
 <div>
-  <div class="tw-pb-3">
-    <input
-      type="text"
-      onkeydown={(e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault()
-        }
-      }}
-      bind:value={inputDate}
-      onblur={parseValidateAndFormatDate}
-    />
-  </div>
-
   <table
     class="tw-table-fixed tw-border-separate tw-text-center tw-min-h-[400px]"
   >
