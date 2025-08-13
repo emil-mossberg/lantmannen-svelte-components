@@ -35,7 +35,6 @@
     highlightSectionEnd?: boolean
     highlightStart?: boolean
     highlightEnd?: boolean
-    
   }
 
   // All dates are on the format string format XXXX-XX-XX
@@ -185,7 +184,8 @@
           prevDay.highlightSectionEnd =
             !day.inHighlightRange || !day.enabled || firstDay
         if (prevDay.inSelectedRange)
-          prevDay.selectedSectionEnd = !day.inSelectedRange || !day.enabled || firstDay
+          prevDay.selectedSectionEnd =
+            !day.inSelectedRange || !day.enabled || firstDay
       }
 
       week.push(day)

@@ -8,6 +8,7 @@
   import SelectWrapper from '@lib/components/SelectWrapper.svelte'
   import IconCart from '@lib/IconsDynamic/IconCart.svelte'
   import DatePicker from '@lib/components/DatePicker.svelte'
+  import InfoBox from '@lib/components/InfoBox.svelte'
 
   import bridgeSingleton from '@lib/stores/MagentoSvelteBridge.svelte'
 
@@ -37,7 +38,7 @@
     },
     {
       type: 'bulk',
-      adress: '101-2',
+      adress: '101-1',
       deliveryDateFrom: '2025-06-12',
       deliveryDateTo: '2025-06-20',
       deliveryMethod: '023',
@@ -72,6 +73,22 @@
       ],
     },
   ])
+
+const sameSiloBulk = $derived.by(() => {
+  const addrCount: Record<string, number[]> = {};
+
+  deliveries.forEach((d, i) => {
+    if (d.type === 'bulk') {
+      const key = String(d.adress).trim();
+      if (!addrCount[key]) addrCount[key] = [];
+      addrCount[key].push(i);
+    }
+  });
+
+  return Object.values(addrCount)
+    .filter(indices => indices.length > 1)
+    .flat();
+});
 
   // TO DO : Could this be a problem with PSS that has same sku twice in cart
   // TO DO : Use this in ajax call to get deliveries info instead of multiple times inline in template when that ajax call is used
@@ -156,6 +173,14 @@
             {`${$t('bulkSilo')}`}
           {/if}
         </h5>
+        <div class="tw-mb-3">
+          {#if sameSiloBulk.includes(index)}
+          <InfoBox text={$t('sameSiloUsed')} />
+            
+          
+        {/if}
+        </div>
+        
         <SelectWrapper
           text={$t('deliveryMethod')}
           bind:value={delivery.deliveryMethod}

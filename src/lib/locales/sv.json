@@ -66,5 +66,5 @@
     "new": "nyhet",
     "buyInQty": "Köp i antal om:",
     "minQty": "Minsta beställning:",
-    "products": "tuotteet"
+    "sameSiloUsed": "Notera att samma silo används flera gånger för olika leveranser"
 }
