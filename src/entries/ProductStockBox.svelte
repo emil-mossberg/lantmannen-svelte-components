@@ -7,7 +7,7 @@
 
   import IconStock from '@lib/Icons/icon-in-stock.svg'
 
-  import { type StockProps } from '../schemas/StockProps-old'
+  import { type StockProps } from '../schemas/StockProps'
   import { type Stock } from 'src/schemas/Stock'
   import Spinner from '@lib/components/Spinner.svelte'
 
@@ -31,6 +31,8 @@
     isPdpCard,
     isVirtualProduct,
   }: StockProps = $props()
+
+  console.log(sku, prefSalesQty)
 
   let stockPromise = $state(
     isBulkFi

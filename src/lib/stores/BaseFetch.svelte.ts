@@ -86,6 +86,7 @@ export default abstract class BaseFetch<S extends ZodType<{ items: any[] }>> {
         }
       }
     } catch (error) {
+      console.error(error)
       for (const { resolvers } of currentQueue.values()) {
         resolvers.forEach(({ reject }) => reject(error as Error))
       }
@@ -99,6 +100,7 @@ export default abstract class BaseFetch<S extends ZodType<{ items: any[] }>> {
   ): Promise<z.infer<S>['items'][number]>  {
     return new Promise((resolve, reject) => {
       if (!this.queue.has(productId)) {
+        console.log('quantity getPRomise', quantity)
         this.queue.set(productId, {
           quantity,
           unitMeasure,

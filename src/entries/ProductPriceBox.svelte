@@ -297,5 +297,6 @@
     </div>
   {:catch error}
     {$t('errorPrice')}
+    {`${JSON.stringify(error)}`}
   {/await}
-</div>
+</div>  

@@ -14,7 +14,7 @@ export const StockPropsSchema = z
         isPdpCard: z.string().nullable().transform((val) => val === '1'),
         prefSalesQty: z.string().transform((val) => {
           const num = Number(val)
-          return Number.isNaN(num) ? 1 : num
+          return Number.isNaN(num) || num === 0 ? 1 : num
         }),
         packagingType: z.string(),
         packagingTypeSe: z.string(),
