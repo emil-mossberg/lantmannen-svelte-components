@@ -21,22 +21,21 @@
     'Dec',
   ] as const
 
-  // TO DO rename to improve readibilty
-
   type Day = {
     date: number
-    selected: boolean
-    selectedLast: boolean
+    value: string
     enabled: boolean
-    highlight: boolean
-    inSelectRange: boolean
-    selectedStart?: boolean
-    selectedEnd?: boolean
+    selectedStart: boolean
+    selectedEnd: boolean
+    inSelectedRange: boolean
+    selectedSectionStart?: boolean
+    selectedSectionEnd?: boolean
+    inHighlightRange: boolean
+    highlightSectionStart?: boolean
+    highlightSectionEnd?: boolean
     highlightStart?: boolean
     highlightEnd?: boolean
-    hoveredStart?: boolean
-    hoveredEnd?: boolean
-    value: string
+    
   }
 
   // All dates are on the format string format XXXX-XX-XX
@@ -132,7 +131,7 @@
 
     let d = new Date(startOfCalendar.getTime()),
       week: Day[] = [],
-      weeks: Day[][] = [week]    
+      weeks: Day[][] = [week]
 
     let highlightRemaining = 0
     let selectedRemaining = 0
@@ -145,49 +144,50 @@
 
       if (isHovered) highlightRemaining = dateRange
 
-      const highlight = highlightRemaining > 0 && enabled
-      if (highlight) highlightRemaining--
-      
+      const inHighlightRange = highlightRemaining > 0 && enabled
+      if (inHighlightRange) highlightRemaining--
 
-      const selected = deliveryDate === value
+      const selectedStart = deliveryDate === value
 
-      if (selected) selectedRemaining = dateRange
-      
-      const inSelectRange = selectedRemaining > 0 && enabled
-      if (inSelectRange) selectedRemaining--
-      
+      if (selectedStart) selectedRemaining = dateRange
+
+      const inSelectedRange = selectedRemaining > 0 && enabled
+      if (inSelectedRange) selectedRemaining--
+
       const day: Day = {
         date: d.getDate(),
-        selected,
-        inSelectRange,
+        selectedStart,
+        inSelectedRange,
+        selectedEnd: inSelectedRange && selectedRemaining === 0,
         enabled,
-        highlight,
+        inHighlightRange,
         value,
-        selectedLast: inSelectRange && selectedRemaining === 0,
-        hoveredStart: isHovered,
-        hoveredEnd: highlight && highlightRemaining === 0
+        highlightStart: isHovered,
+        highlightEnd: inHighlightRange && highlightRemaining === 0,
       }
 
       const firstDay = d.getDay() === START
 
       // START detection
 
-      
-      day.highlightStart =
-        day.highlight &&
-        (firstDay || !prevDay || !prevDay.highlight || !prevDay.enabled)
+      day.highlightSectionStart =
+        day.inHighlightRange &&
+        (firstDay || !prevDay || !prevDay.inHighlightRange || !prevDay.enabled)
 
-      day.selectedStart =
-        day.inSelectRange &&
-        (firstDay || !prevDay || !prevDay.inSelectRange || !prevDay.enabled)
+      day.selectedSectionStart =
+        day.inSelectedRange &&
+        (firstDay || !prevDay || !prevDay.inSelectedRange || !prevDay.enabled)
 
       // END detection for previous day now that we know the current day
 
       if (prevDay) {
-        if (prevDay.highlight) prevDay.highlightEnd = !day.highlight || !day.enabled || firstDay;
-        if (prevDay.inSelectRange) prevDay.selectedEnd = !day.inSelectRange || !day.enabled || firstDay;
+        if (prevDay.inHighlightRange)
+          prevDay.highlightSectionEnd =
+            !day.inHighlightRange || !day.enabled || firstDay
+        if (prevDay.inSelectedRange)
+          prevDay.selectedSectionEnd = !day.inSelectedRange || !day.enabled || firstDay
       }
-   
+
       week.push(day)
       prevDay = day
 
@@ -200,8 +200,8 @@
     }
 
     // Handle the very last day in the calendar
-    if (prevDay && prevDay.highlight) prevDay.highlightEnd = true
-    
+    if (prevDay && prevDay.inHighlightRange) prevDay.highlightSectionEnd = true
+
     return weeks
   })
 
@@ -233,8 +233,8 @@
     endDate.setUTCDate(endDate.getUTCDate() + dateRange)
 
     return [
-      [$t('to'), formatPretty(startDate)],
-      [$t('from'), formatPretty(endDate)],
+      [$t('from'), formatPretty(startDate)],
+      [$t('to'), formatPretty(endDate)],
     ]
   })
 </script>
@@ -260,7 +260,9 @@
 
 <div class="tw-font-bold tw-mb-1">{label}</div>
 <div>
-  <div class="tw-flex tw-justify-around  tw-border-r tw-border-l tw-border-t tw-border-b tw-border-alto">
+  <div
+    class="tw-flex tw-justify-around tw-border-r tw-border-l tw-border-t tw-border-b tw-border-alto"
+  >
     {#each deliveryDateRange as date, index}
       <div
         class={`tw-flex tw-justify-center tw-items-center tw-p-5 tw-grow tw-border-alto ${index === 1 && 'tw-border-l'}`}
@@ -275,7 +277,7 @@
 
   <div class="tw-border-r tw-border-l tw-border-b tw-border-alto">
     <table
-      class="tw-table-fixed tw-border-separate tw-text-center tw-min-h-[400px] tw-p-1" 
+      class="tw-table-fixed tw-border-separate tw-text-center tw-min-h-[400px] tw-p-1"
     >
       <thead>
         <tr>
@@ -314,21 +316,21 @@
                 onmouseleave={() => (currentHover = '')}
                 ><div
                   class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
-    ${day.inSelectRange && 'tw-bg-[#00572099] tw-text-white'}
-    ${day.selectedStart && 'tw-rounded-l-full'}
-    ${day.selectedEnd && 'tw-rounded-r-full'}
+    ${day.inSelectedRange && 'tw-bg-[#00572099] tw-text-white'}
+    ${day.selectedSectionStart && 'tw-rounded-l-full'}
+    ${day.selectedSectionEnd && 'tw-rounded-r-full'}
   `}
                 >
                   <div
                     class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
-    ${day.highlight && 'tw-bg-sand tw-text-charcoal'}
-    ${day.highlightStart && 'tw-rounded-l-full'}
-    ${day.highlightEnd && 'tw-rounded-r-full'}
+    ${day.inHighlightRange && 'tw-bg-sand tw-text-charcoal'}
+    ${day.highlightSectionStart && 'tw-rounded-l-full'}
+    ${day.highlightSectionEnd && 'tw-rounded-r-full'}
   `}
                   >
                     <div
                       class={`tw-h-full tw-w-full tw-flex tw-items-center tw-justify-center tw-transition-colors
-  ${(day.selected || day.selectedLast) && !day.hoveredStart && !day.hoveredEnd && !day.highlight && 'tw-rounded-full tw-bg-tannenbaum'} ${(day.hoveredStart || day.hoveredEnd) && 'tw-rounded-full tw-bg-sand-dark'}`}
+  ${(day.selectedStart || day.selectedEnd) && !day.highlightStart && !day.highlightEnd && !day.inHighlightRange && 'tw-rounded-full tw-bg-tannenbaum'} ${(day.highlightStart || day.highlightEnd) && 'tw-rounded-full tw-bg-sand-dark'}`}
                     >
                       {day.date}
                     </div>
