@@ -56,9 +56,7 @@ export const PriceSchema = z.object({
             }),
 
             weee_attributes: z.array(z.any()),
-
             weee_adjustment: z.string(),
-
             lma_customer_price: z.number(),
             lma_customer_price_formatted: z.string(),
             lma_customer_price_is_campaign: z.boolean(),
@@ -96,5 +94,10 @@ export const PriceSchema = z.object({
     promotion_id_period: z.null(),
     transaction_reason: z.string(),
 })
+
+export const PriceBatchSchema = z.object({
+  items: z.array(PriceSchema),
+})
+
 
 export type Price = z.infer<typeof PriceSchema>

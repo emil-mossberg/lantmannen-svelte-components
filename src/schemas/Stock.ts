@@ -17,4 +17,8 @@ export const StockSchema = z.object({
   unit_measure: z.string(),
 })
 
+export const StockBatchSchema = z.object({
+  items: z.array(StockSchema),
+})
+
 export type Stock = z.infer<typeof StockSchema>

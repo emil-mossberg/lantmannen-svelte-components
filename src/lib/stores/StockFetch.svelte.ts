@@ -1,14 +1,9 @@
 import z from 'zod'
 import { REST_STOCK_GUEST } from '../constants'
 import BaseFetch from './BaseFetch.svelte'
-import { StockSchema } from '../../schemas/Stock'
+import { StockBatchSchema } from '../../schemas/Stock'
 
 import singletonFactory from './SingletonFactory'
-
-
-const StockBatchSchema = z.object({
-  items: z.array(StockSchema),
-})
 
 class StockFetch extends BaseFetch<typeof StockBatchSchema> {
 

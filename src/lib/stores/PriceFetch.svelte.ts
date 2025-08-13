@@ -2,13 +2,8 @@ import z from 'zod'
 
 import BaseFetch from './BaseFetch.svelte'
 import { REST_PRICE, REST_PRICE_GUEST } from '../constants'
-import { PriceSchema } from '../../schemas/Price'
+import { PriceBatchSchema } from '../../schemas/Price'
 import singletonFactory from './SingletonFactory'
-
-
-const PriceBatchSchema = z.object({
-  items: z.array(PriceSchema),
-})
 
 class PriceFetch extends BaseFetch<typeof PriceBatchSchema> {
   protected getPath(): string {
