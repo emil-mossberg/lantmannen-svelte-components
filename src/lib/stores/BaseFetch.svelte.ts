@@ -1,7 +1,7 @@
 import MagentoSvelteBridge from './MagentoSvelteBridge.svelte'
 import { fetchPOST } from '../helpers'
 
-// import { ZodType, z } from 'zod'
+import { ZodType, z } from 'zod'
 
 type Resolver<T> = {
   resolve: (price: T) => void
@@ -13,19 +13,20 @@ type FetchResponse<T> = {
 }
 
 // TO DO why does need to extend Record<string, any>?
-export default abstract class BaseFetch<T extends Record<string, any>> {
+export default abstract class BaseFetch<S extends ZodType<{ items: any[] }>> {
   public bridge = MagentoSvelteBridge
 
-  private queue = new Map<
+    private queue = new Map<
     string,
-    { quantity: number; unitMeasure?: string; resolvers: Resolver<T>[] }
+    { quantity: number; unitMeasure?: string; resolvers: Resolver<z.infer<S>['items'][number]>[] }
   >()
   private timer: ReturnType<typeof setTimeout> | null = null
 
   protected abstract getPath(): string
-
   protected abstract getFetchKey(): string
   protected abstract getItemKey(): string
+
+  protected abstract schema: S
 
   protected getUrl(): string {
     return `${window.BASE_URL}${this.getPath()}`
@@ -63,7 +64,8 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
 
       const response = await fetchPOST(this.getUrl(), body)
 
-      const result: FetchResponse<T> = await response.json()
+      const json = await response.json()
+      const result = this.schema.parse(json)
       
       window.dispatchEvent(new CustomEvent(`${this.getFetchKey()}-fetched`))
 
@@ -94,7 +96,7 @@ export default abstract class BaseFetch<T extends Record<string, any>> {
     productId: string,
     quantity: number,
     unitMeasure?: string,
-  ): Promise<T> {
+  ): Promise<z.infer<S>['items'][number]>  {
     return new Promise((resolve, reject) => {
       if (!this.queue.has(productId)) {
         this.queue.set(productId, {
