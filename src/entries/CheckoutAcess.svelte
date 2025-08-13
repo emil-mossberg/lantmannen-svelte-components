@@ -185,7 +185,7 @@
               label={$t('deliveryDate:')}
               bind:deliveryDate={delivery.deliveryDateFrom}
               disabledFrom="2025-09-24"
-              hoverDistance={3}
+              dateRange={3}
               disabledDates={['2025-08-08', '2025-08-15']}
             />
           </div>

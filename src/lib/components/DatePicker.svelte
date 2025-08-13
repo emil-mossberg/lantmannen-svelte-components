@@ -1,6 +1,6 @@
 <script lang="ts">
   import { toUtcDateString, toUtcMidnightTimestamp } from '../helpers'
-  import { format, t } from 'svelte-i18n'
+  import { t } from 'svelte-i18n'
 
   import IconArrow from '../Icons/icon-arrow.svg'
 
@@ -42,7 +42,7 @@
   // All dates are on the format string format XXXX-XX-XX
   type Props = {
     deliveryDate: string
-    hoverDistance: number
+    dateRange: number
     disabledDates?: string[]
     disabledFrom: string
     label: string
@@ -52,7 +52,7 @@
     deliveryDate = $bindable(),
     disabledFrom,
     disabledDates = [],
-    hoverDistance = 1,
+    dateRange = 1,
     label,
   }: Props = $props()
 
@@ -132,9 +132,8 @@
 
     let d = new Date(startOfCalendar.getTime()),
       week: Day[] = [],
-      weeks: Day[][] = [week]
+      weeks: Day[][] = [week]    
 
-    const currentHoverIso = iso(new Date(currentHover))
     let highlightRemaining = 0
     let selectedRemaining = 0
     let prevDay: Day | null = null
@@ -142,10 +141,10 @@
     while (d.getTime() <= endOfCalendar.getTime()) {
       const value = iso(d)
       const enabled = isDateEnabled(toUtcMidnightTimestamp(value))
-      const isHovered = value === currentHoverIso && enabled
+      const isHovered = value === currentHover && enabled
 
       if (isHovered) {
-        highlightRemaining = hoverDistance
+        highlightRemaining = dateRange
       }
 
       const highlight = highlightRemaining > 0 && enabled
@@ -162,7 +161,7 @@
       const selected = deliveryDate === value
 
       if (selected) {
-        selectedRemaining = hoverDistance
+        selectedRemaining = dateRange
       }
 
       const inSelectRange = selectedRemaining > 0 && enabled
@@ -257,7 +256,7 @@
   const deliveryDateRange = $derived.by(() => {
     const startDate = new Date(toUtcMidnightTimestamp(deliveryDate))
     const endDate = new Date(startDate)
-    endDate.setUTCDate(endDate.getUTCDate() + hoverDistance)
+    endDate.setUTCDate(endDate.getUTCDate() + dateRange)
 
     return [
       [$t('to'), formatPretty(startDate)],
