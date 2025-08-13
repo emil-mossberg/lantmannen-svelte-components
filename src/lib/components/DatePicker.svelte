@@ -171,6 +171,8 @@
       const firstDay = d.getDay() === START
 
       // START detection
+
+      
       day.highlightStart =
         day.highlight &&
         (firstDay || !prevDay || !prevDay.highlight || !prevDay.enabled)
@@ -180,16 +182,12 @@
         (firstDay || !prevDay || !prevDay.inSelectRange || !prevDay.enabled)
 
       // END detection for previous day now that we know the current day
-      if (prevDay && prevDay.highlight) {
-        prevDay.highlightEnd =
-          !day.highlight || !day.enabled || d.getDay() === START
-      }
 
-      if (prevDay && prevDay.inSelectRange) {
-        prevDay.selectedEnd =
-          !day.inSelectRange || !day.enabled || d.getDay() === START
+      if (prevDay) {
+        if (prevDay.highlight) prevDay.highlightEnd = !day.highlight || !day.enabled || firstDay;
+        if (prevDay.inSelectRange) prevDay.selectedEnd = !day.inSelectRange || !day.enabled || firstDay;
       }
-
+   
       week.push(day)
       prevDay = day
 
@@ -202,10 +200,8 @@
     }
 
     // Handle the very last day in the calendar
-    if (prevDay && prevDay.highlight) {
-      prevDay.highlightEnd = true
-    }
-
+    if (prevDay && prevDay.highlight) prevDay.highlightEnd = true
+    
     return weeks
   })
 
