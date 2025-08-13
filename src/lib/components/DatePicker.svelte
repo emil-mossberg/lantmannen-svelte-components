@@ -143,39 +143,19 @@
       const enabled = isDateEnabled(toUtcMidnightTimestamp(value))
       const isHovered = value === currentHover && enabled
 
-      if (isHovered) {
-        highlightRemaining = dateRange
-      }
+      if (isHovered) highlightRemaining = dateRange
 
       const highlight = highlightRemaining > 0 && enabled
-
-      let hoveredEnd = false
-      if (highlight && highlightRemaining === 1) {
-        hoveredEnd = true
-      }
-
-      if (highlight) {
-        highlightRemaining--
-      }
+      if (highlight) highlightRemaining--
+      
 
       const selected = deliveryDate === value
 
-      if (selected) {
-        selectedRemaining = dateRange
-      }
-
+      if (selected) selectedRemaining = dateRange
+      
       const inSelectRange = selectedRemaining > 0 && enabled
-
-      let selectedLast = false
-
-      if (inSelectRange && selectedRemaining === 1) {
-        selectedLast = true
-      }
-
-      if (inSelectRange) {
-        selectedRemaining--
-      }
-
+      if (inSelectRange) selectedRemaining--
+      
       const day: Day = {
         date: d.getDate(),
         selected,
@@ -183,12 +163,10 @@
         enabled,
         highlight,
         value,
-        selectedLast,
+        selectedLast: inSelectRange && selectedRemaining === 0,
         hoveredStart: isHovered,
-        hoveredEnd,
+        hoveredEnd: highlight && highlightRemaining === 0
       }
-
-      // TO DO DRY
 
       const firstDay = d.getDay() === START
 
