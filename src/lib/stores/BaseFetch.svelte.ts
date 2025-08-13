@@ -16,9 +16,13 @@ type FetchResponse<T> = {
 export default abstract class BaseFetch<S extends ZodType<{ items: any[] }>> {
   public bridge = MagentoSvelteBridge
 
-    private queue = new Map<
+  private queue = new Map<
     string,
-    { quantity: number; unitMeasure?: string; resolvers: Resolver<z.infer<S>['items'][number]>[] }
+    {
+      quantity: number
+      unitMeasure?: string
+      resolvers: Resolver<z.infer<S>['items'][number]>[]
+    }
   >()
   private timer: ReturnType<typeof setTimeout> | null = null
 
@@ -38,7 +42,6 @@ export default abstract class BaseFetch<S extends ZodType<{ items: any[] }>> {
     const customerNumber = this.bridge.customerNumber()
 
     if (this.bridge.isLoggedIn && !customerNumber) {
-
       setTimeout(() => this.flushQueue(), 10)
       return
     }
@@ -66,7 +69,7 @@ export default abstract class BaseFetch<S extends ZodType<{ items: any[] }>> {
 
       const json = await response.json()
       const result = this.schema.parse(json)
-      
+
       window.dispatchEvent(new CustomEvent(`${this.getFetchKey()}-fetched`))
 
       const itemsMap = new Map(
@@ -97,10 +100,9 @@ export default abstract class BaseFetch<S extends ZodType<{ items: any[] }>> {
     productId: string,
     quantity: number,
     unitMeasure?: string,
-  ): Promise<z.infer<S>['items'][number]>  {
+  ): Promise<z.infer<S>['items'][number]> {
     return new Promise((resolve, reject) => {
       if (!this.queue.has(productId)) {
-        console.log('quantity getPRomise', quantity)
         this.queue.set(productId, {
           quantity,
           unitMeasure,
