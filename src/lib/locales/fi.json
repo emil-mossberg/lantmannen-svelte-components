@@ -41,5 +41,7 @@
     "price": "hinta",
     "count": "Määrä",
     "goToCart": "Ostoskori",
-    "goToCheckout": "Siirry kassalle"
+    "goToCheckout": "Siirry kassalle",
+    "inclVAT": "sis. ALV",
+    "exclVAT": "ALV 0%"
 }

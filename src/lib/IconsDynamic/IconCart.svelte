@@ -1,17 +1,17 @@
 <script lang="ts">
   type Props = {
     type?: 'white' | 'green'
-	disabled?: boolean | null | undefined
+    disabled?: boolean | null | undefined
   }
 
   const { type = 'white', disabled = false }: Props = $props()
 </script>
 
 <div
-  class={`tw-group tw-grid tw-h-[44px] tw-w-[44px] tw-place-items-center tw-rounded-full tw-border   hover:tw-text-white hover:tw-bg-tannenbaum hover:tw-border-tannenbau ${type === 'white' && 'tw-bg-white tw-text-charcoal tw-border-charcoal'} ${type === 'green' &&  'tw-text-white'} ${type === 'green' && !disabled ? 'tw-bg-green-pea tw-border-green-pea': 'tw-border-charcoal tw-bg-charcoal'}` }
+  class={`tw-group tw-grid tw-h-[44px] tw-w-[44px] tw-place-items-center tw-rounded-full    lg:hover:tw-text-white lg:hover:tw-bg-tannenbaum lg:hover:tw-border-tannenbaum ${type === 'white' && 'tw-bg-white tw-text-charcoal tw-border-charcoal lg:tw-border'} ${type === 'green' && 'tw-text-white'} ${type === 'green' && !disabled ? 'tw-bg-green-pea tw-border-green-pea' : 'tw-border-charcoal tw-bg-charcoal'}`}
 >
   <svg
-    class="tw-h-[24px] tw-w-[24px] group-hover:tw-bg-tannenbaum"
+    class="tw-h-[24px] tw-w-[24px] lg:group-hover:tw-bg-tannenbaum"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
   >

@@ -32,7 +32,6 @@
     isVirtualProduct,
   }: StockProps = $props()
 
-  console.log(sku, prefSalesQty)
 
   let stockPromise = $state(
     isBulkFi

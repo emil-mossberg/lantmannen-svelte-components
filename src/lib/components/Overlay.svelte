@@ -18,12 +18,12 @@
     }
   }
 
-  
+  //  {@attach moveToDestination}  
 </script>
 
 {#if show}
   <button
-    {@attach moveToDestination}  
+   
     class="tw-fixed tw-inset-0 tw-bg-black tw-z-[110] tw-s-overlay hover:tw-bg-black"
     aria-label="overlay"
     onclick={() => onclick?.()}

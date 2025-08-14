@@ -1,6 +1,5 @@
 <script lang="ts">
   import bridgeSingleton from '../stores/MagentoSvelteBridge.svelte'
-  import { type LocaleCode } from 'src/schemas/Locale'
 
   type Props = {
     price: number
@@ -20,8 +19,6 @@
     headerSize = 'lg',
   }: Props = $props()
 
-  
-
   const formatMap = {
     fi_FI: {
       code: 'fi-FI',
@@ -33,7 +30,6 @@
     },
   }
 
-  
   const formattedPrice = $derived.by(() => {
     const format = formatMap[bridgeSingleton.locale]
 

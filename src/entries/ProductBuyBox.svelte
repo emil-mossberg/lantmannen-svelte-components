@@ -117,7 +117,6 @@
   window.addEventListener('magento:cartUpdated', function () {
     showCartSpinner = false
     showModal = false
-    
   })
 </script>
 

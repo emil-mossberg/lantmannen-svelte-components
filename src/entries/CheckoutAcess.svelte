@@ -74,21 +74,21 @@
     },
   ])
 
-const sameSiloBulk = $derived.by(() => {
-  const addrCount: Record<string, number[]> = {};
+  const sameSiloBulk = $derived.by(() => {
+    const addrCount: Record<string, number[]> = {}
 
-  deliveries.forEach((d, i) => {
-    if (d.type === 'bulk') {
-      const key = String(d.adress).trim();
-      if (!addrCount[key]) addrCount[key] = [];
-      addrCount[key].push(i);
-    }
-  });
+    deliveries.forEach((d, i) => {
+      if (d.type === 'bulk') {
+        const key = String(d.adress).trim()
+        if (!addrCount[key]) addrCount[key] = []
+        addrCount[key].push(i)
+      }
+    })
 
-  return Object.values(addrCount)
-    .filter(indices => indices.length > 1)
-    .flat();
-});
+    return Object.values(addrCount)
+      .filter((indices) => indices.length > 1)
+      .flat()
+  })
 
   // TO DO : Could this be a problem with PSS that has same sku twice in cart
   // TO DO : Use this in ajax call to get deliveries info instead of multiple times inline in template when that ajax call is used
@@ -120,18 +120,23 @@ const sameSiloBulk = $derived.by(() => {
       >
     {/if}
   </div>
-  <div class="tw-flex tw-flex-col tw-items-start">
+  <div>
     {#if deliveryPlanner}
       <div>
         {$t('deliveryPlanner')}
       </div>
     {/if}
     {#if bridgeSingleton.cart.value && bridgeSingleton.cart.value.subtotalAmount > 0}
-      <span class="tw-price-wrapper"
+    <div class={`tw-flex tw-items-baseline ${bridgeSingleton.showDeliveryPlanner ? 'tw-gap-2' : 'tw-flex-col'}`}>
+      <div class="tw-price-wrapper"
         >{@html bridgeSingleton.vatEnabled
           ? bridgeSingleton.cart.value.subtotal_incl_tax
-          : bridgeSingleton.cart.value.subtotal_excl_tax}</span
+          : bridgeSingleton.cart.value.subtotal_excl_tax}</div
       >
+      <div class="tw-text-xs"> {bridgeSingleton.vatEnabled ? $t('inclVAT') : $t('exclVAT')}</div>
+    </div>
+      
+
     {/if}
   </div>
 {/snippet}
@@ -175,12 +180,10 @@ const sameSiloBulk = $derived.by(() => {
         </h5>
         <div class="tw-mb-3">
           {#if sameSiloBulk.includes(index)}
-          <InfoBox text={$t('sameSiloUsed')} />
-            
-          
-        {/if}
+            <InfoBox text={$t('sameSiloUsed')} />
+          {/if}
         </div>
-        
+
         <SelectWrapper
           text={$t('deliveryMethod')}
           bind:value={delivery.deliveryMethod}
@@ -258,10 +261,10 @@ const sameSiloBulk = $derived.by(() => {
   </ul>
 {/snippet}
 
-<div
-  class="tw-fixed tw-right-3 tw-top-3 tw-z-[110] tw-border tw-border-charcoal tw-rounded-md tw-bg-white tw-overflow-hidden"
->
-  {#if bridgeSingleton.showDeliveryPlanner && bridgeSingleton.cart.value?.items && bridgeSingleton.cart.value?.items.length}
+{#if bridgeSingleton.showDeliveryPlanner && bridgeSingleton.cart.value?.items && bridgeSingleton.cart.value?.items.length}
+  <div
+    class="tw-fixed tw-right-3 tw-top-3 tw-z-[110] tw-border tw-border-charcoal tw-rounded-md tw-bg-white tw-overflow-hidden"
+  >
     <button
       onclick={() => (showSheet = true)}
       out:fly={{
@@ -274,11 +277,11 @@ const sameSiloBulk = $derived.by(() => {
       {@render cartButtonContent()}
     </button>
     <Sheet {header} {body} bind:showSheet />
-  {:else}
-    <button
-      class="tw-clear-button tw-flex tw-p-3 tw-items-center"
-      onclick={goToCart}
-      >{@render cartButtonContent(false)}
-    </button>
-  {/if}
-</div>
+  </div>
+{:else}
+  <button
+    class="tw-clear-button tw-flex tw-p-3 tw-items-center tw-gap-4"
+    onclick={goToCart}
+    >{@render cartButtonContent(false)}
+  </button>
+{/if}

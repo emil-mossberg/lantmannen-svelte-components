@@ -1,7 +1,6 @@
 import { init, register, waitLocale } from 'svelte-i18n'
 import svelteBridgeSvelte from './stores/MagentoSvelteBridge.svelte'
 
-
 register('sv_SE', () => import('./locales/sv.json'))
 register('fi_FI', () => import('./locales/fi.json'))
 
