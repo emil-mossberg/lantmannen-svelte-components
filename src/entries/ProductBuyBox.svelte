@@ -82,17 +82,14 @@
   let showModal = $state(false)
 
   const useModal = $derived.by(() => {
+
     if (!bridgeSingleton.showDeliveryPlanner) return false
 
     // Keep using modal as long as its visible (or if its bulk), check for change when closing
     if (isBulk || showModal) return true
 
-    if (bridgeSingleton.cart.value?.items) {
-      return !bridgeSingleton.cart.value?.items.some(
-        (item) => item.product_sku === sku,
-      )
-    }
-
+    // TO DO right now this derived is strange, but we need to add here check if a package product is in cart already
+    
     return true
   })
 
