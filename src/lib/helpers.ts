@@ -73,10 +73,25 @@ export const fetchPOST = (url: string, body: string) => {
   })
 }
 
-export const safeParseWithLogging = <T>(schema: z.ZodType<T>, input: unknown) => {
+export const safeParseWithLogging = <T>(
+  schema: z.ZodType<T>,
+  input: unknown,
+) => {
   const result = schema.safeParse(input)
   if (!result.success) {
     console.error(`Failed to parse with schema:`, result.error)
   }
   return result
+}
+
+export const createMoveElement = (id: string) => {
+  const target = document.getElementById(id)
+
+  return (element: HTMLElement) => {
+    if (target) {
+      target.appendChild(element)
+    } else {
+      console.warn('Target element #destination not found')
+    }
+  }
 }

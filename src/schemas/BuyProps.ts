@@ -1,5 +1,8 @@
 import { z } from 'zod'
-import magentoSvelteBridge from '@lib/stores/MagentoSvelteBridge.svelte'
+import {
+  transformPrefSalesQty,
+  isBulkPackaging,
+} from '@lib/utils/transformHelpers'
 
 export const BuyBoxPropsSchema = z
   .instanceof(HTMLElement)
@@ -11,10 +14,7 @@ export const BuyBoxPropsSchema = z
         sku: z.string().min(1),
         isBuyable: z.string().transform((val) => val === '1'),
         isVirtualProduct: z.string().transform((val) => val === '1'),
-        prefSalesQty: z.string().transform((val) => {
-          const num = Number(val)
-          return Number.isNaN(num) || num === 0 ? 1 : num
-        }),
+        prefSalesQty: z.string().transform(transformPrefSalesQty),
         packagingType: z.string().nullable(),
         packagingTypeSe: z.string().nullable(),
         qtyIncrement: z.string().transform((val) => {
@@ -29,15 +29,6 @@ export const BuyBoxPropsSchema = z
         priceBoxUnit: z.string().nullable().default(''),
       })
       .transform((data) => {
-        const effectivePackagingType =
-          data.packagingType || data.packagingTypeSe || ''
-        const isBulk = magentoSvelteBridge.tonnagePackageType.includes(
-          effectivePackagingType,
-        )
-        const isBulkFi = magentoSvelteBridge.tonnagePackageType.includes(
-          data.packagingType ?? '',
-        )
-
         return {
           id: data.id,
           sku: data.sku,
@@ -46,10 +37,10 @@ export const BuyBoxPropsSchema = z
           qtyMin: data.qtyMin,
           isPdpCard: data.isPdpCard,
           priceBoxUnit: data.priceBoxUnit,
-          isBulk,
-          isBulkFi,
+          isBulk: isBulkPackaging(data.packagingType, data.packagingTypeSe),
+          isBulkFi: isBulkPackaging(data.packagingType),
           isVirtualProduct: data.isVirtualProduct,
-          isBuyable: data.isBuyable
+          isBuyable: data.isBuyable,
         }
       }),
   )

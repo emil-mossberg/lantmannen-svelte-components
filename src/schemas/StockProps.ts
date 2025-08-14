@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import magentoSvelteBridge from '@lib/stores/MagentoSvelteBridge.svelte'
+import { transformPrefSalesQty, isBulkPackaging } from '@lib/utils/transformHelpers'
 
 export const StockPropsSchema = z
   .instanceof(HTMLElement)
@@ -12,28 +12,16 @@ export const StockPropsSchema = z
         sku: z.string().min(1),
         isVirtualProduct: z.string().transform((val) => val === '1'),
         isPdpCard: z.string().nullable().transform((val) => val === '1'),
-        prefSalesQty: z.string().transform((val) => {
-          const num = Number(val)
-          return Number.isNaN(num) || num === 0 ? 1 : num
-        }),
-        packagingType: z.string(),
-        packagingTypeSe: z.string(),
+        prefSalesQty: z.string().transform(transformPrefSalesQty),
+        packagingType: z.string().nullable(),
+        packagingTypeSe: z.string().nullable(),
       })
       .transform((data) => {
-        const effectivePackagingType =
-          data.packagingType || data.packagingTypeSe || ''
-        const isBulk = magentoSvelteBridge.tonnagePackageType.includes(
-          effectivePackagingType,
-        )
-        const isBulkFi = magentoSvelteBridge.tonnagePackageType.includes(
-          data.packagingType ?? '',
-        )
-
         return {
           sku: data.sku,
           prefSalesQty: data.prefSalesQty,
-          isBulk,
-          isBulkFi,
+          isBulk: isBulkPackaging(data.packagingType, data.packagingTypeSe),
+          isBulkFi : isBulkPackaging(data.packagingType),
           isPdpCard: data.isPdpCard,
           isVirtualProduct: data.isVirtualProduct,
         }
