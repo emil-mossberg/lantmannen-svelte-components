@@ -3,7 +3,7 @@
 
   import IconCross from '../IconsDynamic/IconCross.svelte'
   import Overlay from './Overlay.svelte'
-  import { scrollLock, createMoveElement } from '../helpers'
+  import { scrollLock, createMoveElement } from '../utils/helpers'
 
   type Props = {
     textButton: string
@@ -31,8 +31,6 @@
       <div class=" tw-bg-white tw-p-6 tw-border tw-w-[500px]">
         <div class="tw-flex tw-justify-between tw-mb-4">
           <h5>{header}</h5>
-          <div>{showModal}</div>
-
           <button class="tw-clear-button" onclick={() => (showModal = false)}
             ><IconCross />
           </button>

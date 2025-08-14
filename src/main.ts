@@ -13,7 +13,7 @@ import { StockPropsSchema } from './schemas/StockProps'
 import { PricePropsSchema } from './schemas/PriceProps'
 import { BuyBoxPropsSchema } from './schemas/BuyProps'
 
-import { safeParseWithLogging } from './lib/helpers'
+import { safeParseWithLogging } from '@lib/utils/helpers'
 
 
 setupI18n('fi_FI').then(() => {

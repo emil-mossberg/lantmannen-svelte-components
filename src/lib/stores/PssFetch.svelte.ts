@@ -1,8 +1,8 @@
-import singletonFactory from './SingletonFactory'
-import MagentoSvelteBridge from './MagentoSvelteBridge.svelte'
+import singletonFactory from '@lib/stores/SingletonFactory'
+import magentoSvelteBridge from '@lib/stores/MagentoSvelteBridge.svelte'
 import { type CartInformation } from '../../schemas/CartInformation'
 import { type Campaign } from '../../schemas/Campaign'
-import { fetchPOST } from '../helpers'
+import { fetchPOST } from '@lib/utils/helpers'
 
 // TO DO move to file or come up with better solution
 type PSSRequest = {
@@ -12,7 +12,7 @@ type PSSRequest = {
 }
 
 class PssFetch {
-  public bridge = MagentoSvelteBridge
+  public bridge = magentoSvelteBridge
 
   public cartInfo = $state<null | CartInformation>(null)
 

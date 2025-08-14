@@ -1,4 +1,4 @@
-import singletonFactory from './SingletonFactory'
+import singletonFactory from '@lib/stores/SingletonFactory'
 
 class CartStateTracker {
   public inProgress = $state<{value: boolean}>({value: false})

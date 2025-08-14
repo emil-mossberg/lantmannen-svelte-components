@@ -4,7 +4,7 @@
   import type { Snippet } from 'svelte'
   import Overlay from './Overlay.svelte'
   import IconCross from '../IconsDynamic/IconCross.svelte'
-  import { scrollLock } from '../helpers'
+  import { scrollLock } from '../utils/helpers'
 
   type Props = {
     header: Snippet

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { toUtcDateString, toUtcMidnightTimestamp } from '../helpers'
+  import { toUtcDateString, toUtcMidnightTimestamp } from '../utils/helpers'
   import { t } from 'svelte-i18n'
 
   import IconArrow from '../Icons/icon-arrow.svg'

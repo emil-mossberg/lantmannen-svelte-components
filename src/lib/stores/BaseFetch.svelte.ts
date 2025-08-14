@@ -1,5 +1,5 @@
-import MagentoSvelteBridge from './MagentoSvelteBridge.svelte'
-import { fetchPOST } from '../helpers'
+import magentoSvelteBridge from '@lib/stores/MagentoSvelteBridge.svelte'
+import { fetchPOST } from '@lib/utils/helpers'
 
 import { ZodType, z } from 'zod'
 
@@ -14,7 +14,7 @@ type FetchResponse<T> = {
 
 // TO DO why does need to extend Record<string, any>?
 export default abstract class BaseFetch<S extends ZodType<{ items: any[] }>> {
-  public bridge = MagentoSvelteBridge
+  public bridge = magentoSvelteBridge
 
   private queue = new Map<
     string,

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte'
+  import { onMount } from 'svelte'
 
   import { t } from 'svelte-i18n'
 
@@ -149,7 +149,7 @@
   <div class="tw-flex tw-py-2">
     <!-- REGULAR PRICE COLUMN -->
     <div class="tw-flex-1 tw-mr-4">
-      {#if discountPrice}
+      {#if discountPrice && campaignPrice}
         <PriceShow
           price={campaignPrice}
           {priceBoxUnit}
@@ -167,7 +167,7 @@
     {#if bridgeSingleton.showListPrice && listPrice}
       <!-- LIST PRICE COLUMN -->
       <div class="tw-flex-1 tw-mr-4">
-        {#if hasProfixPrice(price)}
+        {#if hasProfixPrice(price) && profixPrice}
           <PriceShow
             price={profixPrice}
             {priceBoxUnit}

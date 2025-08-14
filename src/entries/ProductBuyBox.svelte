@@ -18,7 +18,6 @@
   import Spinner from '@lib/components/Spinner.svelte'
   import { type BuyBoxProps } from '../schemas/BuyProps'
 
-  // TO DO remove TEMP dummy data
   import {
     bulkDeliveryMethods,
     packageDeliveryMethods,
@@ -82,14 +81,13 @@
   let showModal = $state(false)
 
   const useModal = $derived.by(() => {
-
     if (!bridgeSingleton.showDeliveryPlanner) return false
 
     // Keep using modal as long as its visible (or if its bulk), check for change when closing
     if (isBulk || showModal) return true
 
     // TO DO right now this derived is strange, but we need to add here check if a package product is in cart already
-    
+
     return true
   })
 
@@ -202,16 +200,17 @@
     itemId="addressId"
     placeholder="Välj leveransaddress"
   />
-
-  <div class="tw-mb-6">
-    <DatePicker
-      bind:deliveryDate={delivery.date}
-      label={$t('deliveryDate:')}
-      disabledFrom="2025-09-24"
-      dateRange={3}
-      disabledDates={['2025-08-08', '2025-08-15', '2025-08-25']}
-    />
-  </div>
+  {#if isBulk}
+    <div class="tw-mb-6">
+      <DatePicker
+        bind:deliveryDate={delivery.date}
+        label={$t('deliveryDate:')}
+        disabledFrom="2025-09-24"
+        dateRange={3}
+        disabledDates={['2025-08-08', '2025-08-15', '2025-08-25']}
+      />
+    </div>
+  {/if}
 
   {@render buyButton(buyButtonLabel)}
 {/snippet}
