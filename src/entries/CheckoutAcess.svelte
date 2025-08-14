@@ -127,16 +127,18 @@
       </div>
     {/if}
     {#if bridgeSingleton.cart.value && bridgeSingleton.cart.value.subtotalAmount > 0}
-    <div class={`tw-flex tw-items-baseline ${bridgeSingleton.showDeliveryPlanner ? 'tw-gap-2' : 'tw-flex-col'}`}>
-      <div class="tw-price-wrapper"
-        >{@html bridgeSingleton.vatEnabled
-          ? bridgeSingleton.cart.value.subtotal_incl_tax
-          : bridgeSingleton.cart.value.subtotal_excl_tax}</div
+      <div
+        class={`tw-flex tw-items-baseline ${bridgeSingleton.showDeliveryPlanner ? 'tw-gap-2' : 'tw-flex-col'}`}
       >
-      <div class="tw-text-xs"> {bridgeSingleton.vatEnabled ? $t('inclVAT') : $t('exclVAT')}</div>
-    </div>
-      
-
+        <div class="tw-price-wrapper">
+          {@html bridgeSingleton.vatEnabled
+            ? bridgeSingleton.cart.value.subtotal_incl_tax
+            : bridgeSingleton.cart.value.subtotal_excl_tax}
+        </div>
+        <div class="tw-text-xs">
+          {bridgeSingleton.vatEnabled ? $t('inclVAT') : $t('exclVAT')}
+        </div>
+      </div>
     {/if}
   </div>
 {/snippet}
@@ -261,9 +263,9 @@
   </ul>
 {/snippet}
 
-{#if bridgeSingleton.showDeliveryPlanner && bridgeSingleton.cart.value?.items && bridgeSingleton.cart.value?.items.length}
+{#if bridgeSingleton.showDeliveryPlanner}
   <div
-    class="tw-fixed tw-right-3 tw-top-3 tw-z-[110] tw-border tw-border-charcoal tw-rounded-md tw-bg-white tw-overflow-hidden"
+    class="tw-right-3 tw-top-3 tw-z-[110]   tw-bg-white tw-overflow-hidden lg:tw-fixed lg:tw-border lg:tw-border-charcoal lg:tw-rounded-md"
   >
     <button
       onclick={() => (showSheet = true)}
