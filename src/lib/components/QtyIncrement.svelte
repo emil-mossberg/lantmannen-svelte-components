@@ -65,7 +65,7 @@
 )}
   <button
     type="button"
-    class={`svelte-qty-button-fix tw-h-[44px] text-[1.25rem] flex tw-justify-center tw-items-center tw-w-[44px] tw-border-alto tw-bg-alto tw-bg-opacity-30 tw-text-green-pea ${customClass} disabled:text-charcoal disabled:tw-cursor-not-allowed disabled:hover:tw-bg-opacity-30 disabled:hover:tw-bg-alto  ${disabled ? 'text-charcoal tw-cursor-not-allowed hover:tw-bg-opacity-30 hover:tw-bg-alto' : 'hover:tw-bg-green-pea hover:tw-text-white'}`}
+    class={`tw-min-w-[auto] tw-h-[44px] text-[1.25rem] flex tw-justify-center tw-items-center tw-w-[44px] tw-border-alto tw-bg-alto tw-bg-opacity-30 tw-text-green-pea ${customClass} disabled:text-charcoal disabled:tw-cursor-not-allowed disabled:hover:tw-bg-opacity-30 disabled:hover:tw-bg-alto  ${disabled ? 'text-charcoal tw-cursor-not-allowed hover:tw-bg-opacity-30 hover:tw-bg-alto' : 'hover:tw-bg-green-pea hover:tw-text-white'}`}
     onclick={action}
     {disabled}>{sign}</button
   >
