@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { Snippet } from 'svelte'
 
-  import IconCross from '../IconsDynamic/IconCross.svelte'
-  import Overlay from './Overlay.svelte'
-  import { scrollLock, createMoveElement } from '../utils/helpers'
+  import IconCross from '@lib/IconsDynamic/IconCross.svelte'
+  import Overlay from '@lib/components/Overlay.svelte'
+  import { scrollLock, createMoveElement } from '@lib/utils/helpers'
 
   type Props = {
     textButton: string

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { localeCodeSchema } from './Locale'
+import { localeCodeSchema } from '@lib/schemas/Locale'
 
 const boolFromString = z.string().transform((v) => v === '1')
 const numFromString = z.string().transform(Number)

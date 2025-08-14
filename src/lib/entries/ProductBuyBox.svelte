@@ -16,16 +16,16 @@
   import Modal from '@lib/components/Modal.svelte'
   import ButtonBuyCircle from '@lib/components/ButtonBuyCircle.svelte'
   import Spinner from '@lib/components/Spinner.svelte'
-  import { type BuyBoxProps } from '../schemas/BuyProps'
+  import { type BuyBoxProps } from '@lib/schemas/BuyProps'
 
   import {
     bulkDeliveryMethods,
     packageDeliveryMethods,
     bulkAddress,
     packageAddresses,
-  } from '../dummyData'
+  } from '../../dummyData'
 
-  import { type DeliveryInfo } from '../schemas/DeliveryInfo'
+  import { type DeliveryInfo } from '@lib/schemas/DeliveryInfo'
 
   const {
     id,

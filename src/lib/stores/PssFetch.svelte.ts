@@ -1,7 +1,7 @@
 import singletonFactory from '@lib/stores/SingletonFactory'
 import magentoSvelteBridge from '@lib/stores/MagentoSvelteBridge.svelte'
-import { type CartInformation } from '../../schemas/CartInformation'
-import { type Campaign } from '../../schemas/Campaign'
+import { type CartInformation } from '@lib/schemas/CartInformation'
+import { type Campaign } from '@lib/schemas/Campaign'
 import { fetchPOST } from '@lib/utils/helpers'
 
 // TO DO move to file or come up with better solution
@@ -24,7 +24,7 @@ class PssFetch {
       window.addEventListener('magento:cartUpdated', () => {
         this.fetchPSSCampaigns()
       })
-      
+
       window.addEventListener('priceFinderData-fetched', () => {
         this.fetchPSSCampaigns()
       })

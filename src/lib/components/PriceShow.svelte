@@ -1,5 +1,5 @@
 <script lang="ts">
-  import bridgeSingleton from '../stores/MagentoSvelteBridge.svelte'
+  import bridgeSingleton from '@lib/stores/MagentoSvelteBridge.svelte'
 
   type Props = {
     price: number

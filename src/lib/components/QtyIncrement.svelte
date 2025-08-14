@@ -7,7 +7,7 @@
     min,
     required,
     qtyIncrements,
-  } from '../validators/validators'
+  } from '@lib/validators/validators'
 
   import InfoIcon from '@lib/Icons/icon-info.svg'
 

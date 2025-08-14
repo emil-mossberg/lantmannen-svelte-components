@@ -2,7 +2,7 @@ import z from 'zod'
 
 import BaseFetch from '@lib/stores/BaseFetch.svelte'
 import { REST_PRICE, REST_PRICE_GUEST } from '@lib/constants'
-import { PriceBatchSchema } from '../../schemas/Price'
+import { PriceBatchSchema } from '@lib/schemas/Price'
 import singletonFactory from '@lib/stores/SingletonFactory'
 
 class PriceFetch extends BaseFetch<typeof PriceBatchSchema> {

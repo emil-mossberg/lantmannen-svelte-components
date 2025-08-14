@@ -1,11 +1,11 @@
 <script lang="ts">
     import { t } from 'svelte-i18n'
-    import svelteBridge from '../stores/MagentoSvelteBridge.svelte'
+    import svelteBridge from '@lib/stores/MagentoSvelteBridge.svelte'
 
-    import PriceShow from './PriceShow.svelte'
-    import InfoBox from './InfoBox.svelte'
+    import PriceShow from '@lib/components/PriceShow.svelte'
+    import InfoBox from '@lib/components/InfoBox.svelte'
 
-    import { type Campaign, type CampaignItem } from '../../schemas/Campaign'
+    import { type Campaign, type CampaignItem } from '@lib/schemas/Campaign'
 
     type Props = {
         campaigns: Campaign

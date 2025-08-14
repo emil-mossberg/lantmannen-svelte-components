@@ -7,8 +7,8 @@
 
   import IconStock from '@lib/Icons/icon-in-stock.svg'
 
-  import { type StockProps } from '../schemas/StockProps'
-  import { type Stock } from 'src/schemas/Stock'
+  import { type StockProps } from '@lib/schemas/StockProps'
+  import { type Stock } from '@lib/schemas/Stock'
   import Spinner from '@lib/components/Spinner.svelte'
 
   import iconDeliveryExpress from '@lib/Icons/icon-delivery-express.svg'

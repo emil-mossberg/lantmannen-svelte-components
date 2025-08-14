@@ -8,7 +8,7 @@
   import PriceShow from '@lib/components/PriceShow.svelte'
   import Spinner from '@lib/components/Spinner.svelte'
 
-  import { type Price } from '../schemas/Price'
+  import { type Price } from '@lib/schemas/Price'
 
   type Props = {
     id: string

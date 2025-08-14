@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { toUtcDateString, toUtcMidnightTimestamp } from '../utils/helpers'
+  import { toUtcDateString, toUtcMidnightTimestamp } from '@lib/utils/helpers'
   import { t } from 'svelte-i18n'
 
-  import IconArrow from '../Icons/icon-arrow.svg'
+  import IconArrow from '@lib/Icons/icon-arrow.svg'
 
   const DAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'] as const
 

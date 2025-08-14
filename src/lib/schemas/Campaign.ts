@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { CartInformationSchema } from './CartInformation'
-import { PriceSchema } from './Price'
-import { StockSchema } from './Stock'
+import { CartInformationSchema } from '@lib/schemas/CartInformation'
+import { PriceSchema } from '@lib/schemas/Price'
+import { StockSchema } from '@lib/schemas/Stock'
 
 export const CampaignItemSchema = z.object({
     campaign_id: z.string(),

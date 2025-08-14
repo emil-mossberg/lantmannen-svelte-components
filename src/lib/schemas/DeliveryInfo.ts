@@ -1,7 +1,7 @@
 import z from 'zod'
 
-import { DeliveryAddressSchema } from './DeliveryAddress'
-import { DeliveryMethodSchema } from './DeliveryMethod'
+import { DeliveryAddressSchema } from '@lib/schemas/DeliveryAddress'
+import { DeliveryMethodSchema } from '@lib/schemas/DeliveryMethod'
 
 export const DeliveryInfoSchema = z.object({
   address: DeliveryAddressSchema.nullable(),

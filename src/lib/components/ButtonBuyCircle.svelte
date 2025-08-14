@@ -2,8 +2,8 @@
   import type { HTMLButtonAttributes } from 'svelte/elements'
 
   import IconCart from '@lib/IconsDynamic/IconCart.svelte'
-  import IconPlus from '../Icons/icon-plus.svg'
-  import Spinner from './Spinner.svelte'
+  import IconPlus from '@lib/Icons/icon-plus.svg'
+  import Spinner from '@lib/components/Spinner.svelte'
 
   type LmCirleButtonProps = HTMLButtonAttributes & {
     showSpinner?: boolean

@@ -2,9 +2,9 @@
   import { fly } from 'svelte/transition'
   import { cubicOut } from 'svelte/easing'
   import type { Snippet } from 'svelte'
-  import Overlay from './Overlay.svelte'
-  import IconCross from '../IconsDynamic/IconCross.svelte'
-  import { scrollLock } from '../utils/helpers'
+  import Overlay from '@lib/components/Overlay.svelte'
+  import IconCross from '@lib/IconsDynamic/IconCross.svelte'
+  import { scrollLock } from '@lib/utils/helpers'
 
   type Props = {
     header: Snippet

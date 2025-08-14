@@ -17,7 +17,7 @@
     packageDeliveryMethods,
     bulkAddress,
     packageAddresses,
-  } from '../dummyData'
+  } from '../../dummyData'
   import PriceShow from '@lib/components/PriceShow.svelte'
 
   const deliveries = $state([
