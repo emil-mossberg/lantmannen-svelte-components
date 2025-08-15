@@ -15,7 +15,7 @@
 <button
   type="button"
   {...rest}
-  class="tw-flex tw-rounded-full tw-min-w-[44px] tw-min-h-[44px] tw-clear-button tw-relative disabled:tw-pointer-events-none"
+  class="tw-flex tw-rounded-full tw-min-w-[44px] tw-min-h-[44px] tw-clear-button tw-relative disabled:tw-pointer-events-none tw-mr-3"
   {disabled}
 >
   {#if !showSpinner}

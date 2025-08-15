@@ -43,5 +43,9 @@
     "goToCart": "Ostoskori",
     "goToCheckout": "Siirry kassalle",
     "inclVAT": "sis. ALV",
-    "exclVAT": "ALV 0%"
+    "exclVAT": "ALV 0%",
+    "palletQty": "Lavakoko: ",
+    "normalPrice": "Kaupan hinta",
+    "listPrice": "Suositushinta",
+    "multipleOf": "Myyntierä: "
 }

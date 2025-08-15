@@ -44,7 +44,6 @@
   const buttonId = $props.id()
 
   // Fetch data
-
   let stockPromise = $state(
     isBulkFi
       ? stockFetch.getPromise(sku, prefSalesQty, 'TO')

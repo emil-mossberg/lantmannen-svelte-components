@@ -101,7 +101,7 @@
   <!-- NO VAT PRICE ROW -->
   <div class="tw-flex tw-py-2">
     <!-- REGULAR PRICE COLUMN -->
-    <div class="tw-flex-1 tw-mr-4">
+    <div class={`tw-mr-4 ${isPDPCard && 'tw-flex-1'}`}>
       {#if discountPrice && campaignPrice}
         <PriceShow
           price={campaignPrice}
@@ -119,7 +119,7 @@
     </div>
     {#if bridgeSingleton.showListPrice && listPrice}
       <!-- LIST PRICE COLUMN -->
-      <div class="tw-flex-1 tw-mr-4">
+      <div class={`tw-mr-4 ${isPDPCard && 'tw-flex-1'}`}>
         {#if hasProfixPrice(price) && profixPrice}
           <PriceShow
             price={profixPrice}
@@ -139,7 +139,7 @@
     {/if}
     {#if !isPss || bridgeSingleton.showListPrice}
       <!-- PRICE LABEL COLUMN -->
-      <div class="tw-flex-1 tw-mr-4 tw-text-right">
+      <div class={`tw-text-right tw-mr-4 ${isPDPCard && 'tw-flex-1'}`}>
         <span class="tw-font-normal tw-text-xs tw-leading-6">
           {vatLabel}
         </span>
@@ -221,17 +221,9 @@
       {@const prefAndUnit = `${prefSalesQty} ${prefSalesQtyUnit}`}
       <span class="tw-text-xs tw-leading-6">
         {#if price.price_info.extension_attributes?.lma_is_pallet_discount}
-          {$t('bestPricePalletQty', {
-            values: {
-              qty: prefAndUnit,
-            },
-          })}
+          {`${$t('bestPricePalletQty')} ${prefAndUnit}`}
         {:else}
-          {$t('palletQty', {
-            values: {
-              qty: prefAndUnit,
-            },
-          })}
+          {`${$t('palletQty')} ${prefAndUnit}`}
         {/if}
       </span>
     {/if}

@@ -81,7 +81,7 @@
 <div bind:this={element}>
   {#if isVirtualProduct}
     <div
-      class={`tw-flex tw-gap-3 ${isPdpCard ? 'tw-rounded tw-border tw-border-alto tw-mt-3 tw-p-4' : 'tw-min-h-[34px]'}`}
+      class={`tw-flex tw-gap-3 tw-items-center ${isPdpCard ? 'tw-rounded tw-border tw-border-alto tw-mt-3 tw-p-4' : 'tw-min-h-[34px]'}`}
     >
       <img src={IconStock} alt="stock icon" /><span
         class="tw-text-xs tw-leading-6">{$t('inStock')}</span
@@ -99,7 +99,7 @@
         {/if}
 
         <div
-          class={`tw-flex tw-gap-3 ${isPdpCard ? 'tw-rounded tw-border tw-border-alto tw-mt-3 tw-p-4' : 'tw-min-h-[34px]'}`}
+          class={`tw-flex tw-gap-3 tw-items-center ${isPdpCard ? 'tw-rounded tw-border tw-border-alto tw-mt-3 tw-p-4' : 'tw-min-h-[34px]'}`}
         >
           <img src={IconStock} alt="stock icon" />
           {#if !stock.in_stock && !stock.allow_backorder}

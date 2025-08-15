@@ -16,7 +16,7 @@ class MagentoSvelteBridge {
   public readonly locale: LocaleCode = this.parsedData.locale
   public readonly isLoggedIn: boolean = this.parsedData.loggedIn
   public readonly showListPrice: boolean =
-    this.parsedData.configShowVatPercentage
+    this.parsedData.configShowListPrice
   public readonly showVatPercentage: boolean =
     this.parsedData.configShowVatPercentage
   public readonly showInclVatPdp: boolean = this.parsedData.configShowInclVatPdp
@@ -44,6 +44,8 @@ class MagentoSvelteBridge {
     // cart.value = window.MagentoBridgeState.cart;
     // customer.value = window.MagentoBridgeState.customer;
     // TO DO can I DRY this, not use 3 x
+
+    console.log(this.showListPrice)
 
     window.addEventListener(
       'magento:cartUpdated',

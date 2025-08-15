@@ -31,7 +31,7 @@
     isInteger(),
     qtyIncrements(
       qtyIncrement,
-      $t('multipleOf', { values: { count: qtyIncrement } }),
+      `${$t('multipleOf')} ${qtyIncrement}`,
     ),
   )
 
