@@ -72,53 +72,6 @@
   )
 
   const headerSize = $derived.by(() => (isPDPCard ? 'lg' : 'sm'))
-
-  // console.log(document.getElementsByClassName('fotorama__stage')[0])
-
-  // TO DO which one to use?
-  // window.addEventListener('fotorama:load', function () {
-  //   function cloneBadgeList() {
-  //     console.log('running MutationObserver')
-  //   }
-
-  //   const observer = new MutationObserver(cloneBadgeList)
-
-  //   const priceBox = document.getElementsByClassName('price-box')[0]
-  //   console.log(priceBox)
-
-  //   observer.observe(priceBox)
-
-  //   console.log(document.getElementsByClassName('fotorama__stage')[0])
-
-  //   console.log('loaded')
-  // })
-
-  // onMount(() => {
-  //   window.addEventListener('fotorama:load', function () {
-
-  //     const pdpPriceBox = document.getElementsByClassName('product-info-price')[0]
-
-  //     console.log(pdpPriceBox)
-
-  //     function cloneBadgeList() {
-  //       console.log('running MutationObserver')
-  //       console.log(pdpPriceBox.querySelector(`#badge-${id}`))
-  //     }
-
-  //     const observer = new MutationObserver(cloneBadgeList)
-
-      
-
-  //     observer.observe(pdpPriceBox, {childList: true})
-
-  //     cloneBadgeList()
-
-  //     console.log(document.getElementsByClassName('fotorama__stage')[0])
-
-  //   })
-  // })
-  
-
 </script>
 
 {#snippet DiscountBox(text: string)}
@@ -195,8 +148,10 @@
   </div>
 {/snippet}
 
-{#snippet badge(bgColor: string, text: string)}
-  <div class={`tw-text-white tw-text-xs tw-mb-2 tw-p-1 ${bgColor}`}>
+{#snippet badge(bgColor: string, text: string, inlineBlock = false)}
+  <div
+    class={`tw-text-white tw-text-xs tw-mb-2 tw-p-1 ${bgColor} ${inlineBlock && 'tw-inline-block'}`}
+  >
     {$t(text)}
   </div>
 {/snippet}
@@ -281,22 +236,18 @@
       </span>
     {/if}
 
-    <div
-      class={`badges-list tw-absolute tw-top-0 tw-z-[1] ${isPDPCard ? 'tw-left-[20px]' : 'tw-left-0'}`}
-    >
-      {#if isPss || price.price_info.extension_attributes?.lma_customer_price_is_campaign}
-        {@render badge('tw-bg-desert', 'campaign')}
-      {/if}
-      {#if newProduct}
-        <div
-          class="tw-bg-steel-blue tw-text-white tw-text-xs tw-mb-2 tw-p-1 tw-inline-block"
-        >
-          {$t('new')}
-        </div>
-      {/if}
-    </div>
+    {#if !isPDPCard}
+      <div class="tw-absolute tw-top-0 tw-z-[1] tw-left-0">
+        {#if isPss || price.price_info.extension_attributes?.lma_customer_price_is_campaign}
+          {@render badge('tw-bg-desert', 'campaign')}
+        {/if}
+        {#if newProduct}
+          {@render badge('tw-bg-steel-blue', 'new', true)}
+        {/if}
+      </div>
+    {/if}
   {:catch error}
     {$t('errorPrice')}
     {`${JSON.stringify(error)}`}
   {/await}
-</div>  
+</div>

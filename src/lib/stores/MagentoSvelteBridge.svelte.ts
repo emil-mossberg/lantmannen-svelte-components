@@ -41,14 +41,9 @@ class MagentoSvelteBridge {
   })
 
   constructor() {
-    // TO Do use parser here for type safety?
     // cart.value = window.MagentoBridgeState.cart;
     // customer.value = window.MagentoBridgeState.customer;
     // TO DO can I DRY this, not use 3 x
-
-    window.addEventListener('fotorama:load', function () {
-      console.log('loaded')
-    })
 
     window.addEventListener(
       'magento:cartUpdated',

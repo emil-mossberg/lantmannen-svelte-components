@@ -13,10 +13,17 @@ import { StockPropsSchema } from '@lib/schemas/StockProps'
 import { PricePropsSchema } from '@lib/schemas/PriceProps'
 import { BuyBoxPropsSchema } from '@lib/schemas/BuyProps'
 
-import { safeParseWithLogging } from '@lib/utils/helpers'
+import { safeParseWithLogging, moveBadgesOnPDP } from '@lib/utils/helpers'
 
 setupI18n('fi_FI').then(() => {
   // Logic Checkout acess component, includes logic for delivery planner or old flow
+
+  // TO Move this to svelte bridge
+  const isPDP = document.body.classList.contains('catalog-product-view')
+  
+  if (isPDP) {
+    moveBadgesOnPDP()
+  }
 
   const checkoutAcessMountPoint = document.getElementById(
     'svelte-checkout-acess',

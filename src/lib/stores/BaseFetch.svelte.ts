@@ -70,7 +70,9 @@ export default abstract class BaseFetch<S extends ZodType<{ items: any[] }>> {
       const json = await response.json()
       const result = this.schema.parse(json)
 
-      window.dispatchEvent(new CustomEvent(`${this.getFetchKey()}-fetched`))
+      window.dispatchEvent(new CustomEvent(`${this.getFetchKey()}-fetched`, {
+        detail: result
+      }))
 
       const itemsMap = new Map(
         result.items.map((p) => [String(p[this.getItemKey()]), p]),

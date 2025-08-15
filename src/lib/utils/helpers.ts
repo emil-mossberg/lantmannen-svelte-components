@@ -1,4 +1,6 @@
 import { ZodType, type ZodTypeDef, z } from 'zod'
+import { PriceSchema, type Price } from '@lib/schemas/Price'
+import magentoSvelteBridge from '@lib/stores/MagentoSvelteBridge.svelte'
 
 export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
@@ -94,4 +96,73 @@ export const createMoveElement = (id: string) => {
       console.warn('Target element #destination not found')
     }
   }
+}
+
+// Work around to be able to attach information from price call to fotorama
+export const moveBadgesOnPDP = () => {
+  window.addEventListener('priceFinderData-fetched', function (event) {
+    const customEvent = event as CustomEvent<{
+      items: Price[]
+    }>
+
+    const stage = document.getElementsByClassName('fotorama__stage')
+
+    if (stage.length) {
+      const priceBox = document.querySelector(
+        '.product-info-main [id*="svelte-product-price-box"]',
+      )
+
+      if (priceBox instanceof HTMLElement) {
+        const productId = priceBox.dataset.id
+
+        const isNewProduct = priceBox.dataset.newProduct === '1'
+
+        const price = PriceSchema.parse(
+          customEvent.detail.items.find(
+            (product: Price) => String(product.product_id) == productId,
+          ),
+        )
+
+        const isCampaign =
+          price.price_info.extension_attributes.lma_campaign_is_pre_season ||
+          price.price_info.extension_attributes.lma_customer_price_is_campaign
+
+        const buildBadge = (text: string, classes: string) => {
+          const div = document.createElement('div')
+          div.classList = `tw-text-white tw-mb-2 tw-p-2 tw-font-bold ${classes}`
+
+          div.textContent = text
+
+          return div
+        }
+
+        if (isNewProduct || isCampaign) {
+          const badgeList = document.createElement('div')
+          badgeList.classList = 'tw-absolute tw-top-0 tw-z-[1] tw-left-[20px]'
+
+          if (isCampaign) {
+            badgeList.appendChild(
+              buildBadge(
+                magentoSvelteBridge.locale === 'sv_SE'
+                  ? 'Kampanj!'
+                  : 'Kampanja!',
+                'tw-bg-desert',
+              ),
+            )
+          }
+
+          if (isNewProduct) {
+            badgeList.appendChild(
+              buildBadge(
+                magentoSvelteBridge.locale === 'sv_SE' ? 'Nyhet' : 'Uutuus!',
+                'tw-bg-steel-blue tw-inline-block',
+              ),
+            )
+          }
+
+          stage[0].appendChild(badgeList)
+        }
+      }
+    }
+  })
 }
